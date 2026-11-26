@@ -56,7 +56,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
     toc19 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D19)
     toc26 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D26) + '<li><a href="#D26-4">D26-4 The 10 scenarios</a></li>'
     body19 = '\n'.join(fig(i, t, s, f().svg()) for i, t, s, f in D19)
-    body26 = '\n'.join(fig(i, t, s, f().svg(), i != 'D26-3') for i, t, s, f in D26)
+    body26 = '\n'.join(fig(i, t, s, f().svg(), i not in ('D26-3', 'D26-7')) for i, t, s, f in D26)
     def link(n):
         if n in FLOWS:
             fid = FLOWS[n][0]
