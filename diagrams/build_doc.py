@@ -7,6 +7,7 @@ import arch26
 import modules26
 import flows26
 import delivery26
+import scorecard26
 
 # In the artifact viewer, #links need a script to scroll inside the page
 LINK_JS = """<script>(function(){function go(id){var t=id&&document.getElementById(decodeURIComponent(id));if(t)t.scrollIntoView();}
@@ -33,6 +34,7 @@ D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
     ('D26-2', 'Architecture', 'Eight layers: an intake agent, an orchestrator after the switch, specialized agents with limited rights, enterprise agents, approved knowledge, systems, governance and people', arch26.build),
     ('D26-7', 'Delivery plan', 'Ten fixed journeys first, more journeys every week from what people ask, then the orchestrator takes what has no journey', delivery26.build),
+    ('D26-6', 'Stack scorecard', 'Every platform from 2019 checked against the six questions: eight stay, two go', scorecard26.build),
     ('D26-5', 'Module map', 'Shared modules, designed once: every scenario is built from the same parts, so the same task always looks the same', modules26.build),
     ('D26-3', 'Handoff, confirmation and the target', 'A person gets the whole story, risky actions wait for a yes, success counts only when the case stays solved', lambda: t26.handoff()),
 ]
@@ -56,7 +58,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
     toc19 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D19)
     toc26 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D26) + '<li><a href="#D26-4">D26-4 The 10 scenarios</a></li>'
     body19 = '\n'.join(fig(i, t, s, f().svg()) for i, t, s, f in D19)
-    body26 = '\n'.join(fig(i, t, s, f().svg(), i not in ('D26-3', 'D26-7')) for i, t, s, f in D26)
+    body26 = '\n'.join(fig(i, t, s, f().svg(), i not in ('D26-3', 'D26-6', 'D26-7')) for i, t, s, f in D26)
     def link(n):
         if n in FLOWS:
             fid = FLOWS[n][0]

@@ -34,11 +34,11 @@ def agent_badge(d, key, x, y, w=190, sub=None):
 # A. What changes ----------------------------------------------------------------------
 def what_changes():
     rows = [
-        ('Avaamo bot and NLP library', 'Answered 40+ cases written in advance', 'bot', ['avaamo'], 'front', 'Understands any request and routes it'),
-        ('AI scripts library', 'Fixed issues found in discovery', 'grey', ['holmes'], 'fix', 'Runs approved fixes through Nexthink and Intune; drafts new ones for an engineer to approve'),
+        ('Avaamo bot and NLP library', 'Answered 40+ cases written in advance', 'bot', ['avaamo'], 'front', 'Replaces the bot. Routes any request to a fixed journey, or fills a ticket'),
+        ('AI scripts library', 'Fixed issues found in discovery', 'grey', ['holmes'], 'fix', 'Replaces Holmes. Runs approved fixes through Nexthink and Intune; an engineer approves new ones'),
         ('Preventive measures', 'Monitoring found problems early', 'grey', ['nexthink'], 'watcher', 'Reads the same telemetry and opens cases itself'),
         ('Self-help UI', 'The employee did the steps', 'hub', ['azure', 'ariba', 'office'], 'access', 'Does the steps in the same systems for the employee'),
-        ('AI issue triage', 'Urgency and sentiment decided when to call a person', 'bot', ['avaamo'], None, 'Same signals, written as handoff rules'),
+        ('AI issue triage', 'Urgency and sentiment decided when to call a person', 'bot', ['avaamo'], 'front', 'Reads urgency and mood from the conversation; handoff rules decide when to call a person'),
         ('Live agent session', 'A person took over with all the data', 'agent', ['genesys'], None, 'Same. The card also shows what the agents already did'),
     ]
     d = Rich('wc', 1120, 60 + len(rows) * 104, 'What changes from 2019 to 2026')
@@ -63,7 +63,7 @@ def what_changes():
             agent_badge(d, agent, 620, y + 4, 480, after)
         else:
             d.rect(620, y + 4, 480, 74, '#fff', TEAL, rx=12, sw=2)
-            d.t(640, y + 36, 'Kept', 15, 600, fill=TEAL)
+            d.t(640, y + 36, 'Kept: Genesys', 15, 600, fill=TEAL)
             d.lines(640, y + 58, after, 440, 12, 400, SECOND)
         y += 104
     return d
@@ -223,7 +223,7 @@ def scenario_card(i, title, agent, systems, enterprise, done, person):
 
 # D. Handoff, guardrails, metrics ----------------------------------------------------------------
 def handoff():
-    d = Rich('ho', 1120, 430, 'Handoff card, confirmation before risky actions, and the target split')
+    d = Rich('ho', 1120, 450, 'Handoff card, confirmation before risky actions, and the target split')
     # handoff card
     d.t(20, 30, 'What the live agent sees', 17, 600)
     d.rect(20, 46, 460, 360, '#fff', Z['agent'][1], rx=14, sw=2)
@@ -232,7 +232,7 @@ def handoff():
     d.t(110, 108, 'Visio install failed twice · frustrated', 13, 400, SECOND)
     y = 140
     for lg, t in [('nexthink', 'Device: the disk is almost full'), ('nexthink', 'Tried: disk clean-up and a reinstall, through Nexthink and Intune'),
-                  ('avaamo', 'Sentiment: frustrated, client meeting soon'), ('now', 'Ticket open with all of the above')]:
+                  ('chat', 'From the chat: in a hurry, client call in 20 minutes'), ('now', 'Ticket open with all of the above')]:
         if lg == 'holmes':
             d.wordmark('holmes', 40, y - 4, 60, 22)
         else:
@@ -254,7 +254,7 @@ def handoff():
     d.lines(520, 306, 'Wiping a device, giving access to client data or spending beyond the policy always waits for a person to confirm.', 280, 13, 400, SECOND)
     # metric
     d.t(840, 30, 'Target', 17, 600)
-    d.rect(840, 46, 260, 360, '#fff', '#dce4e7', rx=14)
+    d.rect(840, 46, 260, 384, '#fff', '#dce4e7', rx=14)
     d.el.append(f'<rect x="870" y="80" width="60" height="290" rx="8" fill="{TEAL}"/>')
     d.el.append(f'<rect x="870" y="80" width="60" height="29" rx="8" fill="{Z["agent"][1]}"/>')
     d.t(950, 100, '10%', 24, 600, fill=Z['agent'][1])

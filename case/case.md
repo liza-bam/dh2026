@@ -30,7 +30,11 @@ Working draft. Diagram IDs refer to `diagrams.html`. Sections marked "to write" 
 
 ## Where it started: 2019
 
-To write, short. The 2019 proposal: ten journeys, one front door, proactive support, a team of 7, final round of the bid, 50+ later Wipro bids built on it. What it could not do: every case had to be written in advance, so anything new became a ticket.
+In 2019, on Wipro's proposal for EY, I designed Digital Hub: one app for every IT issue, live status on every request, and support that acts before people notice a problem. I led a team of 7 through the ten journeys EY's discovery named, from password resets to lost laptops, and built them from shared modules so the same task always looked the same.
+
+Digital Hub reached the final round of the bid. The client called it the strongest part of the proposal, and more than 50 later Wipro bids were built on it.
+
+It had one limit. The AI bot could only handle cases someone had written in advance, and every proactive behavior was a separate script. Anything new became a ticket. That limit is where 2026 starts.
 
 Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support. The rest of D19 behind "see more diagrams".
 
@@ -53,7 +57,9 @@ Some platforms I had to design around in 2019 are gone. Others became stronger. 
 - Is every agent action on record?
 - Can we change the model or the vendor without rebuilding?
 
-Visual: stack scorecard (to draw: D26-6).
+Eight platforms stay, and each now has a way for agents to act through it. Two go: the Avaamo bot, because the intake agent does its job, and Wipro Holmes, because fixes now run through Nexthink and Intune.
+
+Visual: [D26-6] Stack scorecard.
 
 ---
 
@@ -90,25 +96,50 @@ Visual: [D26-7] Delivery plan.
 
 ## Architecture
 
-To write after the redraw. Eight layers: channels; intake agent with no write access, and after the switch the orchestrator; specialized agents with limited access; enterprise agents from the vendors; knowledge layer (answers only from approved EY sources); systems through MCP; governance and audit; people.
+Eight layers, each with one job.
+
+1. **Channels.** Teams, the Digital Hub website, email and voice. It is one conversation, wherever it starts.
+2. **Intake agent and orchestrator.** The intake agent reads every request, picks the journey or fills a ticket. After the switch, the orchestrator takes what has no journey. Neither changes anything in a system itself.
+3. **Specialized agents.** Identity, workplace, access, devices, fix and watcher. Each has its own identity, only the rights its role needs, and a list of what it never does. All run on small models.
+4. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
+5. **Knowledge.** Agents answer only from approved EY sources, with a link to the source.
+6. **Systems.** ServiceNow, Workday, Entra ID, Intune, Nexthink, Office 365 and SAP Ariba, reached through their MCP servers and only within the rights of the agent and the employee.
+7. **Governance.** Every agent is registered, tested on real scenarios before release, has a budget, and every action is logged.
+8. **People.** Live agents, approvers, the security team and engineers: the cases that need judgment.
 
 Visuals: [D26-1] What changes, [D26-2] Architecture.
 
 ## Ten scenarios
 
-To write. Visual: [D26-4] The 10 scenarios.
+The ten scenarios are the ten journeys from 2019, now run by agents. Each card shows how a scenario starts, which agent does the work, which systems it uses, what solved looks like, and when a person steps in. Three of the ten never reach the help desk at all: channel access, Outlook access for an assistant and ordering a peripheral.
+
+Visual: [D26-4] The 10 scenarios.
 
 ## Modules
 
-To write. Two channels, one system: Digital Hub in Teams every day, the Digital Hub website for everything too, and for the moments Teams is out of reach (a locked password). A conversation started in one continues in the other. Every scenario is built from the same modules, so the same task always looks the same. Visual: [D26-5] Module map.
+In 2019 I split the ten journeys into modules where functionality repeated: fewer screens to build, and employees learn the app once. The 2026 version keeps that idea and makes it stricter. Twelve modules, from verifying identity to handing over to a person, and every scenario is built only from them.
+
+Two channels, one system. Digital Hub lives in Teams for every day. The Digital Hub website does everything too, and it is the way in when Teams is out of reach, for example with a locked password. A conversation started in one continues in the other, and nothing is asked again.
+
+Every step the employee takes has a channel: they write in Teams, tap a button on a card, or open the website on their phone. Nothing happens in their head.
+
+Visual: [D26-5] Module map.
 
 ## Handoff to people
 
-To write. Visual: [D26-3] Handoff, confirmation and the target.
+Three rules decide when a person steps in.
+
+- **A person gets the whole story.** Who the employee is, what happened, what was tried, the logs. Nobody asks the employee anything again.
+- **Risky actions wait for a yes.** Wiping a device, giving access to client data or spending beyond the policy always waits for a person to confirm.
+- **Solved means it stays solved.** The target is that nine cases in ten never reach the help desk, and a case counts only if it does not come back.
+
+Visual: [D26-3] Handoff, confirmation and the target.
 
 ## The live demo
 
-To write once built. Mobile first, then desktop.
+All ten scenarios run in a live demo, built from the same twelve modules as the diagrams. Next to the chat, a "Behind the scenes" panel shows which agent acts and which system it uses at every step.
+
+Today the agents' answers are scripted. Next, a real intake agent reads what the employee writes and routes it, so the logic above can be tried live. Mobile first, then desktop.
 
 ## Result
 

@@ -52,7 +52,7 @@ def build():
     for i in range(4):
         d.image(f'cust{i + 1}', 70 + i * 50, 62, 44, round_=True, ring='#b7c1c5')
     x = 300
-    for icon, name in [('teams', 'Teams'), (None, 'Digital Hub app'), ('email', 'Email'), ('voice', 'Voice')]:
+    for icon, name in [('teams', 'Teams'), (None, 'Digital Hub website'), ('email', 'Email'), ('voice', 'Voice')]:
         d.rect(x, 62, 190, 56, '#fff', '#dce4e7', rx=10)
         if icon:
             d.image(icon, x + 12, 74, 32)

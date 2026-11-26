@@ -19,17 +19,17 @@ MODULES = [
     ('channel', 'Continue in another channel', 'teams', False),
 ]
 
-SCEN = [
-    ('Meeting room', ['room', 'status', 'person', 'feedback', 'channel']),
-    ('VPN offsite', ['fix', 'status', 'person', 'feedback', 'channel']),
-    ('Password reset', ['id', 'status', 'feedback', 'channel']),
-    ('Teams channel access', ['approve', 'access', 'status', 'channel']),
-    ('Lost laptop', ['id', 'confirm', 'order', 'status', 'person', 'feedback', 'channel']),
-    ('Client files in Canvas', ['approve', 'access', 'fix', 'status', 'channel']),
-    ('Outlook access for an assistant', ['approve', 'access', 'status', 'channel']),
-    ('Ordering a peripheral', ['order', 'approve', 'status', 'channel']),
-    ('Email scam', ['id', 'person', 'status', 'channel']),
-    ('Failed software install', ['fix', 'install', 'person', 'status', 'feedback', 'channel']),
+SCEN = [  # the same modules, in the same scenarios, as the live demo (app/index.html)
+    ('Meeting room', ['room', 'status', 'feedback']),
+    ('VPN offsite', ['confirm', 'fix', 'person', 'feedback']),
+    ('Password reset', ['id', 'feedback']),
+    ('Teams channel access', ['approve', 'access', 'feedback']),
+    ('Lost laptop', ['confirm', 'id', 'order', 'person', 'status', 'feedback']),
+    ('Client files in Canvas', ['approve', 'access', 'feedback']),
+    ('Outlook access for an assistant', ['confirm', 'access', 'feedback']),
+    ('Ordering a peripheral', ['order', 'status', 'feedback']),
+    ('Email scam', ['channel', 'confirm', 'id', 'person', 'feedback']),
+    ('Failed software install', ['install', 'confirm', 'fix', 'person', 'channel', 'feedback']),
     ('Laptop refresh (proactive)', ['order', 'install', 'confirm', 'status', 'feedback', 'channel']),
 ]
 
