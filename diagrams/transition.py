@@ -11,16 +11,19 @@ OK = '#3d8b2f'
 AGENTS = {
     'front': ('Front door agent', 'chat'), 'identity': ('Identity agent', 'lock'), 'workplace': ('Workplace agent', 'room'),
     'access': ('Access agent', 'approve'), 'devices': ('Devices agent', 'hardware'), 'fix': ('Fix agent', 'tools'),
-    'security': ('Security agent', 'alert'), 'watcher': ('Watcher agent', 'software'),
+    'defender': ('Microsoft Defender', 'alert'), 'watcher': ('Watcher agent', 'software'),
 }
 
 
 def agent_badge(d, key, x, y, w=190, sub=None):
     from svg import wrap
     name, icon = AGENTS[key]
+    ent = key == 'defender'
+    if ent and not sub:
+        sub = 'Enterprise agent'
     h = 56 if not sub else 58 + 17 * len(wrap(sub, w - 66, 12))
-    d.rect(x, y, w, h, TINT, TEAL, rx=12, sw=2)
-    d.el.append(f'<circle cx="{x + 28}" cy="{y + 28}" r="18" fill="#fff" stroke="{TEAL}" stroke-width="1.5"/>')
+    d.rect(x, y, w, h, '#fff' if ent else TINT, '#9aa5aa' if ent else TEAL, rx=12, sw=2)
+    d.el.append(f'<circle cx="{x + 28}" cy="{y + 28}" r="18" fill="#fff" stroke="{'#9aa5aa' if ent else TEAL}" stroke-width="1.5"/>')
     d.image(icon, x + 17, y + 17, 22)
     d.t(x + 56, y + 33, name, 15, 600)
     if sub:
@@ -32,7 +35,7 @@ def agent_badge(d, key, x, y, w=190, sub=None):
 def what_changes():
     rows = [
         ('Avaamo bot and NLP library', 'Answered 40+ cases written in advance', 'bot', ['avaamo'], 'front', 'Understands any request and routes it'),
-        ('AI scripts library', 'Fixed issues found in discovery', 'grey', ['holmes'], 'fix', 'Runs the library and drafts new scripts for an engineer to approve'),
+        ('AI scripts library', 'Fixed issues found in discovery', 'grey', ['holmes'], 'fix', 'Runs approved fixes through Nexthink and Intune; drafts new ones for an engineer to approve'),
         ('Preventive measures', 'Monitoring found problems early', 'grey', ['nexthink'], 'watcher', 'Reads the same telemetry and opens cases itself'),
         ('Self-help UI', 'The employee did the steps', 'hub', ['azure', 'ariba', 'office'], 'access', 'Does the steps in the same systems for the employee'),
         ('AI issue triage', 'Urgency and sentiment decided when to call a person', 'bot', ['avaamo'], None, 'Same signals, written as handoff rules'),
@@ -89,7 +92,7 @@ def architecture():
     d.zone(330, 20, 620, 840, 'Agents', 'grey', 'Claude agents with tools')
     d.rect(350, 70, 580, 2, TEAL, TEAL)
     pos = {'identity': (360, 110), 'workplace': (650, 110), 'access': (360, 230), 'devices': (650, 230),
-           'fix': (360, 560), 'security': (650, 560), 'watcher': (505, 700)}
+           'fix': (360, 560), 'defender': (650, 560), 'watcher': (505, 700)}
     for k, (x, y) in pos.items():
         d.el.append(f'<line x1="640" y1="{416}" x2="{x + 135}" y2="{y + 28}" stroke="{TEAL}" stroke-width="1.5" stroke-dasharray="4 4"/>')
     for k, (x, y) in pos.items():
@@ -135,16 +138,16 @@ def architecture():
 
 # C. Scenarios ------------------------------------------------------------------------------
 SCEN = [
-    ('Meeting room', 'workplace', ['office'], 'Rebooks an identical room, files a facilities request', 'Repair visit'),
-    ('VPN offsite', 'fix', ['nexthink'], 'Finds the cause, fixes the client or guides the employee', 'Network-side problem'),
-    ('Password reset', 'identity', ['azure'], 'Resets with a one-time code', 'Sign-in looks like an attack'),
-    ('Teams channel access', 'access', ['office'], 'Asks the channel owner in Teams, adds the employee', None),
-    ('Lost laptop', 'devices', ['nexthink', 'now', 'ariba'], 'Locks and wipes, new password, forms, replacement', 'Client data on it: security team'),
-    ('Client files in Canvas', 'access', ['azure', 'nexthink'], 'Checks the engagement, asks the owner, fixes app errors', 'The app itself is down'),
-    ('Outlook access for an assistant', 'access', ['office'], 'Sets the delegation once the mailbox owner confirms', None),
-    ('Ordering a peripheral', 'devices', ['ariba', 'workday'], 'Compatible, in stock, locker; bundles approve automatically', 'Outside the bundle: manager'),
-    ('Email scam', 'security', ['office', 'azure'], 'Removes similar messages for everyone', 'Password entered: security team'),
-    ('Failed software install', 'fix', ['nexthink', 'holmes'], 'Finds the cause, fixes, installs again, drafts a script', 'Two fixes failed or frustration'),
+    ('Meeting room', 'workplace', [('office', 'Office 365'), ('now', 'ServiceNow')], 'Rebooks an identical room, files a facilities request', 'Repair visit'),
+    ('VPN offsite', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], 'Finds the cause, fixes the client or guides the employee', 'Network-side problem'),
+    ('Password reset', 'identity', [('azure', 'Entra ID')], 'Resets after a code or an approval in the authenticator', 'Sign-in looks like an attack'),
+    ('Teams channel access', 'access', [('azure', 'Entra ID'), ('office', 'Office 365')], 'Asks the channel owner in Teams, adds the employee', None),
+    ('Lost laptop', 'devices', [(None, 'Intune'), ('now', 'ServiceNow'), ('ariba', 'SAP Ariba')], 'Locks and wipes, new password, forms, replacement', 'Client data on it: security team'),
+    ('Client files in Canvas', 'access', [('azure', 'Entra ID'), ('nexthink', 'Nexthink')], 'Checks the engagement, asks the owner, fixes app errors', 'The app itself is down'),
+    ('Outlook access for an assistant', 'access', [('office', 'Office 365')], 'Sets the delegation once the mailbox owner confirms', None),
+    ('Ordering a peripheral', 'devices', [('ariba', 'SAP Ariba'), ('workday', 'Workday')], 'Compatible, in stock, locker; bundles approve automatically', 'Outside the bundle: manager'),
+    ('Email scam', 'defender', [('office', 'Office 365'), ('azure', 'Entra ID')], 'Defender removes it for everyone; the identity agent resets the password if needed', 'Password entered: security team'),
+    ('Failed software install', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], 'Finds the cause, fixes, installs again, drafts a new fix', 'Two fixes failed or frustration'),
 ]
 
 
@@ -155,14 +158,14 @@ def scenario_card(i, title, agent, logos, done, person):
     d.image('cust1', 20, 62, 46, round_=True, ring='#b7c1c5')
     d.arrow((70, 85), (96, 85), color=G)
     agent_badge(d, agent, 100, 57, 200)
-    lx = 316
-    for lg in logos:
-        if lg == 'holmes':
-            d.wordmark('holmes', lx, 70, 70, 26)
-            lx += 76
+    for k, (lg, name) in enumerate(logos):
+        ly = 56 + k * 26
+        if lg:
+            d.logo(lg, 316, ly, 22)
         else:
-            d.logo(lg, lx, 66, 36)
-            lx += 42
+            d.el.append(f'<circle cx="327" cy="{ly + 11}" r="11" fill="#eceff0"/>')
+            d.t(327, ly + 16, name[0], 11, 700, 'middle')
+        d.t(346, ly + 16, name, 13, 600, fill=SECOND)
     d.mark('ok', 20, 138, 28)
     d.lines(58, 157, done, 460, 14, 600, fill=OK)
     if person:
@@ -184,7 +187,7 @@ def handoff():
     d.t(110, 88, 'Peter, senior auditor, Manchester', 15, 600)
     d.t(110, 108, 'Visio install failed twice · frustrated', 13, 400, SECOND)
     y = 140
-    for lg, t in [('nexthink', 'Device: the disk is almost full'), ('holmes', 'Tried: disk clean-up script, reinstall'),
+    for lg, t in [('nexthink', 'Device: the disk is almost full'), ('nexthink', 'Tried: disk clean-up and a reinstall, through Nexthink and Intune'),
                   ('avaamo', 'Sentiment: frustrated, client meeting soon'), ('now', 'Ticket open with all of the above')]:
         if lg == 'holmes':
             d.wordmark('holmes', 40, y - 4, 60, 22)
