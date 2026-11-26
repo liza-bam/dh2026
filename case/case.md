@@ -53,7 +53,7 @@ Some platforms I had to design around in 2019 are gone. Others became stronger. 
 - Is every agent action on record?
 - Can we change the model or the vendor without rebuilding?
 
-Visual: stack scorecard (to draw: D26-5).
+Visual: stack scorecard (to draw: D26-6).
 
 ---
 
@@ -66,6 +66,10 @@ Visuals: [D26-1] What changes, [D26-2] Architecture (to redraw).
 ## Ten scenarios
 
 To write. Visual: [D26-4] The 10 scenarios.
+
+## Modules
+
+To write. Two channels, one system: Digital Hub in Teams every day, the Digital Hub website for everything too, and for the moments Teams is out of reach (a locked password). A conversation started in one continues in the other. Every scenario is built from the same modules, so the same task always looks the same. Visual: [D26-5] Module map.
 
 ## Handoff to people
 

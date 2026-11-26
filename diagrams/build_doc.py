@@ -4,6 +4,7 @@ from html import escape
 import d_first_contact, d_solving, d_requests, d_status, d_proactive, d_refresh, d_transfer, d_scenarios
 import transition as t26
 import arch26
+import modules26
 
 D19 = [
     ('D19-1', 'First contact', 'From any channel to the right person, with the employee’s data all the way', d_first_contact.build),
@@ -21,6 +22,7 @@ D19 = [
 D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
     ('D26-2', 'Architecture', 'Eight layers: one front door that changes nothing, specialized agents with limited rights, enterprise agents, approved knowledge, systems, governance and people', arch26.build),
+    ('D26-5', 'Module map', 'Shared modules, designed once: every scenario is built from the same parts, so the same task always looks the same', modules26.build),
     ('D26-3', 'Handoff, confirmation and the target', 'A person gets the whole story, risky actions wait for a yes, success counts only when the case stays solved', lambda: t26.handoff()),
 ]
 
