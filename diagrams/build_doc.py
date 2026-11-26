@@ -6,6 +6,7 @@ import transition as t26
 import arch26
 import modules26
 import flows26
+import delivery26
 
 # In the artifact viewer, #links need a script to scroll inside the page
 LINK_JS = """<script>(function(){function go(id){var t=id&&document.getElementById(decodeURIComponent(id));if(t)t.scrollIntoView();}
@@ -31,6 +32,7 @@ D19 = [
 D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
     ('D26-2', 'Architecture', 'Eight layers: one front door that changes nothing, specialized agents with limited rights, enterprise agents, approved knowledge, systems, governance and people', arch26.build),
+    ('D26-7', 'Delivery plan', 'Ten fixed journeys first, more journeys every week from what people ask, then the orchestrator takes what has no journey', delivery26.build),
     ('D26-5', 'Module map', 'Shared modules, designed once: every scenario is built from the same parts, so the same task always looks the same', modules26.build),
     ('D26-3', 'Handoff, confirmation and the target', 'A person gets the whole story, risky actions wait for a yes, success counts only when the case stays solved', lambda: t26.handoff()),
 ]
