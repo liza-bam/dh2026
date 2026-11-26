@@ -151,10 +151,24 @@ SCEN = [
     ('Failed software install', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], [], 'Finds the cause, fixes, installs again, drafts a new fix', 'Two fixes failed, or the employee is frustrated'),
 ]
 
+# How each scenario starts: the input channel and what the employee does there
+START = [
+    (['teams'], 'Writes in Teams: the room screen is not working'),
+    (['teams'], 'Writes in Teams: the VPN does not connect'),
+    (['iphone'], 'Locked out: opens the Digital Hub website on his phone'),
+    (['teams'], 'Writes in Teams: needs access to a channel'),
+    (['iphone', 'teams'], 'Writes in Teams on his phone: the laptop is gone'),
+    (['teams'], 'Writes in Teams: Canvas will not open client files'),
+    (['teams'], 'Writes in Teams: the new assistant needs his Outlook'),
+    (['teams'], 'Writes in Teams: needs a second monitor'),
+    (['outlook'], 'Taps Report in Outlook'),
+    (['teams'], 'Writes in Teams: needs Visio for a client call'),
+]
+
 
 def scenario_card(i, title, agent, systems, enterprise, done, person):
-    d = Rich(f'sc{i}', 560, 300, f'Scenario: {title}')
-    d.rect(1, 1, 558, 298, '#fff', '#dce4e7', rx=12)
+    d = Rich(f'sc{i}', 560, 330, f'Scenario: {title}')
+    d.rect(1, 1, 558, 328, '#fff', '#dce4e7', rx=12)
     d.t(20, 34, f'{i + 1}. {title}', 17, 600)
     # chain: employee, front door, our agent
     d.image('cust1', 20, 56, 44, round_=True, ring='#b7c1c5')
@@ -164,9 +178,17 @@ def scenario_card(i, title, agent, systems, enterprise, done, person):
     d.t(122, 83, 'Front door', 13, 600)
     d.arrow((214, 78), (230, 78), color=TEAL)
     agent_badge(d, agent, 232, 50, 210)
+    # input channel
+    logos, text = START[i]
+    d.t(20, 128, 'Starts', 12, 600, fill=SECOND)
+    x = 60
+    for lg in logos:
+        d.logo(lg, x, 113, 20)
+        x += 24
+    d.t(x + 4, 128, text, 13, 600)
     # systems and enterprise agents
     x = 20
-    y = 128
+    y = 158
     d.t(x, y, 'Uses', 12, 600, fill=SECOND)
     x = 60
     for lg, name in systems:
@@ -184,18 +206,18 @@ def scenario_card(i, title, agent, systems, enterprise, done, person):
         d.t(x + 26, y, name + ' (enterprise agent)', 12, 600, fill=SECOND)
         x += w + 8
     # solved
-    d.mark('ok', 20, 152, 26)
-    d.lines(56, 170, done, 480, 14, 600, fill=OK)
+    d.mark('ok', 20, 182, 26)
+    d.lines(56, 200, done, 480, 14, 600, fill=OK)
     # live support
-    d.el.append(f'<line x1="20" y1="224" x2="540" y2="224" stroke="#e4e8ea"/>')
+    d.el.append(f'<line x1="20" y1="254" x2="540" y2="254" stroke="#e4e8ea"/>')
     if person:
-        d.rect(20, 236, 520, 48, Z['agent'][0], Z['agent'][1], dashed=True, rx=10)
-        d.image('agent1', 30, 242, 36, round_=True, ring=Z['agent'][1])
-        d.t(76, 256, 'Live support', 13, 600)
-        d.t(76, 274, person, 13, 400, fill=SECOND)
+        d.rect(20, 266, 520, 48, Z['agent'][0], Z['agent'][1], dashed=True, rx=10)
+        d.image('agent1', 30, 272, 36, round_=True, ring=Z['agent'][1])
+        d.t(76, 286, 'Live support', 13, 600)
+        d.t(76, 304, person, 13, 400, fill=SECOND)
     else:
-        d.rect(20, 236, 520, 48, TINT, TINT, rx=10)
-        d.t(280, 265, 'No live support needed: the help desk never sees this case', 13, 600, 'middle', fill=TEAL)
+        d.rect(20, 266, 520, 48, TINT, TINT, rx=10)
+        d.t(280, 295, 'No live support needed: the help desk never sees this case', 13, 600, 'middle', fill=TEAL)
     return d
 
 

@@ -33,7 +33,10 @@ def card(d, x, y, w, title, lines=(), buttons=(), tone='hub'):
 
 
 def build_flow(uid, label, lanes, steps, edges, cols, colw=210, title_note=None):
-    """steps: key -> dict(col, lane, title, sub, module, kind[step|decision|card|done], card=(title, lines, buttons, tone))."""
+    """steps: key -> dict(col, lane, title, sub, module, kind[step|decision|card|done], card=(title, lines, buttons, tone)).
+    Every employee step is an action in a channel: a verb in the title and the channel logo."""
+    for key, s in steps.items():
+        assert s['lane'] != 'employee' or s.get('logos'), f'{key}: employee step needs its input channel'
     left = 170
     W = left + cols * colw + 30
     ys, y = {}, 20
@@ -59,7 +62,7 @@ def build_flow(uid, label, lanes, steps, edges, cols, colw=210, title_note=None)
             card(d, cx - w / 2, cy, w, t, lines, buttons, tone)
             if s.get('module'):
                 m = s['module']
-                mw = len(m) * 6.6 + 18
+                mw = len(m) * 6.2 + 18
                 d.rect(cx - w / 2, cy + ch + 6, mw, 20, TEAL, TEAL, rx=10)
                 d.t(cx - w / 2 + mw / 2, cy + ch + 20, m, 11, 600, 'middle', fill='#fff')
             box[key] = (cx - w / 2, cy, w, ch)
@@ -93,7 +96,7 @@ def build_flow(uid, label, lanes, steps, edges, cols, colw=210, title_note=None)
                 yy += 16
             if s.get('module'):
                 m = s['module']
-                mw = len(m) * 6.6 + 18
+                mw = len(m) * 6.2 + 18
                 d.rect(cx - w / 2 + 8, yy - 6, mw, 20, TEAL, TEAL, rx=10)
                 d.t(cx - w / 2 + 8 + mw / 2, yy + 8, m, 11, 600, 'middle', fill='#fff')
             if s.get('logos'):
