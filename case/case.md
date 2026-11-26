@@ -57,6 +57,37 @@ Visual: stack scorecard (to draw: D26-6).
 
 ---
 
+## The logic: how Digital Hub grows
+
+An orchestrator that talks to every employee from day one makes the best demo and the worst plan. EY is a very large company, and every conversation on a large model costs money. So Digital Hub starts cheap and earns the right to use the large model.
+
+### Stage 1. Ten fixed journeys from day one
+The ten most common requests from 2019 become fixed journeys: the same steps every time, built from shared modules. An intake agent on a small model reads every request and picks the journey.
+
+When a request has no journey, the intake agent does not stop. It opens a ServiceNow ticket and fills it in: category, urgency, the right support group, a summary of the conversation, the employee's device. It labels the ticket and tells the employee what happens next. People solve these cases, and nobody asks the employee anything again.
+
+The large model does not run at this stage. Tickets drop from the first day.
+
+### Stage 2. More journeys every week
+Every ticket without a journey carries a label. Once a week the intake agent groups them: what people ask most, and how often. The most frequent requests become new fixed journeys. People design and approve each one, the same way an engineer approves a new fix. The library grows, and the share that reaches the help desk falls.
+
+### Stage 3. The switch
+When fixed journeys cover most requests, what is left is small enough to give to the large model. It starts in shadow mode: for every ticket without a journey, the orchestrator drafts an answer, and the help desk marks each draft as good or not. Nothing reaches the employee. Then one office, then everyone.
+
+We switch when three things are true:
+- Fixed journeys cover most requests.
+- The help desk accepts most of the orchestrator's drafts.
+- The orchestrator costs less than people on the same requests.
+
+The switch changes the default path. Before: no journey means a ticket for people. After: no journey means the orchestrator tries first, and people get what it cannot solve. When the orchestrator solves something often enough, it becomes a new fixed journey.
+
+### Why this order
+Cheap work runs on fixed journeys and a small model, so the first rule holds from day one. The large model gets only what is left, and only after the help desk has seen it work. Each stage pays for the next one.
+
+Visual: [D26-7] Delivery plan.
+
+---
+
 ## Architecture
 
 To write after the redraw. Eight layers: channels; front door agent with no write access; specialized agents with limited access; enterprise agents from the vendors; knowledge layer (answers only from approved EY sources); systems through MCP; governance and audit; people.
