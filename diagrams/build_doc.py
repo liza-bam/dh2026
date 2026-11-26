@@ -47,7 +47,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
     body26 = '\n'.join(fig(i, t, s, f().svg(), i != 'D26-3') for i, t, s, f in D26)
     cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}</div>' for n, sc in enumerate(t26.SCEN))
     body26 += ('<figure class="figure-panel" id="D26-4"><figcaption class="figure-caption"><div><div class="figure-title"><span class="fid">D26-4</span> The 10 scenarios</div>'
-               '<span>Who does the work now, and when a person steps in</span></div></figcaption>'
+               '<span>Every case starts at the front door and goes to one of our agents; enterprise agents help where they hold the data; live support (routed through Genesys) joins only when it is needed</span></div></figcaption>'
                f'<div class="grid">{cards}</div></figure>')
     html = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Digital Hub diagrams · Sandy Tayts</title>

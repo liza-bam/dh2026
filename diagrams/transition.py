@@ -137,43 +137,65 @@ def architecture():
 
 
 # C. Scenarios ------------------------------------------------------------------------------
+# title, our agent, systems, enterprise agents, solved without the help desk, when live support joins
 SCEN = [
-    ('Meeting room', 'workplace', [('office', 'Office 365'), ('now', 'ServiceNow')], 'Rebooks an identical room, files a facilities request', 'Repair visit'),
-    ('VPN offsite', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], 'Finds the cause, fixes the client or guides the employee', 'Network-side problem'),
-    ('Password reset', 'identity', [('azure', 'Entra ID')], 'Resets after a code or an approval in the authenticator', 'Sign-in looks like an attack'),
-    ('Teams channel access', 'access', [('azure', 'Entra ID'), ('office', 'Office 365')], 'Asks the channel owner in Teams, adds the employee', None),
-    ('Lost laptop', 'devices', [(None, 'Intune'), ('now', 'ServiceNow'), ('ariba', 'SAP Ariba')], 'Locks and wipes, new password, forms, replacement', 'Client data on it: security team'),
-    ('Client files in Canvas', 'access', [('azure', 'Entra ID'), ('nexthink', 'Nexthink')], 'Checks the engagement, asks the owner, fixes app errors', 'The app itself is down'),
-    ('Outlook access for an assistant', 'access', [('office', 'Office 365')], 'Sets the delegation once the mailbox owner confirms', None),
-    ('Ordering a peripheral', 'devices', [('ariba', 'SAP Ariba'), ('workday', 'Workday')], 'Compatible, in stock, locker; bundles approve automatically', 'Outside the bundle: manager'),
-    ('Email scam', 'defender', [('office', 'Office 365'), ('azure', 'Entra ID')], 'Defender removes it for everyone; the identity agent resets the password if needed', 'Password entered: security team'),
-    ('Failed software install', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], 'Finds the cause, fixes, installs again, drafts a new fix', 'Two fixes failed or frustration'),
+    ('Meeting room', 'workplace', [('office', 'Office 365'), ('now', 'ServiceNow')], [], 'Rebooks an identical room, files a facilities request', 'The room needs a repair visit'),
+    ('VPN offsite', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], [], 'Finds the cause, fixes the client or guides the employee', 'The problem is on the network side'),
+    ('Password reset', 'identity', [('azure', 'Entra ID')], [], 'Resets after a code or an approval in the authenticator', 'The sign-in looks like an attack'),
+    ('Teams channel access', 'access', [('azure', 'Entra ID'), ('office', 'Office 365')], [], 'Asks the channel owner in Teams, adds the employee', None),
+    ('Lost laptop', 'devices', [(None, 'Intune'), ('now', 'ServiceNow'), ('ariba', 'SAP Ariba')], [], 'Locks and wipes, new password, forms, replacement', 'Client data was on it: the security team joins'),
+    ('Client files in Canvas', 'access', [('azure', 'Entra ID'), ('nexthink', 'Nexthink')], [], 'Checks the engagement, asks the owner, fixes app errors', 'The app itself is down'),
+    ('Outlook access for an assistant', 'access', [('office', 'Office 365')], [], 'Sets the delegation once the mailbox owner confirms', None),
+    ('Ordering a peripheral', 'devices', [('ariba', 'SAP Ariba'), ('workday', 'Workday')], [], 'Compatible, in stock, locker; bundles approve automatically', None),
+    ('Email scam', 'identity', [('office', 'Office 365'), ('azure', 'Entra ID')], ['Microsoft Defender'], 'Defender removes it for everyone; the identity agent resets the password if it was entered', 'A real attack: the security team joins'),
+    ('Failed software install', 'fix', [('nexthink', 'Nexthink'), (None, 'Intune')], [], 'Finds the cause, fixes, installs again, drafts a new fix', 'Two fixes failed, or the employee is frustrated'),
 ]
 
 
-def scenario_card(i, title, agent, logos, done, person):
-    d = Rich(f'sc{i}', 540, 250, f'Scenario: {title}')
-    d.rect(1, 1, 538, 248, '#fff', '#dce4e7', rx=12)
+def scenario_card(i, title, agent, systems, enterprise, done, person):
+    d = Rich(f'sc{i}', 560, 300, f'Scenario: {title}')
+    d.rect(1, 1, 558, 298, '#fff', '#dce4e7', rx=12)
     d.t(20, 34, f'{i + 1}. {title}', 17, 600)
-    d.image('cust1', 20, 62, 46, round_=True, ring='#b7c1c5')
-    d.arrow((70, 85), (96, 85), color=G)
-    agent_badge(d, agent, 100, 57, 200)
-    for k, (lg, name) in enumerate(logos):
-        ly = 56 + k * 26
+    # chain: employee, front door, our agent
+    d.image('cust1', 20, 56, 44, round_=True, ring='#b7c1c5')
+    d.arrow((66, 78), (82, 78), color=G)
+    d.rect(84, 58, 128, 40, TINT, TEAL, rx=20, sw=1.5)
+    d.image('chat', 94, 67, 22)
+    d.t(122, 83, 'Front door', 13, 600)
+    d.arrow((214, 78), (230, 78), color=TEAL)
+    agent_badge(d, agent, 232, 50, 210)
+    # systems and enterprise agents
+    x = 20
+    y = 128
+    d.t(x, y, 'Uses', 12, 600, fill=SECOND)
+    x = 60
+    for lg, name in systems:
         if lg:
-            d.logo(lg, 316, ly, 22)
+            d.logo(lg, x, y - 15, 20)
         else:
-            d.el.append(f'<circle cx="327" cy="{ly + 11}" r="11" fill="#eceff0"/>')
-            d.t(327, ly + 16, name[0], 11, 700, 'middle')
-        d.t(346, ly + 16, name, 13, 600, fill=SECOND)
-    d.mark('ok', 20, 138, 28)
-    d.lines(58, 157, done, 460, 14, 600, fill=OK)
+            d.el.append(f'<circle cx="{x + 10}" cy="{y - 5}" r="10" fill="#eceff0"/>')
+            d.t(x + 10, y, name[0], 10, 700, 'middle')
+        d.t(x + 26, y, name, 12, 600, fill=SECOND)
+        x += 26 + len(name) * 7 + 16
+    for name in enterprise:
+        w = len(name) * 7 + 138
+        d.rect(x - 4, y - 17, w, 24, '#fff', '#9aa5aa', rx=12)
+        d.image('alert', x + 4, y - 13, 16)
+        d.t(x + 26, y, name + ' (enterprise agent)', 12, 600, fill=SECOND)
+        x += w + 8
+    # solved
+    d.mark('ok', 20, 152, 26)
+    d.lines(56, 170, done, 480, 14, 600, fill=OK)
+    # live support
+    d.el.append(f'<line x1="20" y1="224" x2="540" y2="224" stroke="#e4e8ea"/>')
     if person:
-        d.image('agent1', 20, 190, 32, round_=True, ring=Z['agent'][1])
-        d.lines(62, 211, person, 450, 13, 400, SECOND)
+        d.rect(20, 236, 520, 48, Z['agent'][0], Z['agent'][1], dashed=True, rx=10)
+        d.image('agent1', 30, 242, 36, round_=True, ring=Z['agent'][1])
+        d.t(76, 256, 'Live support', 13, 600)
+        d.t(76, 274, person, 13, 400, fill=SECOND)
     else:
-        d.rect(20, 192, 210, 30, TINT, TINT, rx=15)
-        d.t(125, 212, 'Never the help desk', 13, 600, 'middle', fill=TEAL)
+        d.rect(20, 236, 520, 48, TINT, TINT, rx=10)
+        d.t(280, 265, 'No live support needed: the help desk never sees this case', 13, 600, 'middle', fill=TEAL)
     return d
 
 
