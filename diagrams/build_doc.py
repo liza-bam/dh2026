@@ -36,7 +36,7 @@ def main():
 .pano{overflow-x:auto;overscroll-behavior-x:contain}.pano .case-diagram{width:auto;max-width:none;height:auto}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.grid .case-diagram{width:100%;height:auto}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
-.fid{display:inline-block;font:600 14px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:6px;padding:6px 8px;margin-right:8px;vertical-align:4px}
+.figure-caption .fid{display:inline-block;font:600 14px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:6px;padding:6px 8px;margin:0 8px 0 0;vertical-align:4px}
 h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56px 0 24px}
 .toc{columns:2}'''
     toc19 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D19)
