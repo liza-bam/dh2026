@@ -5,6 +5,9 @@ import d_first_contact, d_solving, d_requests, d_status, d_proactive, d_refresh,
 import transition as t26
 import arch26
 import modules26
+import flows26
+
+FLOWS = {9: ('D26-F10', 'Flow: failed software install', 'The full flow behind scenario 10: what the employee sees, which agent acts, the two fixes, the handover to live support, the new fix an engineer approves', flows26.failed_install)}
 
 D19 = [
     ('D19-1', 'First contact', 'From any channel to the right person, with the employee’s data all the way', d_first_contact.build),
@@ -40,15 +43,23 @@ def main():
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
 .figure-caption .fid{display:inline-block;font:600 14px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:6px;padding:6px 8px;margin:0 8px 0 0;vertical-align:4px}
 h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56px 0 24px}
-.toc{columns:2}'''
+.toc{columns:2}
+.flowlink{margin:6px 0 0;font-size:15px}.flowlink a{color:#2c6e7e;font-weight:600}.flowlink.muted{color:#5f7480}'''
     toc19 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D19)
     toc26 = ''.join(f'<li><a href="#{i}">{i} {escape(t)}</a></li>' for i, t, _, _ in D26) + '<li><a href="#D26-4">D26-4 The 10 scenarios</a></li>'
     body19 = '\n'.join(fig(i, t, s, f().svg()) for i, t, s, f in D19)
     body26 = '\n'.join(fig(i, t, s, f().svg(), i != 'D26-3') for i, t, s, f in D26)
-    cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}</div>' for n, sc in enumerate(t26.SCEN))
+    def link(n):
+        if n in FLOWS:
+            fid = FLOWS[n][0]
+            return f'<p class="flowlink"><a href="#{fid}">Open the flow ({fid})</a></p>'
+        return '<p class="flowlink muted">Flow: to draw</p>'
+    cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}{link(n)}</div>' for n, sc in enumerate(t26.SCEN))
     body26 += ('<figure class="figure-panel" id="D26-4"><figcaption class="figure-caption"><div><div class="figure-title"><span class="fid">D26-4</span> The 10 scenarios</div>'
                '<span>Every case starts at the front door and goes to one of our agents; enterprise agents help where they hold the data; live support (routed through Genesys) joins only when it is needed</span></div></figcaption>'
                f'<div class="grid">{cards}</div></figure>')
+    body26 += '<h2>Scenario flows</h2>' + '\n'.join(fig(fid, t, sub, f().svg()) for fid, t, sub, f in FLOWS.values())
+    toc26 += ''.join(f'<li><a href="#{fid}">{fid} {escape(t)}</a></li>' for fid, t, _, _ in FLOWS.values())
     html = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Digital Hub diagrams · Sandy Tayts</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600&amp;family=Inter:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
