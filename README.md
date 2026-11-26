@@ -4,6 +4,7 @@ Agentic rebuild of the EY Digital Hub service (2019 proposal), by Sandy Tayts.
 
 - `case/case.md` — the case study text. Refers to diagrams by ID.
 - `case/diagrams.html` — every diagram with its ID (D19 = 2019 brief, D26 = 2026 agents). Generated; do not edit by hand.
+- `case/flows.html` — the ten scenario cards and the full flow behind each (D26-F*). Generated.
 - `diagrams/` — diagram sources. Run `python3 diagrams/build_doc.py` to rebuild `case/diagrams.html`.
 - `docs/` — working documents: transition map.
 - `source/2019/` — the 2019 slides as PDF; the scenario screens are cropped from it.

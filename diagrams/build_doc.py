@@ -7,6 +7,7 @@ import arch26
 import modules26
 import flows26
 
+FLOWS_URL = 'https://claude.ai/artifact/X1kuj4G3xAcsWb86NmQACZ'
 FLOWS = {9: ('D26-F10', 'Flow: failed software install', 'The full flow behind scenario 10: what the employee sees, which agent acts, the two fixes, the handover to live support, the new fix an engineer approves', flows26.failed_install)}
 
 D19 = [
@@ -52,14 +53,12 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
     def link(n):
         if n in FLOWS:
             fid = FLOWS[n][0]
-            return f'<p class="flowlink"><a href="#{fid}">Open the flow ({fid})</a></p>'
+            return f'<p class="flowlink"><a href="{FLOWS_URL}#{fid}">Open the flow ({fid})</a></p>'
         return '<p class="flowlink muted">Flow: to draw</p>'
     cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}{link(n)}</div>' for n, sc in enumerate(t26.SCEN))
     body26 += ('<figure class="figure-panel" id="D26-4"><figcaption class="figure-caption"><div><div class="figure-title"><span class="fid">D26-4</span> The 10 scenarios</div>'
                '<span>Every case starts at the front door and goes to one of our agents; enterprise agents help where they hold the data; live support (routed through Genesys) joins only when it is needed</span></div></figcaption>'
                f'<div class="grid">{cards}</div></figure>')
-    body26 += '<h2>Scenario flows</h2>' + '\n'.join(fig(fid, t, sub, f().svg()) for fid, t, sub, f in FLOWS.values())
-    toc26 += ''.join(f'<li><a href="#{fid}">{fid} {escape(t)}</a></li>' for fid, t, _, _ in FLOWS.values())
     html = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Digital Hub diagrams · Sandy Tayts</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600&amp;family=Inter:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
