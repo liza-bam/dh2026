@@ -21,7 +21,12 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
             return f'<p class="flowlink"><a href="#{FLOWS[n][0]}">Open the flow ({FLOWS[n][0]})</a></p>'
         return '<p class="flowlink muted">Flow: to draw</p>'
     cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}{link(n)}</div>' for n, sc in enumerate(t26.SCEN))
-    flows = '\n'.join(fig(fid, t, sub, f().svg()) for fid, t, sub, f in FLOWS.values())
+    flows = '\n'.join(fig(fid, t, sub, f().svg(), wide=False) for fid, t, sub, f in FLOWS.values())
+    # the full one-row version, kept for a later pop-up
+    large = HERE.parent / 'case' / 'large'
+    large.mkdir(exist_ok=True)
+    for fid, t, sub, f in FLOWS.values():
+        (large / f'{fid}.svg').write_text(f(rows=None).svg())
     html = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Digital Hub 2026: scenario flows</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600&amp;family=Inter:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
