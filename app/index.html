@@ -52,7 +52,7 @@ button:disabled{opacity:.45;cursor:default}
 <body>
 <div class="wrap">
   <section class="phone" aria-label="Digital Hub chat">
-    <header class="top"><b id="device">Digital Hub in Teams, on the laptop</b><small>Concept mock-up. Not Microsoft Teams.</small></header>
+    <header class="top"><b id="device">Digital Hub demo</b><small>Concept mock-up. Not Microsoft Teams.</small></header>
     <div class="chat" id="chat" aria-live="polite"></div>
     <div class="compose">
       <div class="chips" id="chips"></div>
@@ -63,7 +63,7 @@ button:disabled{opacity:.45;cursor:default}
     <h2>Behind the scenes</h2>
     <p class="hint">Which agent acts, which system it uses. The employee never sees this.</p>
     <ol id="log"></ol>
-    <button class="restart" id="restart">Start again</button>
+    <button class="restart" id="restart">Pick another scenario</button>
   </aside>
 </div>
 <script>
@@ -86,20 +86,21 @@ async function say(text, who = 'Digital Hub', live = false) {
   m.append(el('span', 'who', who), text);
   add(m);
 }
-// A card: title, lines, buttons. Resolves with the label the employee tapped.
-function card(module, title, lines, buttons, live = false) {
+// A card: title, lines, buttons. Resolves with the label the employee tapped (at once if it has no buttons).
+function card(module, title, lines, buttons = [], opt = {}) {
   return new Promise(resolve => {
-    const c = el('div', 'card' + (live ? ' live' : ''));
+    const c = el('div', 'card' + (opt.live ? ' live' : ''));
     c.append(el('b', '', title), ...lines.map(l => el('p', '', l)));
     const b = el('div', 'btns');
     buttons.forEach((label, i) => {
       const x = el('button', i ? '' : 'main', label);
-      x.onclick = () => { b.querySelectorAll('button').forEach(y => y.disabled = true); me(label); resolve(label); };
+      x.onclick = () => { b.querySelectorAll('button').forEach(y => y.disabled = true); if (opt.echo !== false) me(label); resolve(label); };
       b.append(x);
     });
     if (buttons.length) c.append(b);
     if (module) c.append(el('span', 'mod', module));
     add(c);
+    if (!buttons.length) resolve(null);
   });
 }
 // The employee writes: suggestion chips plus free text. Resolves with what was sent.
@@ -114,7 +115,7 @@ function send(text) {
   input.value = '';
   const r = onSend; onSend = null; r(text);
 }
-form.onsubmit = e => { e.preventDefault(); send(input.value); };
+const device = text => { document.getElementById('device').textContent = text; };
 
 // Behind the scenes ----------------------------------------------------------------------
 function step(who, text, kind = 'agent') {
@@ -123,93 +124,240 @@ function step(who, text, kind = 'agent') {
   log.append(li);
 }
 
-// Modules: the same task always looks the same ---------------------------------------------
-const modules = {
+// The 12 modules: the same task always looks the same ----------------------------------------
+const m = {
+  async verifyIdentity(how) {
+    const a = await card('Verify identity', 'Confirm it is you', [how], ['I approved it']);
+    step('Entra ID', 'Identity confirmed with a second factor', 'system');
+    return a;
+  },
+  async orderDevice(item, lines) {
+    const a = await card('Order a device', item, lines, ['Order', 'Not now']);
+    if (a === 'Not now') { await say('OK. The order is saved if you change your mind.'); return false; }
+    step('SAP Ariba', `Order placed: ${item}`, 'system');
+    return true;
+  },
   async installSoftware(app) {
     step('Fix agent', `Checks in ServiceNow that ${app} is approved for this role`);
     const a = await card('Install software', `${app} is approved for you`, ['About 5 minutes'], ['Install now', 'Later']);
-    if (a === 'Later') { await say('OK. I will remind you in an hour.'); return 'later'; }
+    if (a === 'Later') { await say('OK. I will remind you in an hour.'); return false; }
     step('Intune', `Starts the ${app} install`, 'system');
     await say(`Installing ${app}. I will tell you when it is ready.`);
-    return 'started';
+    return true;
+  },
+  async getApproval(agent, who, what) {
+    step(agent, `Asks ${who} in Teams: ${what}`);
+    await card('Get approval', `Waiting for ${who}`, [what, 'I will tell you as soon as they answer']);
+    await wait(2500);
+    step(who, 'Approves in Teams', 'system');
   },
   async confirmRisky(title, lines, action) {
     for (;;) {
       const a = await card('Confirm a risky action', title, lines, [action, 'Not now']);
-      if (a === action) return true;
-      await say('OK, I will not touch anything. The install cannot finish without it.');
+      if (a === action) return;
+      await say('OK, I will not do anything yet. Tell me when you are ready.');
     }
   },
-  async runFix(n, what) {
-    step('Fix agent', `Fix ${n}: ${what}`);
+  async runFix(agent, n, what) {
+    step(agent, `Fix ${n}: ${what}`);
     await say(`Fix ${n}: ${what}…`);
     await wait(1200);
   },
-  async handOver(person) {
-    step('Front door agent', 'Hands over: who, what happened, what was tried, the logs', 'agent');
-    step(person, 'Gets the handoff card. No need to ask again.', 'live');
-    await wait(800);
-    note(`${person} from IT joined the chat`);
-    const a = await card('Hand over to a person', `${person} from IT joined`, ['She already knows what happened'], ['Allow remote session'], true);
-    step(person, 'Remote session allowed. Fixing it.', 'live');
-    return a;
+  async bookRoom(title, lines, action, other) {
+    return card('Book or change a room', title, lines, [action, other]);
   },
-  async continueElsewhere() {
-    document.getElementById('device').textContent = 'Digital Hub in Teams, on the phone';
-    note('You opened Teams on your phone. Same conversation.');
-    step('Front door agent', 'Same conversation on the phone: nothing is asked again');
+  async grantAccess(agent, system, what, button) {
+    step(agent, `Grants access in ${system}`);
+    await card('Grant access', `You have access to ${what}`, [], [button]);
+  },
+  async handOver(who, lines, button) {
+    step('Front door agent', 'Hands over: who, what happened, what was tried, the logs');
+    step(who, 'Gets the handoff card. No need to ask again.', 'live');
+    await wait(800);
+    note(`${who} joined the chat`);
+    return card('Hand over to a person', `${who} joined`, lines, button ? [button] : [], { live: true });
+  },
+  async status(title, lines) {
+    await card('Status and updates', title, lines);
   },
   async feedback() {
     const a = await card('Feedback', 'How did we do?', [], ['Great', 'OK', 'Not good']);
     step('ServiceNow', `Case closed. Rating: ${a}`, 'system');
     await say('Thank you. The case is closed.');
   },
+  async continueElsewhere(where) {
+    device(where);
+    note(`You opened ${where.replace('Digital Hub in ', '')}. Same conversation.`);
+    step('Front door agent', 'Same conversation in another channel: nothing is asked again');
+  },
 };
+const front = (text) => step('Front door agent', text);
+const context = () => front('Loads his context from Workday, Nexthink and ServiceNow: role, laptop, open tickets');
 
-// Scenario 10: failed software install -------------------------------------------------------
-async function failedInstall() {
-  chat.replaceChildren(); log.replaceChildren();
-  document.getElementById('device').textContent = 'Digital Hub in Teams, on the laptop';
-  note('Digital Hub');
-  await ask(['I need Visio for a client call today']);
-  step('Front door agent', 'Loads his context from Workday, Nexthink and ServiceNow: role, laptop, open tickets');
-  step('Front door agent', 'Software request: routes to the fix agent');
-  if (await modules.installSoftware('Visio') === 'later') return;
+// The 10 scenarios -------------------------------------------------------------------------
+const scenarios = [
+  { title: 'Meeting room', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['The screen in room 4B is not working, my meeting starts in 10 minutes']);
+    context(); front('Room problem: routes to the workplace agent');
+    step('Workplace agent', 'Finds a free room of the same size nearby in Office 365');
+    const a = await m.bookRoom('Room 4C is free', ['Same size, same floor', 'I will move the invite for everyone'], 'Move my meeting', 'Keep room 4B');
+    if (a === 'Move my meeting') { step('Office 365', 'Meeting moved to 4C, invites updated', 'system'); await say('Done. Everyone has the new room.'); }
+    step('Workplace agent', 'Files a facilities request in ServiceNow');
+    step('Facilities', 'Schedules a repair visit for room 4B', 'live');
+    await m.status('Repair request for room 4B', ['Facilities will visit today', 'You do not need to do anything']);
+    await m.feedback();
+  } },
+  { title: 'VPN offsite', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['VPN does not connect from the hotel']);
+    context(); front('Connection problem: routes to the fix agent');
+    step('Nexthink', 'The VPN client on his laptop is out of date', 'system');
+    await say('Your VPN app is out of date. That is why it fails.');
+    await m.confirmRisky('Update the VPN app?', ['About 2 minutes', 'You will be offline for a moment'], 'Update');
+    await m.runFix('Fix agent', 1, 'updating the VPN app');
+    step('Intune', 'VPN app updated', 'system');
+    await say('Updated. Try to connect now.');
+    const r = await ask(['It works now', 'Still not working']);
+    if (r === 'Still not working') {
+      step('Front door agent', 'The fix did not help: the problem is on the network side');
+      await say('The problem is on the network side. I am bringing in a person.');
+      await m.handOver('Tracy from IT', ['She already knows what happened'], null);
+      await say('I see it: the hotel network blocks the VPN. Use your phone hotspot for now, I have filed it with the network team.', 'Tracy', true);
+    }
+    await m.feedback();
+  } },
+  { title: 'Password reset', where: 'Digital Hub website, on the phone', async run() {
+    note('Your laptop says the password is wrong. You open the Digital Hub website on your phone.');
+    await ask(['I am locked out of my laptop']);
+    front('Locked out: routes to the identity agent');
+    await m.verifyIdentity('I sent a request to your Authenticator app');
+    step('Entra ID', 'Sign-in risk: low', 'system');
+    step('Identity agent', 'Creates a one-time pass in Entra ID, valid for 1 hour');
+    await card(null, 'Your one-time pass', ['7Q4-K9M-2LX', 'Type it on your laptop instead of the password. Then set a new one.'], ['I am in']);
+    step('Entra ID', 'Signed in with the one-time pass, new password set', 'system');
+    await say('Welcome back. Your new password works everywhere now.');
+    await m.feedback();
+  } },
+  { title: 'Teams channel access', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['I need access to the Atlas client channel']);
+    context(); front('Access request: routes to the access agent');
+    step('Access agent', 'Checks in Workday that he is on the Atlas engagement');
+    await m.getApproval('Access agent', 'the channel owner', 'Add him to the Atlas channel');
+    await m.grantAccess('Access agent', 'Entra ID and Office 365', 'the Atlas channel', 'Open the channel');
+    await m.feedback();
+  } },
+  { title: 'Lost laptop', where: 'Digital Hub in Teams, on the phone', async run() {
+    await ask(['My laptop was stolen at the airport']);
+    front('Lost device: routes to the devices agent');
+    await m.confirmRisky('Lock and wipe your laptop?', ['Nobody can open it', 'Your files are safe in OneDrive'], 'Lock and wipe');
+    step('Intune', 'Laptop locked and wiped', 'system');
+    step('Identity agent', 'Signs him out everywhere and asks for a new password');
+    await m.verifyIdentity('Approve the request in Authenticator, then set a new password');
+    step('Devices agent', 'Files the loss report in ServiceNow');
+    await m.orderDevice('Replacement laptop', ['Same model, set up for you', 'Locker at your office, tomorrow 10:00']);
+    await say('One more question: was client data on it?');
+    const r = await ask(['Yes, client files', 'No']);
+    if (r !== 'No') {
+      front('Client data on a lost device: the security team joins');
+      await m.handOver('The security team', ['They will tell the client if needed'], null);
+      await say('Thanks for telling us fast. We will take it from here and call you today.', 'Security team', true);
+    }
+    await m.status('Your laptop case', ['Locked and wiped', 'Replacement: tomorrow 10:00, locker 12']);
+    await m.feedback();
+  } },
+  { title: 'Client files in Canvas', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['Canvas will not open the Atlas client files']);
+    context(); front('App access problem: routes to the access agent');
+    step('Nexthink', 'Canvas itself is working', 'system');
+    step('Access agent', 'He is on the engagement in Workday, but has no access to its files in Entra ID');
+    await say('You are on the Atlas engagement, but nobody gave you access to its files yet.');
+    await m.getApproval('Access agent', 'the engagement manager', 'Give him access to the Atlas files');
+    await m.grantAccess('Access agent', 'Entra ID', 'the Atlas files', 'Open Canvas');
+    await m.feedback();
+  } },
+  { title: 'Outlook access for an assistant', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['My new assistant needs access to my calendar and inbox']);
+    context(); front('Delegation: routes to the access agent');
+    step('Access agent', 'Finds his new assistant in Workday');
+    await m.confirmRisky('Give your new assistant access?', ['Calendar: can edit', 'Inbox: can read and send for you'], 'Give access');
+    await m.grantAccess('Access agent', 'Office 365', 'your calendar and inbox for your assistant', 'Done');
+    await m.feedback();
+  } },
+  { title: 'Ordering a peripheral', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['I need a second monitor']);
+    context(); front('Hardware request: routes to the devices agent');
+    step('Devices agent', 'Checks what works with his laptop and what is in stock in SAP Ariba');
+    if (await m.orderDevice('27-inch monitor', ['Works with your laptop', 'In stock: locker at your office, tomorrow'])) {
+      step('Devices agent', 'Standard bundle: approved automatically, no manager needed');
+      await m.status('Your monitor', ['Ready tomorrow in locker 12', 'The code comes to your phone']);
+    }
+    await m.feedback();
+  } },
+  { title: 'Email scam', where: 'Outlook on the laptop', async run() {
+    await card(null, 'Your mailbox is full: verify your account', ['From: it-support@mai1box-help.com'], ['Report'], { echo: false });
+    note('You tapped Report in Outlook');
+    step('Microsoft Defender', 'Enterprise agent: confirms phishing, removes it from every mailbox', 'system');
+    m.continueElsewhere('Digital Hub in Teams, on the laptop');
+    await say('Thanks for reporting it. It was a scam, and it is now gone from everyone’s inbox.');
+    await say('Did you click the link or type your password?');
+    const r = await ask(['I typed my password', 'I did not click anything']);
+    if (r === 'I typed my password') {
+      front('Password entered on a scam page: routes to the identity agent');
+      await m.confirmRisky('Change your password now?', ['You will be signed out on all devices'], 'Change password');
+      await m.verifyIdentity('Approve the request in Authenticator, then set a new password');
+      step('Identity agent', 'Password reset, all sessions signed out');
+      front('A real attack: the security team joins');
+      await m.handOver('The security team', ['They will check your account'], null);
+      await say('Your account is safe now. We are checking that nothing else happened.', 'Security team', true);
+    }
+    await m.feedback();
+  } },
+  { title: 'Failed software install', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['I need Visio for a client call today']);
+    context(); front('Software request: routes to the fix agent');
+    if (!await m.installSoftware('Visio')) return;
+    await wait(1500);
+    step('Nexthink', 'The install failed: the disk is almost full', 'system');
+    await say('The install stopped: your disk is almost full.');
+    await m.confirmRisky('Free up space first?', ['Removes temporary files only', 'Your files stay'], 'Free up space');
+    await m.runFix('Fix agent', 1, 'clearing temporary files and installing again');
+    step('Intune', 'Fails again', 'system');
+    await say('It failed again. I am trying another fix.');
+    const reply = await ask(['My call is in 20 minutes, can someone help?', 'OK, keep trying']);
+    if (reply !== 'OK, keep trying') {
+      front('He is in a hurry: a person takes over now');
+    } else {
+      await m.runFix('Fix agent', 2, 'repairing the installer and installing again');
+      step('Intune', 'Still fails', 'system');
+      front('Two fixes failed: a person takes over');
+    }
+    await say('I am bringing in a person from IT. You will not need to explain anything.');
+    await m.handOver('Tracy from IT', ['She already knows what happened'], 'Allow remote session');
+    step('Tracy', 'Remote session allowed. Fixing it.', 'live');
+    await say('I am in. Give me two minutes.', 'Tracy', true);
+    await ask(['I have to run to the train']);
+    await say('Go. Keep this chat open on your phone, I will finish here.', 'Tracy', true);
+    await m.continueElsewhere('Digital Hub in Teams, on the phone');
+    await wait(1500);
+    step('Tracy', 'Fixed in the remote session: the installer cache was broken', 'live');
+    await say('Visio is installed on your laptop. Good luck with the call.', 'Tracy', true);
+    step('Fix agent', 'Drafts a new fix: check the disk and clear the installer cache before installing');
+    step('Engineer', 'Approves the new fix. Next time it runs automatically.', 'done');
+    await m.feedback();
+  } },
+];
 
-  await wait(1500);
-  step('Nexthink', 'The install failed: the disk is almost full', 'system');
-  await say('The install stopped: your disk is almost full.');
-  await modules.confirmRisky('Free up space first?', ['Removes temporary files only', 'Your files stay'], 'Free up space');
-  await modules.runFix(1, 'clearing temporary files and installing again');
-  step('Intune', 'Fails again', 'system');
-  await say('It failed again. I am trying another fix.');
-
-  const reply = await ask(['My call is in 20 minutes, can someone help?', 'OK, keep trying']);
-  const frustrated = reply !== 'OK, keep trying';
-  if (frustrated) {
-    step('Front door agent', 'He is in a hurry: a person takes over now');
-  } else {
-    await modules.runFix(2, 'repairing the installer and installing again');
-    step('Intune', 'Still fails', 'system');
-    step('Front door agent', 'Two fixes failed: a person takes over');
-  }
-  await say('I am bringing in a person from IT. You will not need to explain anything.');
-  await modules.handOver('Tracy');
-  await say('I am in. Give me two minutes.', 'Tracy', true);
-
-  await ask(['I have to run to the train']);
-  await say('Go. Keep this chat open on your phone, I will finish here.', 'Tracy', true);
-  await modules.continueElsewhere();
-  await wait(1500);
-  step('Tracy', 'Fixed in the remote session: the installer cache was broken', 'live');
-  await say('Visio is installed on your laptop. Good luck with the call.', 'Tracy', true);
-  step('Fix agent', 'Drafts a new fix: check the disk and clear the installer cache before installing');
-  step('Engineer', 'Approves the new fix. Next time it runs automatically.', 'done');
-  await modules.feedback();
+// Start: pick a scenario. Later the orchestrator will do this from what the employee writes.
+async function start() {
+  device('Digital Hub demo');
+  const t = await card(null, 'Pick a scenario', ['Each one starts the way an employee would'], scenarios.map(s => s.title), { echo: false });
+  const s = scenarios.find(x => x.title === t);
+  chat.replaceChildren();
+  device(s.where);
+  await s.run();
 }
-
+form.onsubmit = e => { e.preventDefault(); if (onSend) send(input.value); else { input.value = ''; } };
 document.getElementById('restart').onclick = () => location.reload();
-failedInstall();
+start();
 }
 </script>
 </body>
