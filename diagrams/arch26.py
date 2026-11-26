@@ -36,15 +36,15 @@ def band(d, y, h, n, title, sub, fill='#f7fafb', stroke='#dce4e7'):
 AGENTS = [
     ('Identity agent', 'lock', 'Resets passwords, unlocks accounts', 'Never reads mail or files', 'Small model', [('azure', 'Entra ID')]),
     ('Workplace agent', 'room', 'Rebooks rooms, files facilities requests', 'Never sees meeting content', 'Small model', [('office', 'Office 365')]),
-    ('Access agent', 'approve', 'Asks owners, grants access once they say yes', 'Never approves its own request', 'Large model', [('azure', 'Entra ID'), ('workday', 'Workday')]),
+    ('Access agent', 'approve', 'Asks owners, grants access once they say yes', 'Never approves its own request', 'Small model', [('azure', 'Entra ID'), ('workday', 'Workday')]),
     ('Devices agent', 'hardware', 'Locks, orders, starts the data transfer', 'Wipes only after the employee confirms', 'Small model', [(None, 'Intune'), ('ariba', 'SAP Ariba')]),
-    ('Fix agent', 'tools', 'Runs approved fixes, drafts new ones', 'A new fix waits for an engineer', 'Large model', [('nexthink', 'Nexthink'), (None, 'Intune')]),
+    ('Fix agent', 'tools', 'Runs approved fixes, drafts new ones', 'A new fix waits for an engineer', 'Small model', [('nexthink', 'Nexthink'), (None, 'Intune')]),
     ('Watcher agent', 'software', 'Reads telemetry, opens cases itself', 'Never changes a device', 'Small model', [('nexthink', 'Nexthink'), ('now', 'ServiceNow')]),
 ]
 
 
 def build():
-    d = Rich('a26', 1500, 1290, 'Digital Hub 2026 architecture in eight layers: channels, front door agent, specialized agents with limited access, '
+    d = Rich('a26', 1500, 1290, 'Digital Hub 2026 architecture in eight layers: channels, intake agent and orchestrator, specialized agents with limited access, '
              'enterprise agents, knowledge, systems through MCP, governance, people')
 
     # 1 channels ---------------------------------------------------------------------------
@@ -61,17 +61,19 @@ def build():
         d.t(x + 56, 96, name, 14, 600)
         x += 208
 
-    # 2 front door ---------------------------------------------------------------------------
-    band(d, 160, 130, 2, 'Front door agent', 'Reads only. Changes nothing in any system', TINT, TEAL)
-    d.el.append(f'<circle cx="94" cy="236" r="22" fill="#fff" stroke="{TEAL}" stroke-width="2"/>')
-    d.image('chat', 80, 222, 28)
-    d.lines(132, 228, 'Loads the employee’s context, understands the request, picks the agent, keeps the conversation and tells the employee what is happening.', 560, 14)
-    cx = 720
-    for t, f, c in [('Large model', TEAL, '#fff'), ('Read only', '#fff', TEAL), ('Own agent identity', '#fff', TEAL)]:
-        cx = chip(d, cx, 214, t, f, TEAL, c)
-    for k, n in [('workday', 'Profile'), ('office', 'Calendar'), ('nexthink', 'Device'), ('now', 'Tickets')]:
-        pass
-    d.lines(720, 262, 'Context: profile (Workday), calendar (Office 365), device (Nexthink), tickets (ServiceNow)', 410, 12, 400, SECOND)
+    # 2 intake agent and orchestrator ---------------------------------------------------------
+    band(d, 160, 130, 2, 'Intake agent and orchestrator', 'One way in. Neither changes anything in a system itself', TINT, TEAL)
+    for x, w, name, chips, text in [
+            (40, 545, 'Intake agent', [('Small model', '#fff', TEAL), ('Read only', '#fff', TEAL)],
+             'Loads the context, picks the fixed journey and its agent. No journey: fills a ServiceNow ticket, labels it, tells the employee what happens next.'),
+            (600, 530, 'Orchestrator', [('Large model', TEAL, '#fff'), ('After the switch', '#fff', TEAL)],
+             'Takes the requests that have no journey and works through the agents. What it cannot solve goes to a person with the whole story.')]:
+        d.rect(x, 202, w, 80, '#fff', TEAL, rx=12, sw=1.5)
+        d.t(x + 14, 226, name, 15, 600)
+        cx = x + w - 14 - sum(len(t) * 12 * 0.58 + 24 for t, _, _ in chips) + 6
+        for t, f, c in chips:
+            cx = chip(d, cx, 210, t, f, TEAL, c)
+        d.lines(x + 14, 250, text, w - 28, 13, 400, SECOND, lh=17)
 
     # 3 specialized agents ----------------------------------------------------------------------
     band(d, 310, 300, 3, 'Specialized agents', 'Each has its own identity and only the rights its role needs', TINT, TEAL)

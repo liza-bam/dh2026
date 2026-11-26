@@ -39,7 +39,7 @@ Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive suppor
 ## Three rules before any agent
 
 ### 1. It costs less than the help desk it replaces
-Every solved case has a price: model calls, licences, the engineer who approves a new fix. Simple cases run on small, cheap models. The large model only decides and hands over. Cost is measured per solved case, against the cost of the same case at the help desk.
+Every solved case has a price: model calls, licences, the engineer who approves a new fix. Fixed journeys run on small, cheap models. The large model only gets requests that have no journey, and only after the switch. Cost is measured per solved case, against the cost of the same case at the help desk.
 
 ### 2. Agents get access the way people do
 Each agent has its own identity, its own role and only the rights that role needs. The password agent resets passwords and nothing else. Risky actions wait for a person.
@@ -90,9 +90,9 @@ Visual: [D26-7] Delivery plan.
 
 ## Architecture
 
-To write after the redraw. Eight layers: channels; front door agent with no write access; specialized agents with limited access; enterprise agents from the vendors; knowledge layer (answers only from approved EY sources); systems through MCP; governance and audit; people.
+To write after the redraw. Eight layers: channels; intake agent with no write access, and after the switch the orchestrator; specialized agents with limited access; enterprise agents from the vendors; knowledge layer (answers only from approved EY sources); systems through MCP; governance and audit; people.
 
-Visuals: [D26-1] What changes, [D26-2] Architecture (to redraw).
+Visuals: [D26-1] What changes, [D26-2] Architecture.
 
 ## Ten scenarios
 

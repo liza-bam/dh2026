@@ -7,7 +7,7 @@ G = '#9aa5aa'
 OK = '#3d8b2f'
 YEL = '#f5c000'
 LANE_H = {'employee': 110, 'sees': 210, 'front': 100, 'agent': 120, 'enterprise': 100, 'systems': 100, 'live': 110, 'engineer': 100}
-LANE_NAME = {'employee': 'What the employee does and sees', 'sees': 'What the employee sees', 'front': 'Front door agent', 'agent': 'Our agent',
+LANE_NAME = {'employee': 'What the employee does and sees', 'sees': 'What the employee sees', 'front': 'Intake agent', 'agent': 'Our agent',
              'enterprise': 'Enterprise agent', 'systems': 'Systems', 'live': 'Live support', 'engineer': 'Engineer'}
 LANE_FILL = {'front': TINT, 'agent': TINT, 'live': Z['agent'][0], 'engineer': Z['agent'][0]}
 

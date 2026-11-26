@@ -171,7 +171,7 @@ const m = {
     await card('Grant access', `You have access to ${what}`, [], [button]);
   },
   async handOver(who, lines, button) {
-    step('Front door agent', 'Hands over: who, what happened, what was tried, the logs');
+    step('Intake agent', 'Hands over: who, what happened, what was tried, the logs');
     step(who, 'Gets the handoff card. No need to ask again.', 'live');
     await wait(800);
     note(`${who} joined the chat`);
@@ -188,10 +188,10 @@ const m = {
   async continueElsewhere(where) {
     device(where);
     note(`You opened ${where.replace('Digital Hub in ', '')}. Same conversation.`);
-    step('Front door agent', 'Same conversation in another channel: nothing is asked again');
+    step('Intake agent', 'Same conversation in another channel: nothing is asked again');
   },
 };
-const front = (text) => step('Front door agent', text);
+const front = (text) => step('Intake agent', text);
 const context = () => front('Loads his context from Workday, Nexthink and ServiceNow: role, laptop, open tickets');
 
 // The 10 scenarios -------------------------------------------------------------------------
@@ -218,7 +218,7 @@ const scenarios = [
     await say('Updated. Try to connect now.');
     const r = await ask(['It works now', 'Still not working']);
     if (r === 'Still not working') {
-      step('Front door agent', 'The fix did not help: the problem is on the network side');
+      step('Intake agent', 'The fix did not help: the problem is on the network side');
       await say('The problem is on the network side. I am bringing in a person.');
       await m.handOver('Tracy from IT', ['She already knows what happened'], null);
       await say('I see it: the hotel network blocks the VPN. Use your phone hotspot for now, I have filed it with the network team.', 'Tracy', true);

@@ -9,7 +9,7 @@ G = '#9aa5aa'
 OK = '#3d8b2f'
 
 AGENTS = {
-    'front': ('Front door agent', 'chat'), 'identity': ('Identity agent', 'lock'), 'workplace': ('Workplace agent', 'room'),
+    'front': ('Intake agent', 'chat'), 'identity': ('Identity agent', 'lock'), 'workplace': ('Workplace agent', 'room'),
     'access': ('Access agent', 'approve'), 'devices': ('Devices agent', 'hardware'), 'fix': ('Fix agent', 'tools'),
     'defender': ('Microsoft Defender', 'alert'), 'watcher': ('Watcher agent', 'software'),
 }
@@ -170,12 +170,12 @@ def scenario_card(i, title, agent, systems, enterprise, done, person):
     d = Rich(f'sc{i}', 560, 330, f'Scenario: {title}')
     d.rect(1, 1, 558, 328, '#fff', '#dce4e7', rx=12)
     d.t(20, 34, f'{i + 1}. {title}', 17, 600)
-    # chain: employee, front door, our agent
+    # chain: employee, intake agent, our agent
     d.image('cust1', 20, 56, 44, round_=True, ring='#b7c1c5')
     d.arrow((66, 78), (82, 78), color=G)
     d.rect(84, 58, 128, 40, TINT, TEAL, rx=20, sw=1.5)
     d.image('chat', 94, 67, 22)
-    d.t(122, 83, 'Front door', 13, 600)
+    d.t(122, 83, 'Intake agent', 13, 600)
     d.arrow((214, 78), (230, 78), color=TEAL)
     agent_badge(d, agent, 232, 50, 210)
     # input channel

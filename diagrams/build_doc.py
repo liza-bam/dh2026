@@ -31,7 +31,7 @@ D19 = [
 
 D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
-    ('D26-2', 'Architecture', 'Eight layers: one front door that changes nothing, specialized agents with limited rights, enterprise agents, approved knowledge, systems, governance and people', arch26.build),
+    ('D26-2', 'Architecture', 'Eight layers: an intake agent, an orchestrator after the switch, specialized agents with limited rights, enterprise agents, approved knowledge, systems, governance and people', arch26.build),
     ('D26-7', 'Delivery plan', 'Ten fixed journeys first, more journeys every week from what people ask, then the orchestrator takes what has no journey', delivery26.build),
     ('D26-5', 'Module map', 'Shared modules, designed once: every scenario is built from the same parts, so the same task always looks the same', modules26.build),
     ('D26-3', 'Handoff, confirmation and the target', 'A person gets the whole story, risky actions wait for a yes, success counts only when the case stays solved', lambda: t26.handoff()),
@@ -64,7 +64,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
         return '<p class="flowlink muted">Flow: to draw</p>'
     cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}{link(n)}</div>' for n, sc in enumerate(t26.SCEN))
     body26 += ('<figure class="figure-panel" id="D26-4"><figcaption class="figure-caption"><div><div class="figure-title"><span class="fid">D26-4</span> The 10 scenarios</div>'
-               '<span>Every case starts at the front door and goes to one of our agents; enterprise agents help where they hold the data; live support (routed through Genesys) joins only when it is needed</span></div></figcaption>'
+               '<span>Every case starts at the intake agent and goes to one of our agents; enterprise agents help where they hold the data; live support (routed through Genesys) joins only when it is needed</span></div></figcaption>'
                f'<div class="grid">{cards}</div></figure>')
     html = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Digital Hub diagrams · Sandy Tayts</title>

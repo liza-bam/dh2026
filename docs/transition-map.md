@@ -8,7 +8,7 @@ The 2019 diagrams are the brief. The service, the journeys, the employee data an
 |---|---|---|
 | Digital Hub app, chat, voice, email | One front door for every channel | Same front door. Every channel talks to one agent team |
 | Initial customer data (Workday, Office, Nexthink, ServiceNow) | Every channel knew who was asking | Context the agents load at the start of every conversation |
-| Avaamo bot + NLP library (40+ cases) | Answered cases written in advance | Front door agent: understands any request and routes it to the right agent |
+| Avaamo bot + NLP library (40+ cases) | Answered cases written in advance | Intake agent: understands any request and routes it to a fixed journey or a filled ticket; after the switch, the orchestrator takes requests with no journey |
 | AI scripts library (Wipro Holmes), built in discovery | Fixed known issues | Fix agent runs the library and drafts new scripts; an engineer approves them before they join the library |
 | Preventive measures (Nexthink monitoring) | Found problems before people reported them | Watcher agent reads the same telemetry and opens cases on its own |
 | AI issue triage: urgency, sentiment | Decided when to call a person | Handoff rules (section 4), the same signals |
@@ -22,7 +22,7 @@ The 2019 diagrams are the brief. The service, the journeys, the employee data an
 
 | Agent | Scenarios | Systems (tools) |
 |---|---|---|
-| Front door | All: understands the request, loads the employee's data, routes, keeps the conversation | Workday, ServiceNow, Office 365 |
+| Intake agent | All: understands the request, loads the employee's data, routes, keeps the conversation | Workday, ServiceNow, Office 365 |
 | Identity | Password reset | Azure AD |
 | Workplace | Meeting room problems | Office 365 rooms and calendar, room devices |
 | Access | Teams channel access, client files in Canvas, Outlook access for a new assistant, software requests | Azure AD, Office 365, ServiceNow catalogue, Workday approvals |

@@ -4,7 +4,7 @@
 <text x="24" y="166" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#223640" text-anchor="start">What the employee</text>
 <text x="24" y="184" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#223640" text-anchor="start">does and sees</text>
 <rect x="10" y="328" width="3260" height="120" rx="10" fill="#e3eef1" stroke="#e3eef1" stroke-width="1.5"/>
-<text x="24" y="384" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#2c6e7e" text-anchor="start">Front door agent</text>
+<text x="24" y="384" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#2c6e7e" text-anchor="start">Intake agent</text>
 <rect x="10" y="456" width="3260" height="126" rx="10" fill="#e3eef1" stroke="#e3eef1" stroke-width="1.5"/>
 <text x="24" y="515" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#2c6e7e" text-anchor="start">Our agent</text>
 <rect x="10" y="590" width="3260" height="110" rx="10" fill="#f7fafb" stroke="#f7fafb" stroke-width="1.5"/>
