@@ -66,7 +66,7 @@ The ten most common requests from 2019 become fixed journeys: the same steps eve
 
 When a request has no journey, the intake agent does not stop. It opens a ServiceNow ticket and fills it in: category, urgency, the right support group, a summary of the conversation, the employee's device. It labels the ticket and tells the employee what happens next. People solve these cases, and nobody asks the employee anything again.
 
-The large model does not run at this stage. Tickets drop from the first day.
+Requests never reach the large model at this stage. Tickets drop from the first day. The large model works only off to the side: when people solve a new kind of problem, it drafts a fix from the case, and an engineer approves it before it runs anywhere.
 
 ### Stage 2. More journeys every week
 Every ticket without a journey carries a label. Once a week the intake agent groups them: what people ask most, and how often. The most frequent requests become new fixed journeys. People design and approve each one, the same way an engineer approves a new fix. The library grows, and the share that reaches the help desk falls.

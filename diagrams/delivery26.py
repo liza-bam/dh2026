@@ -73,7 +73,7 @@ def build():
     r1 = box(d, x + W - 20 - half, yb, half, 'Fills a ServiceNow ticket', 'Category, urgency, group, summary, label', 'agent')
     down(d, x + 20 + half / 2, l1, l1 + 26)
     down(d, x + W - 20 - half / 2, r1, r1 + 26)
-    box(d, x + 20, l1 + 26, half, 'Solved', 'The large model is not used', 'done')
+    box(d, x + 20, l1 + 26, half, 'Solved', 'The request never reaches the large model', 'done')
     box(d, x + W - 20 - half, r1 + 26, half, 'People solve it', 'Nothing is asked again', 'people')
 
     # 2. More journeys every week ---------------------------------------------------------------
