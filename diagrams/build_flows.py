@@ -2,7 +2,7 @@
 import pathlib
 from html import escape
 import transition as t26
-from build_doc import FLOWS, fig
+from build_doc import FLOWS, fig, LINK_JS
 
 HERE = pathlib.Path(__file__).parent
 
@@ -36,7 +36,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
 <h2>The 10 scenarios</h2><div class="grid">{cards}</div>
 <h2>Flows</h2>
 {flows}
-</main></body></html>'''
+</main>{LINK_JS}</body></html>'''
     (HERE.parent / 'case' / 'flows.html').write_text(html)
     print('ok', len(html) // 1024, 'KB')
 

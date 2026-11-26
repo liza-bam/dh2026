@@ -7,6 +7,11 @@ import arch26
 import modules26
 import flows26
 
+# In the artifact viewer, #links need a script to scroll inside the page
+LINK_JS = """<script>(function(){function go(id){var t=id&&document.getElementById(decodeURIComponent(id));if(t)t.scrollIntoView();}
+window.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();var id=a.getAttribute('href').slice(1);go(id);try{history.replaceState(null,'','#'+id)}catch(_){}},true);
+window.addEventListener('hashchange',function(){go(location.hash.slice(1))});
+window.addEventListener('load',function(){go(location.hash.slice(1))});})();</script>"""
 FLOWS_URL = 'https://claude.ai/artifact/X1kuj4G3xAcsWb86NmQACZ'
 FLOWS = {9: ('D26-F10', 'Flow: failed software install', 'The full flow behind scenario 10: what the employee sees, which agent acts, the two fixes, the handover to live support, the new fix an engineer approves', flows26.failed_install)}
 
@@ -53,7 +58,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
     def link(n):
         if n in FLOWS:
             fid = FLOWS[n][0]
-            return f'<p class="flowlink"><a href="{FLOWS_URL}#{fid}">Open the flow ({fid})</a></p>'
+            return f'<p class="flowlink"><a href="{FLOWS_URL}#{fid}" target="_blank" rel="noopener">Open the flow ({fid})</a></p>'
         return '<p class="flowlink muted">Flow: to draw</p>'
     cards = ''.join(f'<div>{t26.scenario_card(n, *sc).svg()}{link(n)}</div>' for n, sc in enumerate(t26.SCEN))
     body26 += ('<figure class="figure-panel" id="D26-4"><figcaption class="figure-caption"><div><div class="figure-title"><span class="fid">D26-4</span> The 10 scenarios</div>'
@@ -71,7 +76,7 @@ h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56p
 {body19}
 <h2>2026: agents</h2>
 {body26}
-</main></body></html>'''
+</main>{LINK_JS}</body></html>'''
     out = pathlib.Path(__file__).parent.parent / 'case' / 'diagrams.html'
     out.write_text(html)
     print('ok', len(html) // 1024, 'KB')
