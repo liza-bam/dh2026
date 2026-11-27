@@ -66,6 +66,8 @@ Visual: [D26-6] Stack scorecard.
 
 ## The logic: does it need a decision?
 
+**Half of IT support needs no AI.** The whole design follows from three decisions: what gets no AI at all, what goes to agents, and which agents.
+
 The starting point is research: the ten most common IT requests at EY. I sort them by one question: does solving it need a decision?
 
 Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
@@ -92,6 +94,21 @@ Within those limits the agent leads the case itself: it checks, tries, changes t
 
 Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads and asks the Security agent whether the account is fine. For a stolen laptop, Security leads and hands the replacement to Devices. The employee talks to one agent the whole time.
 
+**The agents and what they never do**
+- **Security:** stolen devices, scams, locked accounts. Wipes a device only once the employee is verified.
+- **Devices:** ordering and replacing devices, hardware faults. Never wipes a device.
+- **Software:** installs, repairs, VPN, apps. Never runs a new fix before an engineer approves it.
+- **Mail, calendar and Teams:** delegation, mailboxes, channels. Never reads the content of mail.
+- **Workplace:** rooms, desks, facilities. Never sees meeting content.
+- **Watcher:** reads telemetry and opens cases before people notice. Never changes a device.
+
+**The Software agent: five cases, one ladder**
+- **Visio will not install.** A full disk: the agent clears temporary files itself. A broken installer cache: after two tries, a person takes over in a remote session.
+- **Excel crashes on the client model.** The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
+- **EY Atlas will not open.** First the agent checks whether Atlas is down for everyone. If it is, it fixes nothing, files no ticket and says when Atlas will be back. If it is only this employee, it clears the browser cache and signs them in again.
+- **No sound in a Teams call that starts in 10 minutes.** The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
+- **Acrobat says the license has expired.** Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.
+
 ### 3. Everything else: a ticket to the right team, and that team's agent
 When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.
 
@@ -112,6 +129,8 @@ One number hides too much, so agents get two. How many cases an agent is allowed
 Most requests are simple, and simple requests run on flows and small models, so the first rule holds from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.
 
 Agents go only where a decision is needed. Everything else stays a cheap, predictable flow.
+
+The logic was checked against the market in November 2026: ServiceNow's AI front door and AI specialists, Moveworks, Salesforce, Microsoft Agent 365 with Entra Agent ID, and Anthropic's and IBM's guidance on workflows and agents. It matches current practice: one way in, narrow agents with the rights of the role, fixed workflows where logic is fixed, and independence that grows step by step.
 
 <small>Gartner expects over 40% of agentic AI projects to be canceled by the end of 2027 because of cost, unclear value or weak risk controls, and warns about "agent washing": chatbots and RPA renamed as agents. Digital Hub uses an agent only where a flow cannot do the job.</small>
 
@@ -163,6 +182,15 @@ Two rules follow from this.
 - **An agent comes back once.** More than that is nagging.
 
 If the agent decided on its own whether to come back, the same request could go differently each time, and nobody could test it before release.
+
+## Rules for the employee's experience
+
+- **Never ask twice.** If the employee has already said what happened, nobody asks again: not the agent, not a person.
+- **Real choices, not yes or no.** A catalog of monitors and where to deliver. A level of access for an assistant: see the calendar, manage the calendar, calendar and email.
+- **Harmless steps need no question.** Clearing temporary files is not risky: the agent does it and says so.
+- **Declining is a choice, not a dead end.** Not now: "Is it urgent?" Yes: straight to a person, no more questions. No: "Shall I file a ticket?" Yes: it is filed and the number given. Never mind: cancelled.
+- **Confirmation means "it is me".** A stolen laptop: the employee confirms who they are in Authenticator, and the laptop is locked and wiped at once, without a second question.
+- **A person who joins gives real help at once.** Live support works from the same approved playbook as the agents and starts with next steps, not "I am looking into it".
 
 ## Handoff to people
 

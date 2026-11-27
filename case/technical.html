@@ -843,6 +843,7 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 </svg></figure>
 <hr />
 <h2>The logic: does it need a decision?</h2>
+<p><strong>Half of IT support needs no AI.</strong> The whole design follows from three decisions: what gets no AI at all, what goes to agents, and which agents.</p>
 <p>The starting point is research: the ten most common IT requests at EY. I sort them by one question: does solving it need a decision?</p>
 <p>Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.</p>
 <p>Of the ten, five need no decision: ordering a device, an assistant's access, a Teams channel, a password reset, a meeting room. Five do: a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. That leaves five problems for agents to think about, not ten.</p>
@@ -859,6 +860,19 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <p><strong>Why a small agent is enough.</strong> Agents have no open internet: vendor knowledge goes into their libraries in advance, checked and kept up to date. And the system around them is strict: laptops are standard and centrally managed, apps install automatically, files live in OneDrive. So every software problem has a short ladder: a known fix; repair or reinstall the app; reset the laptop to its standard state, with files and apps coming back by themselves; a person. The agent does not need to understand everything. It picks the step and the time with the employee: "Resetting takes an hour. Now or tonight?" Anything outside its library goes to the second-line team.</p>
 <p>Within those limits the agent leads the case itself: it checks, tries, changes the plan and tells the employee what is happening. Simple actions in its domain still run as fixed flows: the Devices agent does not improvise an order.</p>
 <p>Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads and asks the Security agent whether the account is fine. For a stolen laptop, Security leads and hands the replacement to Devices. The employee talks to one agent the whole time.</p>
+<p><strong>The agents and what they never do</strong>
+- <strong>Security:</strong> stolen devices, scams, locked accounts. Wipes a device only once the employee is verified.
+- <strong>Devices:</strong> ordering and replacing devices, hardware faults. Never wipes a device.
+- <strong>Software:</strong> installs, repairs, VPN, apps. Never runs a new fix before an engineer approves it.
+- <strong>Mail, calendar and Teams:</strong> delegation, mailboxes, channels. Never reads the content of mail.
+- <strong>Workplace:</strong> rooms, desks, facilities. Never sees meeting content.
+- <strong>Watcher:</strong> reads telemetry and opens cases before people notice. Never changes a device.</p>
+<p><strong>The Software agent: five cases, one ladder</strong>
+- <strong>Visio will not install.</strong> A full disk: the agent clears temporary files itself. A broken installer cache: after two tries, a person takes over in a remote session.
+- <strong>Excel crashes on the client model.</strong> The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
+- <strong>EY Atlas will not open.</strong> First the agent checks whether Atlas is down for everyone. If it is, it fixes nothing, files no ticket and says when Atlas will be back. If it is only this employee, it clears the browser cache and signs them in again.
+- <strong>No sound in a Teams call that starts in 10 minutes.</strong> The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
+- <strong>Acrobat says the license has expired.</strong> Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.</p>
 <h3>3. Everything else: a ticket to the right team, and that team's agent</h3>
 <p>When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.</p>
 <p>What a team solves goes back down. Its agent turns the solution into knowledge or a new fix for the first line, an engineer approves it, and next time the same case never becomes a ticket.</p>
@@ -875,6 +889,7 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <h3>Why this works</h3>
 <p>Most requests are simple, and simple requests run on flows and small models, so the first rule holds from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.</p>
 <p>Agents go only where a decision is needed. Everything else stays a cheap, predictable flow.</p>
+<p>The logic was checked against the market in November 2026: ServiceNow's AI front door and AI specialists, Moveworks, Salesforce, Microsoft Agent 365 with Entra Agent ID, and Anthropic's and IBM's guidance on workflows and agents. It matches current practice: one way in, narrow agents with the rights of the role, fixed workflows where logic is fixed, and independence that grows step by step.</p>
 <p><small>Gartner expects over 40% of agentic AI projects to be canceled by the end of 2027 because of cost, unclear value or weak risk controls, and warns about "agent washing": chatbots and RPA renamed as agents. Digital Hub uses an agent only where a flow cannot do the job.</small></p>
 <p>Visual: [D26-7] Delivery plan (to redraw).</p><figure class="fig" id="D26-7"><figcaption><b><span class="fid">D26-7</span>Delivery plan</b><span>Ten fixed journeys first, more journeys every week from what people ask, then the orchestrator takes what has no journey</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 900" role="img" aria-label="Delivery plan: ten fixed journeys first, more journeys every week, then the orchestrator takes what has no journey" class="case-diagram" width="1120" height="900">
 <defs><marker id="mdp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
@@ -1999,6 +2014,15 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <li><strong>An agent comes back once.</strong> More than that is nagging.</li>
 </ul>
 <p>If the agent decided on its own whether to come back, the same request could go differently each time, and nobody could test it before release.</p>
+<h2>Rules for the employee's experience</h2>
+<ul>
+<li><strong>Never ask twice.</strong> If the employee has already said what happened, nobody asks again: not the agent, not a person.</li>
+<li><strong>Real choices, not yes or no.</strong> A catalog of monitors and where to deliver. A level of access for an assistant: see the calendar, manage the calendar, calendar and email.</li>
+<li><strong>Harmless steps need no question.</strong> Clearing temporary files is not risky: the agent does it and says so.</li>
+<li><strong>Declining is a choice, not a dead end.</strong> Not now: "Is it urgent?" Yes: straight to a person, no more questions. No: "Shall I file a ticket?" Yes: it is filed and the number given. Never mind: cancelled.</li>
+<li><strong>Confirmation means "it is me".</strong> A stolen laptop: the employee confirms who they are in Authenticator, and the laptop is locked and wiped at once, without a second question.</li>
+<li><strong>A person who joins gives real help at once.</strong> Live support works from the same approved playbook as the agents and starts with next steps, not "I am looking into it".</li>
+</ul>
 <h2>Handoff to people</h2>
 <p>Three rules decide when a person steps in.</p>
 <ul>
