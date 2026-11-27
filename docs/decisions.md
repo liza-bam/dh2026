@@ -8,6 +8,15 @@ Everything we agreed on, so nothing gets lost. Newest decisions win. Last update
 - **The technical document** (case/technical.md) holds the full system: rules, stack, architecture, agents, scenarios, modules, handoff, rollout. One link to it from the case.
 - Every change goes into both at once: short in the case, in full in the technical document.
 
+## The thesis
+
+The case is built on it: **half of IT support needs no AI.** Three decisions follow:
+1. What gets no AI at all: simple actions run as fixed flows.
+2. What goes to agents: only the problems that need a decision.
+3. Which agents: small and specialized, one per domain. Not one big one.
+
+Later: study how ServiceNow builds its agents (AI specialists, the front door, the control tower) and build our own system from what we learn.
+
 ## The logic
 
 - The starting point is still the ten most common requests from EY's discovery in 2019.

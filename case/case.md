@@ -25,6 +25,8 @@ Research named the ten most common IT requests at EY. I asked one question of ea
 
 So the simple half runs as fixed flows: fast, cheap, predictable. Agents get only the five problems that need judgment.
 
+And not one big agent. Small ones, each an expert in one domain: cheaper, safer, easier to test.
+
 ---
 
 ## What I designed

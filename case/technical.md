@@ -77,7 +77,9 @@ So every request takes one of three paths.
 ### 1. Simple actions: fixed flows
 Ordering a device, giving an assistant access, joining a Teams channel, resetting a password, rebooking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
 
-### 2. Problems: an agent for each domain
+### 2. Problems: small agents, one for each domain
+Not one big agent that knows everything. Small agents, each an expert in one domain, on small models: cheaper to run, safer because each can touch only its own systems, and easier to test before release.
+
 A failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. Each domain has its own agent: Security; Devices; Software; Mail, calendar and Teams; Workplace. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
 - what it does on its own, like clearing temporary files;
 - what waits for the employee's yes;
