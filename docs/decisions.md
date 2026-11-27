@@ -15,6 +15,8 @@ Everything we agreed on, so nothing gets lost. Newest decisions win. Last update
 - A ticket is not where agents stop. Every second-line team has an agent: it reads the ticket and the history, suggests what to do, prepares actions. An engineer decides.
 - What the second line solves goes back to the first line as knowledge or a new fix, after an engineer approves it.
 - The old plan (fixed journeys first, then a switch to one large orchestrator) is dropped. It was a bot with a router.
+- **Before anyone asks:** the watcher agent reads telemetry, opens the case itself and gives it to the domain agent. Proactive support was the heart of 2019; it stays at the center.
+- Checked against the market in November 2026 (ServiceNow EmployeeWorks and AI specialists, Moveworks, Salesforce, Microsoft Agent 365 and Entra Agent ID, Anthropic and IBM guidance on workflows and agents). The logic matches current practice. Three gaps were closed: one lead agent per case, proactive support as its own path, two numbers per agent.
 
 ## Agents
 
@@ -26,10 +28,13 @@ Everything we agreed on, so nothing gets lost. Newest decisions win. Last update
   - **Workplace:** rooms, desks, facilities.
   - **Watcher:** reads telemetry and opens cases before people notice. Never changes a device.
 - Each agent runs the fixed flows of its domain and solves its problems within its limits.
+- Every case has one lead agent. It brings in other agents when the problem crosses domains (VPN: Software leads, asks Security about the account; stolen laptop: Security leads, Devices orders the replacement). The employee talks to one agent the whole time.
 - Each agent has its own library of how its domain works, and searches only that library.
 - Limits for each agent: what it does alone, what waits for the employee's yes, how many tries before it brings in a person, what it never does.
 - Independence grows one action at a time: first the agent proposes and a person decides, then it acts alone in simple cases, then within its full limits. An action moves up only after it has worked on real cases.
 - Cost: flows and domain agents run on small models. The large model works only where cases are few and hard: team agents and drafting new fixes.
+- Two numbers per agent: how many cases it is allowed to take, and how many of those it solves (ServiceNow's own first-line agent: 15% of incidents eligible, 46% of them solved). A case counts only if it does not come back.
+- The case cites Gartner in small print: over 40% of agentic AI projects canceled by the end of 2027, and "agent washing". Digital Hub uses an agent only where a flow cannot do the job.
 - New things come from ticket labels: a frequent simple request becomes a new fixed flow, a frequent problem becomes a new skill for its domain agent.
 
 ## Rules for the employee's experience

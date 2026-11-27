@@ -87,18 +87,30 @@ A failed install, VPN at a hotel, client files that will not open, a scam email,
 
 Within those limits the agent leads the case itself: it checks, tries, changes the plan and tells the employee what is happening. Simple actions in its domain still run as fixed flows: the Devices agent does not improvise an order.
 
+Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads and asks the Security agent whether the account is fine. For a stolen laptop, Security leads and hands the replacement to Devices. The employee talks to one agent the whole time.
+
 ### 3. Everything else: a ticket to the right team, and that team's agent
 When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.
 
 What a team solves goes back down. Its agent turns the solution into knowledge or a new fix for the first line, an engineer approves it, and next time the same case never becomes a ticket.
+
+### Before anyone asks
+In 2019 the heart of Digital Hub was support that acts before people notice a problem. In 2026 that is the watcher agent. It reads device telemetry, finds the disk that is almost full or the VPN app that is out of date, opens the case itself and gives it to the right domain agent. The agent fixes it quietly, or tells the employee in one message what it did. The best request is the one nobody has to make.
 
 ### How it grows
 - **New flows and new skills.** Ticket labels show what people ask most. A frequent simple request becomes a new fixed flow. A frequent problem becomes a new skill for its domain agent.
 - **More independence, one action at a time.** An agent starts by proposing while a person decides. Then it acts on its own in simple cases, then within its full limits. Each action moves up only after it has worked on real cases.
 - **The rollout of 2019 stays.** The same waves, the same reuse of modules: the first ten requests, then whatever the labels show next.
 
+### What we measure
+One number hides too much, so agents get two. How many cases an agent is allowed to take, and how many of those it solves. ServiceNow's own first-line agent shows why: 15% of incidents are eligible for it, and it solves 46% of those. Digital Hub grows both numbers, one action at a time. A case counts as solved only if it does not come back.
+
 ### Why this works
 Most requests are simple, and simple requests run on flows and small models, so the first rule holds from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.
+
+Agents go only where a decision is needed. Everything else stays a cheap, predictable flow.
+
+<small>Gartner expects over 40% of agentic AI projects to be canceled by the end of 2027 because of cost, unclear value or weak risk controls, and warns about "agent washing": chatbots and RPA renamed as agents. Digital Hub uses an agent only where a flow cannot do the job.</small>
 
 Visual: [D26-7] Delivery plan (to redraw).
 
@@ -110,7 +122,7 @@ Nine layers, each with one job.
 
 1. **Channels.** Teams, the Digital Hub website, email and voice. It is one conversation, wherever it starts.
 2. **Intake agent.** Reads every request and sends it down one of the three paths: a fixed flow, a domain agent or a team. Small model. Changes nothing in any system itself.
-3. **Domain agents.** Security; Devices; Software; Mail, calendar and Teams; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. A watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
+3. **Domain agents.** Security; Devices; Software; Mail, calendar and Teams; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. The watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
 4. **Team agents.** One for each second-line team, working for the engineers, not the employees. Large model: few cases, hard ones.
 5. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
 6. **Knowledge.** A library for each domain and each team. Agents answer only from approved EY sources, with a link to the source.

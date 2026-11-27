@@ -78,7 +78,7 @@ def build():
     d.arrow((440, 242), (474, 242), color=TEAL)
 
     # 3 specialized agents ----------------------------------------------------------------------
-    band(d, 310, 300, 3, 'Domain agents', 'Simple actions run as fixed flows; problems the agent solves within its limits', TINT, TEAL)
+    band(d, 310, 300, 3, 'Domain agents', 'Flows for simple actions, decisions within limits; one lead agent for each case', TINT, TEAL)
     for i, (name, icon, can, cannot, model, tools) in enumerate(AGENTS):
         x = 40 + (i % 3) * 368
         y = 356 + (i // 3) * 124
