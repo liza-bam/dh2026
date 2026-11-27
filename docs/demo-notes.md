@@ -31,5 +31,6 @@ Working notes for building the live demo. The logic, architecture, agents and ru
 4. Test it with 20 to 30 runs.
 5. Draw the main visual of the case: five and five, and the three paths. Redraw or drop D26-1 and D26-7.
 6. Lessons learned, screenshots or a short video of the demo.
-7. Move it all to https://sandy.tayts.com when Sandy says so.
+7. Move it all to https://sandy.tayts.com when Sandy says so. The case lives in Experiments and shows under a new "Agent design" pill (a filter, with Loomik, Pleasant Street Pipeline and the site maker); a one-line link from the EY case, and a link back to it.
+   After this case: when any pill is selected, projects and work show in one grid, not split into sections.
 8. Rotate the API key.
