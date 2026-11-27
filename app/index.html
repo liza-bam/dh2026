@@ -223,7 +223,7 @@ async function tracy(cue, fallback) {
 async function talkToTracy(text) {
   me(text); input.value = '';
   personHistory.push({ role: 'user', content: text });
-  await tracy('', 'Got it, I am on it.');
+  await tracy('', 'Let me check that for you. I can see everything that was tried, so I will start from there.');
 }
 
 // Tickets stay in this browser, so a later conversation can ask about them ("how is my Visio?")

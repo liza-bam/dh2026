@@ -47,7 +47,7 @@ async function intake(request, env) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { authorization: `Bearer ${env.ANTHROPIC_API_KEY}`, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-    body: JSON.stringify({ model: MODEL, max_tokens: 300, system: SYSTEM, messages: [{ role: 'user', content: text }] }),
+    body: JSON.stringify({ model: MODEL, max_tokens: 800, system: SYSTEM, messages: [{ role: 'user', content: text }] }),
   });
   if (!r.ok) return json({ error: 'model unavailable', status: r.status, detail: (await r.text()).slice(0, 300) }, 502);
   const out = await r.json();
@@ -80,7 +80,7 @@ async function person(request, env) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { authorization: `Bearer ${env.ANTHROPIC_API_KEY}`, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-    body: JSON.stringify({ model: PERSON_MODEL, max_tokens: 200, system: PERSON, messages }),
+    body: JSON.stringify({ model: PERSON_MODEL, max_tokens: 1024, system: PERSON, messages }), // room to think before a short reply
   });
   if (!r.ok) return json({ error: 'model unavailable', status: r.status, detail: (await r.text()).slice(0, 300) }, 502);
   const out = await r.json();
