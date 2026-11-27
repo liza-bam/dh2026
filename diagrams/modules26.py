@@ -25,7 +25,7 @@ SCEN = [  # the same modules, in the same scenarios, as the live demo (app/index
     ('Password reset', ['id', 'feedback']),
     ('Teams channel access', ['approve', 'access', 'feedback']),
     ('Lost laptop', ['id', 'order', 'person', 'status', 'feedback']),
-    ('Client files in Canvas', ['approve', 'access', 'feedback']),
+    ('Client files in SharePoint', ['approve', 'access', 'feedback']),
     ('Outlook access for an assistant', ['confirm', 'access', 'feedback']),
     ('Ordering a peripheral', ['order', 'status', 'feedback']),
     ('Email scam', ['channel', 'confirm', 'id', 'person', 'feedback']),

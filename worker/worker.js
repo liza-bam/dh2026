@@ -15,7 +15,7 @@ VPN offsite: first make sure the VPN app is up to date. Hotel and guest Wi-Fi of
 Password reset: verify identity with the Authenticator app, then give a one-time pass valid for 1 hour; the employee types it on the laptop instead of the password and sets a new one. If the sign-in looks like an attack, involve security.
 Teams channel access: the channel owner approves in Teams, then the access agent adds the employee. Access appears within a few minutes; restarting Teams shows it at once.
 Lost laptop: lock and wipe through Intune, sign out everywhere, new password, loss report in ServiceNow, replacement laptop in the office locker next day. Client data on it: security team joins.
-Client files in Canvas: check the employee is on the engagement in Workday and has file access in Entra ID; the engagement manager approves access. If Canvas itself is down, there is nothing to fix on the laptop.
+Client files in SharePoint: check the employee is on the engagement in Workday and has access to the client folder; the engagement manager approves access. If SharePoint itself is down, there is nothing to fix on the laptop.
 Outlook access for an assistant: the mailbox owner confirms; give the assistant edit rights to the calendar and send-on-behalf for the inbox. It shows in the assistant's Outlook after a restart.
 Ordering a peripheral: standard items (monitor, mouse, keyboard, headset) are approved automatically and ready next day in the office locker; the code comes to the phone.
 Email scam: Defender removes the email for everyone. If the employee typed the password: change it now, sign out everywhere, security checks the account.
@@ -37,7 +37,7 @@ const JOURNEYS = {
   'Password reset': 'forgot the password, locked out, password expired',
   'Teams channel access': 'needs access to a Teams channel or team',
   'Lost laptop': 'laptop or phone lost or stolen',
-  'Client files in Canvas': 'cannot open client files or a client app such as Canvas',
+  'Client files in SharePoint': 'cannot open a client folder or client files in SharePoint',
   'Outlook access for an assistant': 'give an assistant or delegate access to their mailbox or calendar',
   'Ordering a peripheral': 'needs a monitor, mouse, keyboard, headset or other accessory',
   'Email scam': 'a suspicious email, phishing, a scam, or entered a password on a strange page',

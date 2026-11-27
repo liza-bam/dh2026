@@ -27,7 +27,7 @@ Working notes for building the live demo. The logic, architecture, agents and ru
 
 1. Study how ServiceNow builds its agents and write what we take into the technical document.
 2. Design the five problem cases in detail.
-3. Build the Software agent as a real agent with tools and limits: Visio, Excel, Atlas, Teams sound, Acrobat.
+3. Build the Software agent as a real agent with tools and limits: Visio, Excel, Outlook, Teams sound, Acrobat. Only tools everyone knows. The fictional client is Halden; client files live in SharePoint.
 4. Test it with 20 to 30 runs.
 5. Draw the main visual of the case: five and five, and the three paths. Redraw or drop D26-1 and D26-7.
 6. Lessons learned, screenshots or a short video of the demo.

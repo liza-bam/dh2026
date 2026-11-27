@@ -76,7 +76,21 @@ A failed install, VPN at a hotel, client files that will not open, a scam email,
 - what waits for the employee's yes;
 - how many tries it gets before it brings in a person;
 
-**Why a small agent is enough.** Agents have no open internet: vendor knowledge goes into their libraries in advance, checked and kept up to date. And the system around them is strict: laptops are standard and centrally managed, apps install automatically, files live in OneDrive. So every software problem has a short ladder: a known fix; repair or reinstall the app; reset the laptop to its standard state, with files and apps coming back by themselves; a person. The agent does not need to understand everything. It picks the step and the time with the employee: "Resetting takes an hour. Now or tonight?" Anything outside its library goes to the second-line team.
+**Why a small agent is enough.** The system around it is strict:
+- Every laptop starts from a standard image for its group: auditors, consultants, designers and a few others. The groups differ, but each image is fixed.
+- Software comes from an approved catalog for each image, and installs centrally.
+- Files live in OneDrive, not on the laptop.
+- Agents have no open internet. Vendor knowledge (Microsoft, Adobe) goes into their libraries in advance, checked and kept up to date. An agent that searches forums can find a wrong fix or a page with hidden instructions, and nobody can test it in advance.
+
+So the agent knows what each laptop should look like. A diagnosis is the difference between the laptop and its image, and fixing it means bringing the laptop back to the image. The agent asks three questions:
+
+1. **Is it this laptop?** Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, or bring in the Security agent or the network team.
+2. **If it is, what is the lightest step back to the image?** A known fix (clear a cache, turn off an add-in, switch the headset); then repair or reinstall the app; then reset the laptop to its image, with files and apps coming back by themselves; then a person. Harmless steps need no question. A reset takes time, so the agent picks the moment with the employee: "It takes an hour. Now or tonight?"
+3. **Is it about data?** Most "where is my file" cases are simple: the OneDrive recycle bin or an earlier version, run as a fixed flow. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent on a large model works on it with a person, because the stakes are high and every case is different.
+
+**Software outside the catalog** is never the small agent's call. A larger model checks the request: is there an approved alternative, is it safe, what does the license cost. It offers the alternative first; if the employee still needs the app, a person decides.
+
+The agent does not need to understand everything. Anything outside its library goes to the second-line team.
 
 Within those limits the agent leads the case itself: it checks, tries, changes the plan and tells the employee what is happening. Simple actions in its domain still run as fixed flows: the Devices agent does not improvise an order.
 
@@ -92,10 +106,10 @@ Many problems cross domains. A VPN that will not connect can be the app, the acc
 
 One rule for all of them: every agent has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes, and a new fix runs only after an engineer approves it.
 
-**The Software agent: five cases, one ladder**
+**The Software agent: five cases, one ladder** (diagram [D26-8])
 - **Visio will not install.** A full disk: the agent clears temporary files itself. A broken installer cache: after two tries, a person takes over in a remote session.
 - **Excel crashes on the client model.** The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
-- **EY Atlas will not open.** First the agent checks whether Atlas is down for everyone. If it is, it fixes nothing, files no ticket and says when Atlas will be back. If it is only this employee, it clears the browser cache and signs them in again.
+- **Outlook will not connect.** First the agent checks whether Microsoft 365 is down for everyone. If it is, it fixes nothing, files no ticket and says when it will be back. If it is only this employee, it clears the cached sign-in and the Outlook profile.
 - **No sound in a Teams call that starts in 10 minutes.** The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
 - **Acrobat says the license has expired.** Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.
 

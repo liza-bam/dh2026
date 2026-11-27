@@ -512,11 +512,11 @@ const scenarios = [
     await m.feedback();
   } },
   { title: 'Teams channel access', where: 'Digital Hub in Teams, on the laptop', async run() {
-    await ask(['I need access to the Atlas client channel']);
+    await ask(['I need access to the Halden client channel']);
     context(); front('Access request: routes to the access agent');
-    step('Access agent', 'Checks in Workday that he is on the Atlas engagement');
-    await m.getApproval('Access agent', 'the channel owner', 'Add him to the Atlas channel');
-    await m.grantAccess('Access agent', 'Entra ID and Office 365', 'the Atlas channel', 'Open the channel');
+    step('Access agent', 'Checks in Workday that he is on the Halden engagement');
+    await m.getApproval('Access agent', 'the channel owner', 'Add him to the Halden channel');
+    await m.grantAccess('Access agent', 'Entra ID and Office 365', 'the Halden channel', 'Open the channel');
     await m.feedback();
   } },
   { title: 'Lost laptop', where: 'Digital Hub in Teams, on the phone', async run() {
@@ -539,14 +539,14 @@ const scenarios = [
     await m.status('Your laptop case', ['Locked and wiped', 'Replacement: tomorrow 10:00, locker 12']);
     await m.feedback();
   } },
-  { title: 'Client files in Canvas', where: 'Digital Hub in Teams, on the laptop', async run() {
-    await ask(['Canvas will not open the Atlas client files']);
+  { title: 'Client files in SharePoint', where: 'Digital Hub in Teams, on the laptop', async run() {
+    await ask(['I cannot open the Halden client folder in SharePoint']);
     context(); front('App access problem: routes to the access agent');
-    step('Nexthink', 'Canvas itself is working', 'system');
+    step('Nexthink', 'SharePoint itself is working', 'system');
     step('Access agent', 'He is on the engagement in Workday, but has no access to its files in Entra ID');
-    await say('You are on the Atlas engagement, but nobody gave you access to its files yet.');
-    await m.getApproval('Access agent', 'the engagement manager', 'Give him access to the Atlas files');
-    await m.grantAccess('Access agent', 'Entra ID', 'the Atlas files', 'Open Canvas');
+    await say('You are on the Halden engagement, but nobody gave you access to its files yet.');
+    await m.getApproval('Access agent', 'the engagement manager', 'Give him access to the Halden files');
+    await m.grantAccess('Access agent', 'Entra ID', 'the Halden files', 'Open SharePoint');
     await m.feedback();
   } },
   { title: 'Outlook access for an assistant', where: 'Digital Hub in Teams, on the laptop', async run() {
@@ -658,9 +658,9 @@ const EXAMPLES = [
   ['Meeting room', 'The screen in room 4B is not working, my meeting starts in 10 minutes', 'Meeting room'],
   ['VPN', 'VPN does not connect from the hotel', 'VPN offsite'],
   ['Password', 'I am locked out of my laptop', 'Password reset'],
-  ['Channel access', 'I need access to the Atlas client channel', 'Teams channel access'],
+  ['Channel access', 'I need access to the Halden client channel', 'Teams channel access'],
   ['Lost laptop', 'My laptop was stolen at the airport', 'Lost laptop'],
-  ['Client files', 'Canvas will not open the Atlas client files', 'Client files in Canvas'],
+  ['Client files', 'I cannot open the Halden client folder in SharePoint', 'Client files in SharePoint'],
   ['New device', 'I need a second monitor', 'Ordering a peripheral'],
   ["Assistant's Outlook", 'My new assistant needs access to my calendar and inbox', 'Outlook access for an assistant'],
   ['Scam email', 'I clicked a link in a strange email and typed my password', 'Email scam'],

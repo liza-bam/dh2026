@@ -28,6 +28,18 @@ And not one big agent: small ones, one per domain. They stay small because the s
 
 Visual: [D26-2] Architecture.
 
+## How an agent works
+
+Every laptop starts from a standard image for its group: auditors, consultants, designers. Software comes from an approved catalog. So the agent knows what each laptop should look like, and asks three questions:
+
+1. **Is it this laptop?** If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.
+2. **If it is, what is the lightest step back to the standard?** A known fix, then reinstalling the app, then resetting the laptop to its image. Files stay in OneDrive.
+3. **Is it about data?** Most "where is my file" cases are a restore from OneDrive. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent works on it with a person.
+
+Software outside the catalog is never the small agent's call. A larger model checks the request and offers an approved alternative; a person decides.
+
+Visual: [D26-8] How the Software agent decides.
+
 ## What the employee sees
 
 - **Real choices.** A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.

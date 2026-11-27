@@ -154,6 +154,92 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="658" y="794" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">SAP Ariba</text>
 <text x="658" y="812" font-family="'Inter', sans-serif" font-size="12" font-weight="400" fill="#3f5f6b" text-anchor="start">Ordering devices</text>
 </svg></figure>
+<h2>How an agent works</h2>
+<p>Every laptop starts from a standard image for its group: auditors, consultants, designers. Software comes from an approved catalog. So the agent knows what each laptop should look like, and asks three questions:</p>
+<ol>
+<li><strong>Is it this laptop?</strong> If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.</li>
+<li><strong>If it is, what is the lightest step back to the standard?</strong> A known fix, then reinstalling the app, then resetting the laptop to its image. Files stay in OneDrive.</li>
+<li><strong>Is it about data?</strong> Most "where is my file" cases are a restore from OneDrive. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent works on it with a person.</li>
+</ol>
+<p>Software outside the catalog is never the small agent's call. A larger model checks the request and offers an approved alternative; a person decides.</p>
+<p>Visual: [D26-8] How the Software agent decides.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent decides</b><span>Is it this laptop? If so, the lightest step back to the standard image. Files are a separate path</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="How the Software agent decides: is it this laptop; if so, the lightest step back to the standard image; files are a separate path; software outside the catalog goes to a larger model and a person" class="case-diagram" width="1200" height="640">
+<defs><marker id="mag26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
+<rect x="20" y="20" width="270" height="64" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="34" y="46" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A software problem</text>
+<text x="34" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">From the employee or the watcher</text>
+<path d="M155 84 L155 110" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="20" y="110" width="270" height="110" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
+<text x="34" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Is it this laptop?</text>
+<text x="34" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Reinstalling helps only if the</text>
+<text x="34" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">problem is on this laptop.</text>
+<path d="M290 165 L320 165" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<text x="293" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">No</text>
+<rect x="320" y="110" width="276" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="334" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Down for everyone</text>
+<text x="334" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Fix nothing. Say when it is back.</text>
+<rect x="334" y="188" width="67" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="368" y="203" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Outlook</text>
+<rect x="612" y="110" width="276" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="626" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">No license</text>
+<text x="626" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Hand it to the approval flow.</text>
+<rect x="626" y="188" width="67" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="660" y="203" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Acrobat</text>
+<rect x="904" y="110" width="276" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="918" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Account or network</text>
+<text x="918" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Bring in the Security agent or the</text>
+<text x="918" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">network team.</text>
+<path d="M155 220 L155 250" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<text x="162" y="240" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">Yes</text>
+<rect x="20" y="250" width="270" height="130" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
+<text x="34" y="276" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">2. Back to the image</text>
+<text x="34" y="298" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The lightest step first; the next</text>
+<text x="34" y="315" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">only if it did not work.</text>
+<path d="M290 315 L320 315" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="320" y="250" width="200" height="130" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="334" y="276" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A known fix</text>
+<text x="334" y="298" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Clear a cache, turn off</text>
+<text x="334" y="315" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">an add-in, switch the</text>
+<text x="334" y="332" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">headset.</text>
+<rect x="334" y="348" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="360" y="363" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Excel</text>
+<rect x="393" y="348" width="95" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="440" y="363" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Teams sound</text>
+<path d="M520 315 L540 315" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="540" y="250" width="200" height="130" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="554" y="276" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Reinstall the app</text>
+<text x="554" y="298" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Harmless, so no</text>
+<text x="554" y="315" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">question.</text>
+<rect x="554" y="348" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="580" y="363" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Visio</text>
+<path d="M740 315 L760 315" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="760" y="250" width="200" height="130" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="774" y="276" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Reset to the image</text>
+<text x="774" y="298" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Takes an hour: now or</text>
+<text x="774" y="315" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">tonight? Files stay in</text>
+<text x="774" y="332" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">OneDrive.</text>
+<path d="M960 315 L980 315" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="980" y="250" width="200" height="130" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="994" y="276" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A person</text>
+<text x="994" y="298" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Takes over with the</text>
+<text x="994" y="315" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">whole story.</text>
+<rect x="994" y="348" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="1020" y="363" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Visio</text>
+<rect x="20" y="410" width="270" height="110" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
+<text x="34" y="436" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">3. Is it about data?</text>
+<text x="34" y="458" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Lost or broken files are a separate</text>
+<text x="34" y="475" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">path.</text>
+<path d="M290 465 L320 465" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="320" y="410" width="420" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="334" y="436" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Simple: a restore from OneDrive</text>
+<text x="334" y="458" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The recycle bin or an earlier version. A fixed flow.</text>
+<rect x="760" y="410" width="420" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="774" y="436" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Hard: client data, a shared folder, a sync conflict</text>
+<text x="774" y="458" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">A stronger agent on a large model works on it with a</text>
+<text x="774" y="475" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">person.</text>
+<rect x="20" y="548" width="1160" height="72" rx="12" fill="#f7fafb" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="40" y="578" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Software outside the catalog</text>
+<text x="40" y="602" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Never the small agent’s call. A larger model checks the request and offers an approved alternative; a person decides.</text>
+</svg></figure>
 <h2>What the employee sees</h2>
 <ul>
 <li><strong>Real choices.</strong> A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.</li>

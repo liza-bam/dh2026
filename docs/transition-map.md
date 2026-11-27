@@ -25,7 +25,7 @@ The 2019 diagrams are the brief. The service, the journeys, the employee data an
 | Intake agent | All: understands the request, loads the employee's data, routes, keeps the conversation | Workday, ServiceNow, Office 365 |
 | Identity | Password reset | Azure AD |
 | Workplace | Meeting room problems | Office 365 rooms and calendar, room devices |
-| Access | Teams channel access, client files in Canvas, Outlook access for a new assistant, software requests | Azure AD, Office 365, ServiceNow catalogue, Workday approvals |
+| Access | Teams channel access, client files in SharePoint, Outlook access for a new assistant, software requests | Azure AD, Office 365, ServiceNow catalogue, Workday approvals |
 | Devices | Lost laptop, ordering a peripheral, laptop refresh, data transfer | ServiceNow CMDB, SAP Ariba, DigiLocker, Nexthink |
 | Fix | VPN offsite, failed software installation, other troubleshooting | Nexthink diagnostics, script library |
 | Security | Email scam | Mail, Azure AD |
@@ -40,7 +40,7 @@ The 2019 diagrams are the brief. The service, the journeys, the employee data an
 | Password reset | Identity | Always, through the one-time code | Sign-in risk looks like an attack |
 | Access to a Teams channel | Access | The channel owner approves in Teams | Never the help desk |
 | Reporting a lost laptop | Devices | Locks and wipes, changes the password, fills the forms, orders a replacement | Client data was on the laptop: the security team |
-| Client files in the Canvas app | Access + Fix | Checks the engagement, asks the owner, fixes app errors on the device | The error is in the app itself |
+| Client files in SharePoint | Access + Fix | Checks the engagement, asks the owner, fixes app errors on the device | The error is in the app itself |
 | Outlook access for a new assistant | Access | Sets the delegation after the mailbox owner confirms | Never the help desk |
 | Ordering a peripheral | Devices | Compatible, in stock, locker or vending machine; bundles approve automatically | Outside the bundle: the manager approves |
 | Reporting an email scam | Security | Removes similar messages for everyone | The employee entered their password: reset plus the security team |
