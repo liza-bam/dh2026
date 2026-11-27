@@ -2,10 +2,11 @@
 from rich import Rich
 from svg import SECOND
 from transition import TEAL, TINT
+from cards26 import icon
 
 
 def column(d, x, title, sub, items, dark):
-    d.rect(x, 20, 560, 380, TINT if dark else '#f7fafb', TEAL if dark else '#dce4e7', rx=14, sw=1.5)
+    d.rect(x, 20, 560, 380, TINT if dark else '#f7fafb', TEAL if dark else '#dce4e7', rx=8, sw=1.5)
     d.t(x + 24, 60, title, 20, 600)
     d.t(x + 24, 86, sub, 14, 400, fill=SECOND)
     y = 108
@@ -21,8 +22,8 @@ def build():
            'A password reset', 'A stolen laptop', 'A scam email'], False)
     column(d, 600, 'Four: agents', 'Each case needs a decision', ['A meeting room that does not work', 'An app that will not install or crashes',
            'VPN at a hotel', 'Client files that will not open'], True)
-    d.rect(20, 420, 1140, 84, '#fff', '#223640', rx=14, sw=1.5)
-    d.image('lock', 49, 447, 30)
+    d.rect(20, 420, 1140, 84, '#fff', '#dce4e7', rx=8, sw=1.5)
+    icon(d, 'lock', 64, 462, 26)
     d.t(108, 454, 'Security is always a fixed flow', 17, 600)
     d.t(108, 480, 'It must be fast and never wrong. A model never acts on a scam email: the attacker wrote it.', 14, 400, fill=SECOND)
     d.H = 520
