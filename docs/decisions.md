@@ -78,4 +78,5 @@ Everything we agreed on, so nothing gets lost. Newest decisions win. Last update
 - Rebuild the demo on the new logic: real domain agents with tools and limits, starting with the Software agent for Visio.
 - Decide how each of the five problem cases is solved by its agent.
 - Redraw D26-1 (what changes) and D26-7 (delivery plan) for the new logic. D26-2 (architecture) is redrawn.
-- Later: the "how is my Visio?" status demo from saved requests; a user test with 5 people; Result and Lessons in the case; rotate the API key.
+- Later: the "how is my Visio?" status demo from saved requests; Lessons in the case; rotate the API key.
+- No Result section and no numbers: this is Sandy's own project, made to show she can do this kind of work.

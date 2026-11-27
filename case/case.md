@@ -24,7 +24,6 @@ Working draft of the portfolio case study. The full system is in the technical d
 
 **What I did.** Looked at the ten most common requests again and saw that only five need a decision. Simple actions became fixed flows; problems went to small agents, one per domain, each with its own tools, knowledge and limits. Then I designed what the employee sees and built a live demo.
 
-**Result.** To write once the demo is tested with people. No numbers until they are measured.
 
 ---
 
@@ -76,10 +75,6 @@ Three journeys on a phone, each showing something different: a small shop for a 
 https://digital-hub-demo.alexandra-tayts.workers.dev
 
 ---
-
-## Result
-
-To write once measured.
 
 ## Lessons learned
 

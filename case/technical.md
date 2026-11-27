@@ -24,7 +24,6 @@ The technical document behind the case study: the full logic, architecture, agen
 
 **What I did.** Took the 2019 service as the brief and rebuilt it with specialized AI agents: the same journeys, the same employee data, the same systems, with agents doing the work people had to script. Re-evaluated the stack, gave agents access the way people get it, and built a live demo.
 
-**Result.** To write once the demo runs: share of cases solved without the help desk, repeat contacts, cost per solved case. No numbers until they are measured.
 
 ---
 
@@ -180,10 +179,6 @@ The live demo runs on a phone, inside a Teams-like frame: https://digital-hub-de
 - Tracy, the live support person, is played by a larger model with a face and the support playbook.
 - Next to the phone, "How it runs" shows every agent and system as it acts: its model, memory, tools and cost.
 - Next: the domain agents become real agents with tools and limits, starting with the Software agent for Visio.
-
-## Result
-
-To write once measured.
 
 ## Lessons learned
 
