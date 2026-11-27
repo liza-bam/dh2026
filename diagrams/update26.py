@@ -28,7 +28,7 @@ def mark(d, key, x, y, r):
         d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>')
         d.el.append(f'<image href="{vec(name)}" x="{x - s / 2}" y="{y - s / 2}" width="{s}" height="{s}"/>')
 
-W = 1340
+W = 1180
 X0, COL = 140, 160            # first column centre, column width
 TOP, BOT = 96, 470            # top of the people band, top of the systems band
 PY, R = 250, 44               # people circles
@@ -195,8 +195,7 @@ def legend(d, label, agents):
 
 STEPS = [
     ('Crash', 'Visio won’t start after the update'),
-    ('Ticket', 'A ticket opens, and Peter is told'),
-    ('Workaround', 'Peter keeps working'),
+    ('Ticket', 'A ticket opens; Peter is told and keeps working'),
     ('Cause', 'The engineer finds out why'),
     ('Hold', 'The update stops for everyone else'),
     ('Fix', 'The fix is written and approved'),
@@ -244,80 +243,75 @@ def everyone(d, i):
     d.t(cx(i), 420, 'Visio just works', 15, 600, 'middle', fill=SECOND)
 
 
+FIXED = '\u201cWe fixed\nthe problem\u201d'
+
+
 def build19():
-    d = base('bu19', 'A bad Visio update in 2019: Peter is told at each step and everyone else gets the fix without noticing, the engineer searches for the cause and writes the fix, Digital Hub scripts do the rest; every step reads and writes the ServiceNow ticket', '2019')
+    d = base('bu19', 'A bad Visio update in 2019: Peter gets two messages, the ticket with a workaround and the fix; the engineer searches for the cause and writes the fix; Digital Hub runs it for everyone else, who notice nothing; every step reads and writes the ServiceNow ticket', '2019')
     # 1 Peter's Visio crashes; Nexthink records it
     person(d, 0, 'peter', 'alert'); system(d, cx(0), SY1, 'nexthink', 'Nexthink')
     vline(d, cx(0), PY + R + 32, SY1 - SR - 6, 'Crash\nand version', 410)
-    # 2 Digital Hub opens a ticket and tells Peter
+    # 2 Digital Hub opens a ticket and gives Peter the virtual machine, in one message
     person(d, 1, 'peter', 'message'); system(d, cx(1), SY1, 'hub'); record(d, 1, 'Ticket', first=True)
-    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'We opened\na ticket', 410)
     hline(d, cx(0) + SR + 6, cx(1) - SR - 8, SY1)
     d.t((cx(0) + cx(1)) / 2, SY1 - 10, 'Crash', 15, 600, 'middle', fill=SECOND)
+    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'Ticket +\nvirtual machine', 410)
     both(d, cx(1), SY1 + SR + 6, SYB - 34)
-    # 3 Digital Hub offers the workaround
-    person(d, 2, 'peter', 'message'); system(d, cx(2), SY1, 'hub'); record(d, 2, 'Workaround')
-    vline(d, cx(2), SY1 - SR - 6, PY + R + 32, 'Virtual\nmachine', 410)
+    # 3 the engineer searches Nexthink; the ticket shows three similar ones
+    person(d, 2, 'engineer'); system(d, cx(2), SY1, 'nexthink'); record(d, 2, '3 similar tickets')
+    pair(d, cx(2), 'The cause:\nthe update', 'She searches', ly=410, down_first=True)
     both(d, cx(2), SY1 + SR + 6, SYB - 34)
-    # 4 the engineer searches Nexthink; the ticket shows three similar ones
-    person(d, 3, 'engineer'); system(d, cx(3), SY1, 'nexthink'); record(d, 3, '3 similar tickets')
-    pair(d, cx(3), 'The cause:\nthe update', 'She searches', ly=410, down_first=True)
+    # 4 Digital Hub holds the update and tells Peter
+    person(d, 3, 'peter', 'message'); system(d, cx(3), SY1, 'hub'); record(d, 3, 'Update held')
+    vline(d, cx(3), SY1 - SR - 6, PY + R + 32, 'Update held,\nfix underway', 410)
     both(d, cx(3), SY1 + SR + 6, SYB - 34)
-    # 5 Digital Hub holds the update and tells Peter
-    person(d, 4, 'peter', 'message'); system(d, cx(4), SY1, 'hub'); record(d, 4, 'Update held')
-    vline(d, cx(4), SY1 - SR - 6, PY + R + 32, 'Update held,\nfix underway', 410)
+    # 5 the engineer writes the steps; Digital Hub runs them
+    person(d, 4, 'engineer'); system(d, cx(4), SY1, 'hub'); record(d, 4, 'Fix')
+    vline(d, cx(4), PY + R + 32, SY1 - SR - 6, 'Steps she\nwrote', 410)
     both(d, cx(4), SY1 + SR + 6, SYB - 34)
-    # 6 the engineer writes the steps; Digital Hub runs them
-    person(d, 5, 'engineer'); system(d, cx(5), SY1, 'hub'); record(d, 5, 'Fix')
-    vline(d, cx(5), PY + R + 32, SY1 - SR - 6, 'Steps she\nwrote', 410)
+    # 6 Peter hears back and rates it; his ticket closes
+    person(d, 5, 'peter', 'done'); system(d, cx(5), SY1, 'hub'); record(d, 5, 'Ticket closed')
+    pair(d, cx(5), FIXED, 'Rating', ly=410)
     both(d, cx(5), SY1 + SR + 6, SYB - 34)
-    # 7 Peter hears back and rates it; the ticket closes
-    person(d, 6, 'peter', 'done'); system(d, cx(6), SY1, 'hub'); record(d, 6, 'Ticket closed')
-    pair(d, cx(6), '\u201cWe fixed it\u201d', 'Rating', ly=410)
+    # 7 Digital Hub runs the same steps for everyone else; nobody notices
+    everyone(d, 6); system(d, cx(6), SY1, 'hub'); record(d, 6, 'All closed')
     both(d, cx(6), SY1 + SR + 6, SYB - 34)
-    # 8 Digital Hub runs the same steps for everyone else; nobody notices
-    everyone(d, 7); system(d, cx(7), SY1, 'hub'); record(d, 7, 'All closed')
-    both(d, cx(7), SY1 + SR + 6, SYB - 34)
     return d
 
 
 def build26():
-    d = base('bu26', 'A bad Visio update in 2026: Peter sees the same steps and everyone else gets the fix without noticing; agents and flows do the work; the engineer only says yes; every step reads and writes the ServiceNow record', '2026')
+    d = base('bu26', 'A bad Visio update in 2026: Peter gets the same messages; agents and flows do the work; the engineer only says yes; everyone else gets the fix and notices nothing; every step reads and writes the ServiceNow record', '2026')
     # 1 Peter's Visio crashes; Nexthink records it
     person(d, 0, 'peter', 'alert'); system(d, cx(0), SY1, 'nexthink', 'Nexthink')
     vline(d, cx(0), PY + R + 32, SY1 - SR - 6, 'Crash\nand version', 410)
-    # 2 a webhook opens the incident; the Software agent tells Peter
+    # 2 a webhook opens the incident; the Software agent tells Peter, with the workaround from the knowledge base
     record(d, 1, 'Incident', first=True)
     mid = cx(0) + 80
     path(d, (cx(0) + SR + 6, SY1), (mid, SY1), (mid, SYB), (cx(1) - 34, SYB), label='Webhook', at=(mid + 40, (SY1 + SYB) / 2 + 5))
     person(d, 1, 'peter', 'message'); robot(d, cx(1), SY1, 'Digital Hub')
-    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'We opened\na ticket', 410)
+    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'Ticket + Visio\nin the browser', 410)
     both(d, cx(1), SY1 + SR + 14, SYB - 34)
-    # 3 the Software agent gives the workaround from the knowledge base
-    person(d, 2, 'peter', 'message'); robot(d, cx(2), SY1, 'Digital Hub'); record(d, 2, 'Workaround')
-    vline(d, cx(2), SY1 - SR - 6, PY + R + 32, 'Visio in\nthe browser', 410)
+    under(d, 1, 'now', 'Knowledge base', 'Workaround')
+    # 3 the incidents become one problem; the problem agent prepares the analysis; the engineer says yes
+    person(d, 2, 'engineer'); robot(d, cx(2), SY1, 'ServiceNow'); record(d, 2, 'Problem')
+    pair(d, cx(2), 'Analysis,\nready', 'Yes', ly=410)
     both(d, cx(2), SY1 + SR + 14, SYB - 34)
-    under(d, 2, 'now', 'Knowledge base', 'Workaround')
-    # 4 the incidents become one problem; the problem agent prepares the analysis; the engineer says yes
-    person(d, 3, 'engineer'); robot(d, cx(3), SY1, 'ServiceNow'); record(d, 3, 'Problem')
-    pair(d, cx(3), 'Analysis,\nready', 'Yes', ly=410)
+    under(d, 2, 'nexthink', 'Nexthink', 'By version')
+    # 4 a change pauses the update; the Software agent tells Peter
+    person(d, 3, 'peter', 'message'); robot(d, cx(3), SY1, 'Digital Hub'); record(d, 3, 'Change: pause')
+    vline(d, cx(3), SY1 - SR - 6, PY + R + 32, 'Update held,\nfix underway', 410)
     both(d, cx(3), SY1 + SR + 14, SYB - 34)
-    under(d, 3, 'nexthink', 'Nexthink', 'By version')
-    # 5 a change pauses the update; the Software agent tells Peter
-    person(d, 4, 'peter', 'message'); robot(d, cx(4), SY1, 'Digital Hub'); record(d, 4, 'Change: pause')
-    vline(d, cx(4), SY1 - SR - 6, PY + R + 32, 'Update held,\nfix underway', 410)
+    under(d, 3, 'cloud', 'Cloud Update', 'Pause', up=False)
+    # 5 the problem agent prepares the steps; the engineer says yes; Intune changes the settings
+    person(d, 4, 'engineer'); robot(d, cx(4), SY1, 'ServiceNow'); record(d, 4, 'Change: fix')
+    pair(d, cx(4), 'Steps,\nready', 'Yes', ly=410)
     both(d, cx(4), SY1 + SR + 14, SYB - 34)
-    under(d, 4, 'cloud', 'Cloud Update', 'Pause', up=False)
-    # 6 the problem agent prepares the steps; the engineer says yes; Intune changes the settings
-    person(d, 5, 'engineer'); robot(d, cx(5), SY1, 'ServiceNow'); record(d, 5, 'Change: fix')
-    pair(d, cx(5), 'Steps,\nready', 'Yes', ly=410)
+    under(d, 4, 'intune', 'Intune', 'Settings', up=False)
+    # 6 the Software agent tells Peter; his incident closes
+    person(d, 5, 'peter', 'done'); robot(d, cx(5), SY1, 'Digital Hub'); record(d, 5, 'Incident closed')
+    pair(d, cx(5), FIXED, 'Rating', ly=410)
     both(d, cx(5), SY1 + SR + 14, SYB - 34)
-    under(d, 5, 'intune', 'Intune', 'Settings', up=False)
-    # 7 the Software agent tells Peter; his incident closes
-    person(d, 6, 'peter', 'done'); robot(d, cx(6), SY1, 'Digital Hub'); record(d, 6, 'Incident closed')
-    pair(d, cx(6), '\u201cWe fixed it\u201d', 'Rating', ly=410)
-    both(d, cx(6), SY1 + SR + 14, SYB - 34)
-    # 8 Cloud Update rolls the update out to everyone else in waves; nobody notices; everything closes
-    everyone(d, 7); record(d, 7, 'All closed')
-    under(d, 7, 'cloud', 'Cloud Update', 'In waves', up=False, left=True)
+    # 7 Cloud Update rolls the update out to everyone else in waves; nobody notices; everything closes
+    everyone(d, 6); record(d, 6, 'All closed')
+    under(d, 6, 'cloud', 'Cloud Update', 'In waves', up=False, left=True)
     return d

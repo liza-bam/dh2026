@@ -20,7 +20,15 @@ A bad Visio update takes both halves of this diagram. Monitoring catches the cra
 
 ## A bad update, 2019
 
-Peter opens Visio after an update, and it won't start. Digital Hub files a ticket and tells him: "We see Visio isn't working. We've opened a ticket, don't worry." It gives him a workaround, Visio on a virtual machine, so he keeps working. Behind the scenes it finds similar tickets and calls in support. An engineer finds the cause: the new update. Digital Hub holds the update back from everyone else, runs the engineer's fix and tells Peter: "All fine, we fixed the problem with your Visio update."
+Peter opens Visio after an update, and it won't start. Digital Hub files a ticket and sends him one message:
+
+> We noticed that your Visio app crashed.
+> We created a problem ticket for this issue. We are working on the solution and will notify you about the updates.
+> To continue working in the application use the virtual machine.
+
+He opens Visio on the virtual machine and keeps working. Behind the scenes Digital Hub finds similar tickets and calls in support. An engineer finds the cause: the new update. Digital Hub holds the update back from everyone else and runs the engineer's fix. Peter gets the second message:
+
+> We fixed the problem with your Visio update. You can start working in it now.
 
 Then the same fix reaches everyone else who was due the update. They never see the bug and never notice anything happened.
 
@@ -49,7 +57,7 @@ The 2019 journey works now, with one change: AI only where a step needs a decisi
 
 ## The same journey, 2026
 
-Peter sees the same thing as in 2019: "We see Visio isn't working, we've opened a ticket" at the start, "All fine, we fixed it" at the end, and nothing to do in between. Everyone else gets the fix in waves and never sees the bug. Behind the scenes, the platforms now do what we had to script.
+Peter gets the same two messages as in 2019, with Visio in the browser in place of the virtual machine, and has nothing to do in between. Everyone else gets the fix in waves and never sees the bug. Behind the scenes, the platforms now do what we had to script.
 
 Visual: [D26-17] A bad update, 2026.
 

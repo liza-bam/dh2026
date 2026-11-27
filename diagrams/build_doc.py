@@ -42,7 +42,7 @@ D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
     ('D26-9', 'Six and four', 'Of the ten journeys, six run as fixed flows and four go to agents', split26.build),
     ('D26-2', 'Architecture', 'One way in, three paths, and the systems the agents work with', arch26.build),
-    ('D26-17', 'A bad update, 2026', 'The same eight steps: Peter sees the same thing; agents and flows do the work; the engineer only says yes', update26.build26),
+    ('D26-17', 'A bad update, 2026', 'The same seven steps: Peter gets the same messages; agents and flows do the work; the engineer only says yes', update26.build26),
     ('D26-14', 'Path 1: a fixed flow', 'An employee orders a second monitor', paths26.fixed),
     ('D26-15', 'Path 2: a domain agent', 'Visio will not install, with a client call in 20 minutes', paths26.domain),
     ('D26-16', 'Path 3: a team agent', 'The office Wi-Fi keeps dropping', paths26.team),
