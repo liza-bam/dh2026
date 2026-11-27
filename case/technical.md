@@ -86,6 +86,8 @@ A failed install, VPN at a hotel, client files that will not open, a scam email,
 - how many tries it gets before it brings in a person;
 - what it never does: the Software agent never wipes a device.
 
+**Why a small agent is enough.** Agents have no open internet: vendor knowledge goes into their libraries in advance, checked and kept up to date. And the system around them is strict: laptops are standard and centrally managed, apps install automatically, files live in OneDrive. So every software problem has a short ladder: a known fix; repair or reinstall the app; reset the laptop to its standard state, with files and apps coming back by themselves; a person. The agent does not need to understand everything. It picks the step and the time with the employee: "Resetting takes an hour. Now or tonight?" Anything outside its library goes to the second-line team.
+
 Within those limits the agent leads the case itself: it checks, tries, changes the plan and tells the employee what is happening. Simple actions in its domain still run as fixed flows: the Devices agent does not improvise an order.
 
 Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads and asks the Security agent whether the account is fine. For a stolen laptop, Security leads and hands the replacement to Devices. The employee talks to one agent the whole time.

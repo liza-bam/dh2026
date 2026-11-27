@@ -25,7 +25,7 @@ Research named the ten most common IT requests at EY. I asked one question of ea
 
 So the simple half runs as fixed flows: fast, cheap, predictable. Agents get only the five problems that need judgment.
 
-And not one big agent. Small ones, each an expert in one domain: cheaper, safer, easier to test.
+And not one big agent. Small ones, each an expert in one domain: cheaper, safer, easier to test. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset, and the agent only picks the step and the moment. Anything outside its library goes up to people.
 
 ---
 
