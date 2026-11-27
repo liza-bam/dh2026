@@ -55,8 +55,8 @@ def system(d, x, y, key, name=None):
         d.el.append(f'<circle cx="{x}" cy="{y}" r="{SR}" fill="#fff" stroke="#dce4e7"/>')
         d.t(x, y + 9, 'Intune', 15, 700, 'middle')
     elif key == 'hub':
-        d.el.append(f'<circle cx="{x}" cy="{y}" r="{SR}" fill="#fff" stroke="#dce4e7"/>')
-        d.rect(x - 20, y - 14, 40, 28, '#f5c000', '#f5c000', rx=0, sw=0)
+        d.el.append(f'<circle cx="{x}" cy="{y}" r="{SR - 2}" fill="#fff" stroke="#f5c000" stroke-width="4"/>')
+        glyph(d, 'hub', x, y, 40)
     elif key == 'cloud':
         d.logo('office', x - SR, y - SR, 2 * SR)
     else:

@@ -2,6 +2,7 @@
 from rich import Rich, Z
 from svg import SECOND
 from transition import TEAL, TINT
+from cards26 import symbol
 
 G = '#9aa5aa'
 PURPLE = '#6b4fa0'
@@ -61,7 +62,8 @@ def build():
         if icon:
             d.image(icon, x + 12, 42, 30)
         else:
-            d.rect(x + 12, 46, 30, 22, '#f5c000', '#f5c000', rx=6)
+            d.el.append(f'<circle cx="{x + 27}" cy="58" r="14" fill="#fff" stroke="#f5c000" stroke-width="3"/>'
+                        f'<path d="{symbol("hub")}" fill="{TEAL}" transform="translate({x + 17} 68) scale({20 / 960:.4f})"/>')
         d.t(x + 54, 64, name, 14, 600)
         x += 236
     d.arrow((600, 96), (600, 124), color=TEAL)
