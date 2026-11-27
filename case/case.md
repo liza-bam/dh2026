@@ -8,20 +8,16 @@
 
 **Links:** live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).
 
----
-
 ## Half of IT support needs no AI
 
 Research named the ten most common IT requests at EY. I asked one question of each: does solving it need a decision?
 
-- **No:** a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room. Same steps every time; the only choices are the employee's.
-- **Yes:** a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. The next step depends on what turns up.
+- **No:** a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room.
+- **Yes:** a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop.
 
-So the simple half runs as fixed flows: fast, cheap, predictable. Agents get only the five problems that need judgment.
+The first five run as fixed flows. Agents get only the other five.
 
-And not one big agent. Small ones, each an expert in one domain: cheaper, safer, easier to test. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset, and the agent only picks the step and the moment. Anything outside its library goes up to people.
-
----
+And not one big agent: small ones, one per domain. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset; the agent picks the step and the moment. Anything else goes up to people.
 
 ## What I designed
 
@@ -32,26 +28,18 @@ And not one big agent. Small ones, each an expert in one domain: cheaper, safer,
 
 Visual: [D26-2] Architecture.
 
----
-
 ## What the employee sees
-
-The agents are the means. This is the point.
 
 - **Real choices.** A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.
 - **No nagging.** Tap Later, and the agent offers one reminder in 15 minutes. Then it starts the install itself, and you can still cancel.
 - **Never explain twice.** When a person takes over, they already know everything that was tried.
-- **A record of everything.** Every request gets a number, even when agents do all the work. You never have to look at it.
-
----
+- **A record of everything.** Every request gets a number, even when agents do all the work.
 
 ## Try it
 
 Three journeys on a phone: a monitor, an assistant's access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.
 
 https://digital-hub-demo.alexandra-tayts.workers.dev
-
----
 
 ## Lessons learned
 

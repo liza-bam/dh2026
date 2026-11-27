@@ -26,18 +26,15 @@ code{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:4px}
 small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 </style></head><body><main><h1>Digital Hub, 2026: how it works</h1>
 <p>The technical document behind the case study: the full logic, architecture, agents, scenarios and rules. Diagram IDs refer to <code>diagrams.html</code>.</p>
-<hr />
 <h2>Header</h2>
 <p><strong>Title:</strong> Digital Hub, 2026</p>
 <p><strong>Subtitle:</strong> In 2019 I designed IT support for EY that fixes problems before people notice them. In 2026 I rebuilt it with AI agents, on my own.</p>
 <p><strong>Role:</strong> UX, product and service designer. Service design, agent architecture, prototype.</p>
 <p><strong>Timeline:</strong> 2019–2020 proposal for EY at Wipro; 2026 rebuild.</p>
 <p><strong>Links:</strong> live demo (when built), 2019 case study, diagrams.</p>
-<hr />
 <h2>TL;DR</h2>
 <p><strong>Problem.</strong> EY employees work on tight client deadlines, but one IT issue meant 3+ support channels, 30%+ of cases lost between teams, and the same checks again and again. In 2019 I designed Digital Hub to solve problems before people noticed them, but every case the bot could handle had to be written in advance.</p>
 <p><strong>What I did.</strong> Took the 2019 service as the brief and rebuilt it with specialized AI agents: the same journeys, the same employee data, the same systems, with agents doing the work people had to script. Re-evaluated the stack, gave agents access the way people get it, and built a live demo.</p>
-<hr />
 <h2>Where it started: 2019</h2>
 <p>In 2019, on Wipro's proposal for EY, I designed Digital Hub: one app for every IT issue, live status on every request, and support that acts before people notice a problem. I led a team of 7 through the ten journeys EY's discovery named, from password resets to lost laptops, and built them from shared modules so the same task always looked the same.</p>
 <p>The delivery plan followed the same idea. The first journey, the laptop refresh, was the MVP. Every next journey reused its modules and added only what was unique to it, about two sprints each. The rollout went in waves: 500 people in the UK first, then 17,500; in the US and India, 20,000 first; in other countries, 500, then 2,000, then everyone, each in its own language. And the platform sat on top of EY's systems through APIs, so EY could change a system without changing what employees saw.</p>
@@ -677,7 +674,6 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="990" y="766" font-family="'Inter', sans-serif" font-size="14" font-weight="400" fill="#223640" text-anchor="start">new version of software or</text>
 <text x="990" y="785" font-family="'Inter', sans-serif" font-size="14" font-weight="400" fill="#223640" text-anchor="start">cleaning up the disk.</text>
 </svg></figure>
-<hr />
 <h2>Three rules before any agent</h2>
 <h3>1. It costs less than the help desk it replaces</h3>
 <p>Every solved case has a price: model calls, licences, the engineer who approves a new fix. Fixed flows and domain agents run on small, cheap models. The large model works only where cases are few and hard. Cost is measured per solved case, against the cost of the same case at the help desk.</p>
@@ -841,7 +837,6 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="369" y="759" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">No, or not found in public documentation</text>
 <text x="20" y="788" font-family="'Inter', sans-serif" font-size="12" font-weight="400" fill="#3f5f6b" text-anchor="start">Checked against vendor documentation, November 2026.</text>
 </svg></figure>
-<hr />
 <h2>The logic: does it need a decision?</h2>
 <p><strong>Half of IT support needs no AI.</strong> The whole design follows from three decisions: what gets no AI at all, what goes to agents, and which agents.</p>
 <p>The starting point is research: the ten most common IT requests at EY. I sort them by one question: does solving it need a decision?</p>
@@ -1027,7 +1022,6 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="680" y="840" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#2c6e7e" text-anchor="start">No journey: the orchestrator tries,</text>
 <text x="680" y="860" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#2c6e7e" text-anchor="start">people get what it cannot solve</text>
 </svg></figure>
-<hr />
 <h2>Architecture</h2>
 <p>Nine layers, each with one job.</p>
 <ol>

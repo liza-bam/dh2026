@@ -2,8 +2,6 @@
 
 The technical document behind the case study: the full logic, architecture, agents, scenarios and rules. Diagram IDs refer to `diagrams.html`.
 
----
-
 ## Header
 
 **Title:** Digital Hub, 2026
@@ -16,16 +14,11 @@ The technical document behind the case study: the full logic, architecture, agen
 
 **Links:** live demo (when built), 2019 case study, diagrams.
 
----
-
 ## TL;DR
 
 **Problem.** EY employees work on tight client deadlines, but one IT issue meant 3+ support channels, 30%+ of cases lost between teams, and the same checks again and again. In 2019 I designed Digital Hub to solve problems before people noticed them, but every case the bot could handle had to be written in advance.
 
 **What I did.** Took the 2019 service as the brief and rebuilt it with specialized AI agents: the same journeys, the same employee data, the same systems, with agents doing the work people had to script. Re-evaluated the stack, gave agents access the way people get it, and built a live demo.
-
-
----
 
 ## Where it started: 2019
 
@@ -38,8 +31,6 @@ Digital Hub reached the final round of the bid. The client called it the stronge
 It had one limit. The AI bot could only handle cases someone had written in advance, and every proactive behavior was a separate script. Anything new became a ticket. That limit is where 2026 starts.
 
 Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support. The rest of D19 behind "see more diagrams".
-
----
 
 ## Three rules before any agent
 
@@ -61,8 +52,6 @@ Some platforms I had to design around in 2019 are gone. Others became stronger. 
 Eight platforms stay, and each now has a way for agents to act through it. Two go: the Avaamo bot, because the intake agent does its job, and Wipro Holmes, because fixes now run through Nexthink and Intune.
 
 Visual: [D26-6] Stack scorecard.
-
----
 
 ## The logic: does it need a decision?
 
@@ -135,8 +124,6 @@ The logic was checked against the market in November 2026: ServiceNow's AI front
 <small>Gartner expects over 40% of agentic AI projects to be canceled by the end of 2027 because of cost, unclear value or weak risk controls, and warns about "agent washing": chatbots and RPA renamed as agents. Digital Hub uses an agent only where a flow cannot do the job.</small>
 
 Visual: [D26-7] Delivery plan (to redraw).
-
----
 
 ## Architecture
 
