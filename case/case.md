@@ -22,9 +22,9 @@ A bad Visio update takes both halves of this diagram. Monitoring catches the cra
 
 Peter opens Visio after an update, and it won't start. Digital Hub files a ticket and gives him a workaround, Visio on a virtual machine, so he keeps working. Behind the scenes it finds similar tickets and calls in support. An engineer finds the cause: the new update. Digital Hub holds the update back from everyone else, runs the engineer's fix and tells the people affected: "We fixed the problem with your Visio update." Everyone else never sees the bug.
 
-Visual: the 2019 video, "Ticket Trends, Crash bugs and Automated Solutions" (to add).
+Visual: [V19-1] Ticket Trends, Crash bugs and Automated Solutions, 2019.
 
-Visual: the 2019 blueprint, "SW update issue and resolution": Submit, Confirm, Identify, Notify, Resolve, Inform (to add).
+Visual: [D19-12] SW update issue and resolution, 2019.
 
 ## Why it was hard
 

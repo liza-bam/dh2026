@@ -7,6 +7,10 @@ import transition as t26
 from build_doc import D19, D26
 
 FIGS = {i: (t, sub, f) for i, t, sub, f in D19 + D26}
+FIGS['V19-1'] = ('Ticket Trends, Crash bugs and Automated Solutions', 'The 2019 scenario, narrated: a bad Visio update caught, held back and fixed',
+                 lambda: '<video controls preload="metadata" poster="media/crash-2019-poster.jpg" src="media/crash-2019.mp4"></video>')
+FIGS['D19-12'] = ('SW update issue and resolution, 2019', 'My 2019 blueprint for the same scenario: six stages, four actors, twelve steps',
+                  lambda: '<img src="media/blueprint-2019.png" alt="2019 blueprint: Submit, Confirm, Identify, Notify, Resolve, Inform, with the customer, the Digital Hub service layer, backend systems and technical support"/>')
 FIGS['D26-4'] = ('The 10 scenarios', 'Who does the work now, and when a person steps in',
                  lambda: '<div class="grid">' + ''.join(t26.scenario_card(n, *sc).svg() for n, sc in enumerate(t26.SCEN)) + '</div>')
 
@@ -22,7 +26,7 @@ def figure(i):
 def with_figures(html):
     """After every paragraph that names diagrams like [D26-7], show those diagrams."""
     def add(m):
-        ids = [i for i in re.findall(r'\[(D\d\d-\d+)\]', m.group(0)) if i in FIGS]
+        ids = [i for i in re.findall(r'\[((?:D|V)\d\d-\d+)\]', m.group(0)) if i in FIGS]
         figs = ''.join(figure(i) for i in ids)
         # A line that only names diagrams ("Visual: [D26-2] ...") is replaced by the diagrams themselves
         return figs if ids and m.group(0).startswith(('<p>Visual:', '<p>Visuals:')) else m.group(0) + figs
@@ -55,6 +59,7 @@ code{{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:0}}
 .fig{{width:min(1120px,calc(100vw - 32px));position:relative;left:50%;transform:translateX(-50%);margin:24px 0 40px;padding:16px;background:#fff;border:1px solid var(--rule);border-radius:0;color:#223640}}
 .fig figcaption{{margin:0 0 12px}}.fig figcaption b{{display:block;font:600 20px/1.3 'Inter Tight',sans-serif}}.fig figcaption span{{display:block;font-size:15px;color:#3f5f6b}}
 .fig .fid{{display:inline-block;font:600 13px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:0;padding:5px 7px;margin:0 8px 0 0;vertical-align:3px}}
+.fig img,.fig video{{display:block;width:100%;height:auto}}
 .fig svg{{display:block;width:auto;max-width:100%;height:auto;margin:0 auto}}
 .grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
 @media (max-width:700px){{.grid{{grid-template-columns:1fr}}}}

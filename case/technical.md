@@ -50,6 +50,10 @@ From the 2019 video "Ticket Trends, Crash bugs and Automated Solutions" and its 
 
 Peter opens Visio after a new update, and it won't start. Digital Hub files a ticket and offers a workaround: Visio on a virtual machine. Peter keeps working. Behind the scenes, Digital Hub finds similar tickets in ServiceNow and asks technical support to look. An engineer, Linda, finds the cause in Nexthink: the new Visio update. Digital Hub postpones the update for everyone scheduled to get it. Linda writes the steps (change the settings, then push the update), Digital Hub runs them and tells the people affected. Peter gets "We fixed the problem with your Visio update." Everyone else never sees the bug.
 
+Visual: [V19-1] Ticket Trends, Crash bugs and Automated Solutions, 2019.
+
+Visual: [D19-12] SW update issue and resolution, 2019.
+
 The blueprint has six stages and four actors: the customer using the Digital Hub front end, the Digital Hub service layer, the backend systems and the technical support team.
 
 | Stage | What happens |
