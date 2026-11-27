@@ -132,7 +132,7 @@ const form = document.getElementById('form'), input = document.getElementById('i
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
 const add = e => { chat.append(e); chat.scrollTop = chat.scrollHeight; return e; };
-let onSend = null, pending = null, busy = false, fromChat = false;
+let onSend = null, pending = null, busy = false, fromChat = false, topic = '';
 
 // What the employee sees ---------------------------------------------------------------
 const me = text => add(el('div', 'msg me', text));
@@ -192,6 +192,16 @@ function widget(id, key, title, status) {
   it.querySelector('span').textContent = status;
 }
 const request = (title, status) => widget('reqs', title, title, status);
+// Tickets stay in this browser, so a later conversation can ask about them ("how is my Visio?")
+const tickets = {
+  all() { try { return JSON.parse(localStorage.getItem('dh-tickets')) || []; } catch { return []; } },
+  add(what, team) {
+    const t = { num: 'INC' + Math.floor(1000000 + Math.random() * 9000000), what, team, status: 'Open', at: new Date().toISOString() };
+    try { localStorage.setItem('dh-tickets', JSON.stringify([...tickets.all(), t])); } catch { /* storage off: the ticket still shows in this conversation */ }
+    request(t.num, `${what}. ${team}, open`);
+    return t.num;
+  },
+};
 function unwait(key) {
   const box = document.getElementById('waits');
   box.querySelector(`[data-k="${key}"]`)?.remove();
@@ -318,9 +328,8 @@ const m = {
     }
     await say('Shall I file a ticket?');
     if (/^(y|да)/i.test(await ask(['Yes', 'Never mind']))) {
-      const num = 'INC' + Math.floor(1000000 + Math.random() * 9000000);
+      const num = tickets.add(topic || what, 'Service desk');
       step('ServiceNow ticket', `Filed ${num}: ${what}, not urgent`);
-      request(num, 'Open');
       await say(`Done. Your ticket is ${num}.`);
     } else {
       await say('OK, cancelled.');
@@ -531,6 +540,7 @@ const EXAMPLES = [
 let place = 'phone';
 function home() {
   device(`Teams, on the ${place}`);
+  tickets.all().forEach(t => request(t.num, `${t.what}. ${t.team}, ${t.status.toLowerCase()}`));
   chat.replaceChildren();
   [['Audit team', 'Files for Thursday are in the channel'], ['Your manager', 'Can we move our 1:1?'], ['Client call prep', 'Agenda attached']].forEach(([n, t]) => {
     const r = el('div', 'home-row'), x = el('div');
@@ -560,6 +570,7 @@ $('examples').append(...EXAMPLES.map(([t, j]) => { const b = el('button', '', t)
 const live = location.protocol.startsWith('http') && !location.hostname.endsWith('claudeusercontent.com');
 async function intake(text, offline) {
   busy = true;
+  topic = text;
   $('trybox').classList.add('hidden');
   me(text);
   input.value = '';
@@ -589,8 +600,8 @@ async function intake(text, offline) {
   }
   const t = r.ticket;
   step('ServiceNow ticket', `Filled for ${t.group}, urgency ${t.urgency}`);
-  request(t.category, 'With ' + t.group);
-  await card('Status and updates', 'I opened a ticket for you', [t.summary, `Team: ${t.group}. Urgency: ${t.urgency}.`, 'A person will reply here. You will not need to explain again.']);
+  const num = tickets.add(t.summary, t.group);
+  await card('Status and updates', `Your ticket is ${num}`, [t.summary, `Team: ${t.group}. Urgency: ${t.urgency}.`, 'A person will reply here. You will not need to explain again.']);
   step('ServiceNow ticket', `Label "${t.label}": when many tickets share a label, it becomes a new journey`);
   busy = false;
 }
