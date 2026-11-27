@@ -58,6 +58,7 @@ code{{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:0}}
 .fig svg{{display:block;width:auto;max-width:100%;height:auto;margin:0 auto}}
 .grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
 @media (max-width:700px){{.grid{{grid-template-columns:1fr}}}}
+table{{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5;margin:16px 0 24px}}th,td{{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}}th{{background:var(--panel);font-weight:600}}
 small{{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}}
 </style></head><body><main>{body}</main></body></html>'''
   (ROOT / 'case' / f'{name}.html').write_text(html)

@@ -38,6 +38,76 @@ Visual: [D19-11] Support paths, 2019.
 
 Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support. The rest of D19 behind "see more diagrams".
 
+## The use case: a bad update, 2019 and 2026
+
+In 2019 I designed how EY's IT support would stop a bad software update before it reached everyone. In 2026 I went back and asked how I would build it today. The journey held up; only the tools behind it changed. This section follows the one scenario through both years.
+
+### 2019: the scenario
+
+From the 2019 video "Ticket Trends, Crash bugs and Automated Solutions" and its blueprint "SW update issue and resolution".
+
+Peter opens Visio after a new update, and it won't start. Digital Hub files a ticket and offers a workaround: Visio on a virtual machine. Peter keeps working. Behind the scenes, Digital Hub finds similar tickets in ServiceNow and asks technical support to look. An engineer, Linda, finds the cause in Nexthink: the new Visio update. Digital Hub postpones the update for everyone scheduled to get it. Linda writes the steps (change the settings, then push the update), Digital Hub runs them and tells the people affected. Peter gets "We fixed the problem with your Visio update." Everyone else never sees the bug.
+
+The blueprint has six stages and four actors: the customer using the Digital Hub front end, the Digital Hub service layer, the backend systems and the technical support team.
+
+| Stage | What happens |
+|---|---|
+| Submit | The first customer hits the bug and a ticket is filed. The backend systems match it against related tickets. |
+| Confirm | Technical support confirms that the new update causes the bug and blocks it for everyone else until it is fixed. |
+| Identify | The service layer pulls the list of blocks and matches it against everyone affected; the backend systems list everyone using the software. |
+| Notify | The people affected learn that the update is blocked and a fix is underway. |
+| Resolve | The patch is made, the ticket is closed and the block is removed. The service layer matches the closed ticket against the people affected. |
+| Inform | The people affected hear about the fix, with instructions to install it, and give a sentiment score. |
+
+In the blueprint the first customer files the ticket; in the video Digital Hub files it automatically. In 2026 it is always filed automatically.
+
+### 2026: the same stages
+
+Peter sees the same thing as in 2019. Behind the scenes, each step that once needed a script and a hand-written integration is now a platform feature.
+
+| Stage | Who acts | Data, and where it comes from | Written to | Through |
+|---|---|---|---|---|
+| Submit | Nexthink records the crash, and its monitor raises an alert. A webhook files an incident. The Software agent messages Peter first, with a workaround: Visio in the browser | Crash, device, app version: Nexthink. Workaround: the knowledge base | Incident: the crash data and the workaround | Nexthink webhook to ServiceNow; Teams |
+| Confirm | Nexthink flags the version that crashes more than others. ServiceNow finds similar incidents. The Software agent links them to one problem. ServiceNow's Problems investigation agent prepares the analysis. An engineer confirms the cause and approves a change. A flow pauses the update | Nexthink: crashes by version. ServiceNow: similar incidents, changes, affected devices | Problem: linked incidents, the cause. Change: the pause | ServiceNow API; Microsoft 365 Apps admin center (Cloud Update) |
+| Identify | A flow lists everyone affected | Nexthink: devices with the new version and their crashes. Cloud Update: which devices have the update | Problem: the people affected | Nexthink API; Cloud Update |
+| Notify | A flow messages everyone on the problem | The problem record | Each linked incident: the message sent | Teams |
+| Resolve | ServiceNow's problem agent proposes the steps, and the engineer approves them in a change. A flow changes the settings, then rolls the update out in waves | Nexthink remote actions or Intune: the settings. Cloud Update: the update | Change: the fix. Knowledge base: the known error and its fix | Nexthink API or Intune; Cloud Update |
+| Inform | A flow closes every linked incident. Each person gets a message and a one-tap rating | The problem record | Incidents closed; the ratings | Teams; ServiceNow survey |
+
+What Peter sees, in order: "Visio crashed. Here is a way to keep working." "It's not just you. We're on it." "We fixed the problem with your Visio update." "How did we do?"
+
+### What the platforms bring
+
+- **Nexthink** compares app versions across its customers and alerts when a version performs worse than others, with crash breakdowns by version, OS build and device model. In 2019 an alert needed a rule written in advance.
+- **Nexthink webhooks** file an incident in ServiceNow from an alert. In 2019 this was a custom integration.
+- **ServiceNow** finds similar resolved incidents (Incident assist) and analyses a problem with its related incidents, changes and affected devices (Problems investigation agent).
+- **Microsoft 365 Apps Cloud Update**, generally available since August 2025, pauses an update, rolls it back and rolls it out in waves.
+
+### What I design
+
+- Who owns the case at each stage, so nothing is lost between teams.
+- What goes into the record at each step, so nobody asks Peter twice.
+- Where a rule decides, where an agent decides and where an engineer decides.
+- What Peter sees, and when.
+
+### Rules in this journey
+
+- AI in two places only: the Software agent, which talks to Peter and links the incidents, and ServiceNow's Problems investigation agent, which prepares the analysis for the engineer.
+- No agent changes a system. The engineer approves every change in ServiceNow, and a fixed flow runs it.
+- Every incident is linked to the problem, so closing the problem reaches every person affected.
+
+### Sources
+
+- Nexthink alerts and diagnostics: https://docs.nexthink.com/platform/user-guide/alerts-and-diagnostics
+- Nexthink execution crashes: https://docs.nexthink.com/platform/user-guide/alerts-and-diagnostics/getting-started-with-diagnostics/execution-crashes
+- Nexthink webhook to a ServiceNow incident: https://docs.nexthink.com/platform/configuring_nexthink/bringing-data-into-your-nexthink-instance/integrating-nexthink-with-third-party-tools/outbound-connectors/webhooks/webhook-use-cases-setup/creating-an-incident-in-servicenow
+- Nexthink V6 (2019) alerts: https://docs-v6.nexthink.com/glossary-and-references/security/system-alerts
+- Nexthink V6 (2019) ServiceNow event management: https://docs-v6.nexthink.com/V6/6.29/event-management
+- ServiceNow Incident assist: https://www.servicenow.com/docs/r/it-service-management/now-assist-for-it-service-management-itsm/now-assist-itsm-incident-assist-workflow.html
+- ServiceNow Investigate problems: https://www.servicenow.com/docs/r/zurich/intelligent-experiences/enable-ai-experiences/problem-investigation.html
+- Microsoft 365 Apps Cloud Update: https://learn.microsoft.com/microsoft-365-apps/admin-center/cloud-update
+- Cloud Update general availability: https://techcommunity.microsoft.com/t5/microsoft-365-blog/cloud-update-reaches-general-availability-transforming-microsoft/ba-p/4440710
+
 ## Three rules before any agent
 
 ### 1. It costs less than the help desk it replaces
@@ -104,7 +174,7 @@ So the agent knows what each laptop should look like. A diagnosis is the differe
 
 Those rules make the fence. For the Software agent it has three steps:
 
-1. **Does the program fail for many people?** The agent checks the service status itself. If yes, there is nothing to fix on this laptop, but the employee is never left stuck: the agent files a ticket, gives the number, and the Nexthink agent takes it (updates, network, system fixes). Nexthink brings its own agent, like Microsoft Defender does; we decide what to give it, not rebuild it.
+1. **Does the program fail for many people?** The agent reads the Nexthink alert and the similar incidents in ServiceNow. If yes, there is nothing to fix on this laptop, but the employee is never left stuck: the agent gives a workaround, links the incident to a problem for the team and gives the number. The bad update above is this case.
 2. **Does the employee have a license?** If not but they are entitled, the agent renews it. If they are not entitled, it fills in the request and sends it to the manager; once approved, it renews.
 3. **Bring the laptop back to standard.** The smallest fix first: a known fix (clear a cache, switch the headset, turn off an add-in after a yes); then reinstall the program; then reset the laptop, which takes about an hour, so the agent asks when; then a person from IT with the whole story.
 
