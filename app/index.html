@@ -92,7 +92,6 @@ button:disabled{opacity:.45;cursor:default}
 .branches span.taken{background:var(--teal);border-color:var(--teal);color:#fff}
 .details{margin-top:8px;font-size:13px}.details p{margin:4px 0}.details ol{margin:6px 0 0;padding-left:18px;color:var(--second)}
 .total{margin-top:8px;font-size:14px;font-weight:600}
-.examples button{display:block;width:100%;text-align:left;margin-bottom:6px;min-height:36px;font-weight:400;font-size:13px;border-color:var(--frame);color:var(--frame)}
 .switch{display:flex;gap:6px;margin-top:16px}
 </style>
 </head>
@@ -124,7 +123,9 @@ button:disabled{opacity:.45;cursor:default}
   </section>
   <aside class="guide">
     <p class="now" id="now"></p>
-    <div id="trybox" class="hidden"><h2>Try one, or write your own</h2><div class="examples" id="examples"></div></div>
+    <h2>Version 1: ten fixed journeys</h2>
+    <p>Describe a problem in your own words. A small, cheap model sends it to one of ten journeys, or files a ticket.</p>
+    <p class="empty">Meeting room · VPN · Password · Channel access · Lost laptop · Client files · Assistant's Outlook · New device · Scam email · Software install</p>
     <h2>How it runs</h2>
     <div class="flow" id="agents"><p class="empty">Nothing yet</p></div>
     <p class="total" id="total"></p>
@@ -604,13 +605,6 @@ const scenarios = [
 ];
 
 // Start: something is not working, and Teams is already open ---------------------------------
-const EXAMPLES = [
-  ['I need Visio for a client call today', 'Failed software install'],
-  ['My laptop was stolen on the train', 'Lost laptop'],
-  ['VPN does not connect from the hotel', 'VPN offsite'],
-  ['I need a second monitor', 'Ordering a peripheral'],
-  ['The printer on floor 3 keeps jamming', null],
-];
 let place = 'phone';
 function home() {
   device(`Teams, on the ${place}`);
@@ -633,19 +627,16 @@ async function openHub() {
   step('Message in Digital Hub', `Digital Hub in Teams, on the ${place}`);
   step('Intake agent', 'Listens. Every message goes to it first');
   now('You are in Digital Hub inside Teams. The intake agent reads what you write: a small, cheap model.');
-  $('trybox').classList.remove('hidden');
   await say('Hi. Tell me what is not working, in your own words.');
 }
 $('tabhub').onclick = openHub;
 $('railhub').onclick = openHub;
-$('examples').append(...EXAMPLES.map(([t, j]) => { const b = el('button', '', t); b.onclick = () => { if (!busy) intake(t, j); }; return b; }));
 
 // The intake agent: a small model picks a fixed journey, or fills a ticket and labels it
 const live = location.protocol.startsWith('http') && !location.hostname.endsWith('claudeusercontent.com');
-async function intake(text, offline) {
+async function intake(text) {
   busy = true;
   topic = text;
-  $('trybox').classList.add('hidden');
   me(text);
   input.value = '';
   step('Intake agent', 'Reads the request');
@@ -658,10 +649,7 @@ async function intake(text, offline) {
       step('Intake agent', `${r.usage.in} tokens in, ${r.usage.out} out: $${r.usage.cost.toFixed(5)}`);
       spend('Intake agent', r.usage.cost);
     } catch (e) { await say('I cannot reach the intake agent right now. Try again in a minute.'); busy = false; return; }
-  } else if (offline !== undefined) {
-    step('Intake agent', 'Offline preview: routed without the model');
-    r = { journey: offline || 'none', ticket: offline ? null : { category: 'Printing', urgency: 'normal', group: 'Workplace', summary: 'The printer on floor 3 keeps jamming.', label: 'printer jams' } };
-  } else { await say('Free text works in the hosted demo. Here, try one of the examples.'); busy = false; $('trybox').classList.remove('hidden'); return; }
+  } else { await say('This preview cannot reach the model. Open the hosted demo to try it.'); busy = false; return; }
   const s = scenarios.find(x => x.title === r.journey);
   step('Fixed journey?', s ? `Yes: ${s.title}` : 'No journey yet');
   document.querySelectorAll('.branches span')[s ? 0 : 1].classList.add('taken');
