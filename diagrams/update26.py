@@ -1,7 +1,7 @@
 """D19-12b / D26-17. The bad update as a blueprint in Sandy's 2019 style: people on top, systems below,
 the data written on the arrows between them. Same seven steps in 2019 and 2026."""
 from rich import Rich
-from svg import SECOND, INK
+from svg import SECOND, INK, wrap
 from transition import TEAL, TINT
 from cards26 import symbol
 import base64
@@ -34,7 +34,8 @@ TOP, BOT = 96, 470            # top of the people band, top of the systems band
 PY, R = 250, 44               # people circles
 SY1, SYB, SY3, SR = 556, 690, 830, 34   # actors, the ServiceNow record, integrations
 SY2 = SYB
-H = 1000
+END = 930                     # bottom of the systems band
+H = 1130
 GREY = '#f4f7f8'
 LINE = '#5d6b72'
 RED = '#c0392b'
@@ -143,22 +144,53 @@ def head(d, i, n, title, text):
 
 def frame(d, label, agents=True):
     d.rect(60, TOP - 36, W - 80, BOT - TOP + 26, '#fff', '#dce4e7', rx=0, sw=1)
-    d.rect(60, BOT, W - 80, H - BOT - 70, GREY, GREY, rx=0, sw=0)
-    for y0, y1, s in [(TOP - 36, BOT - 10, 'PEOPLE'), (BOT, H - 70, 'SYSTEMS')]:
+    d.rect(60, BOT, W - 80, END - BOT, GREY, GREY, rx=0, sw=0)
+    for y0, y1, s in [(TOP - 36, BOT - 10, 'PEOPLE'), (BOT, END, 'SYSTEMS')]:
         cy = (y0 + y1) / 2
         d.el.append(f'<text x="36" y="{cy:.0f}" transform="rotate(-90 36 {cy:.0f})" font-family="\'Inter\', sans-serif" font-size="14" '
                     f'font-weight="600" letter-spacing="3" fill="{SECOND}" text-anchor="middle">{s}</text>')
-    # key
-    y = H - 40
-    d.el.append(f'<path d="M64 {y}h34" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
-    d.t(108, y + 5, 'Words on an arrow: the data that moves', 15, 400, fill=SECOND)
-    d.el.append(f'<path d="M420 {y}h34" stroke="{LINE}" stroke-width="1.8" marker-start="url(#m{d.uid})" marker-end="url(#m{d.uid})"/>')
-    d.t(464, y + 5, 'Reads and writes the record', 15, 400, fill=SECOND)
+    legend(d, label, agents)
+
+
+def legend(d, label, agents):
+    """Every picture in the diagram, with what it means."""
+    d.t(64, END + 34, 'Legend', 15, 700, fill=INK)
+    d.t(W - 20, END + 34, label, 15, 700, 'end', fill=INK)
+    items = [('peter', 'Peter, whose Visio crashed'), ('engineer', 'The support engineer'),
+             ('everyone', 'Everyone else due the update'), ('alert', 'Something went wrong'),
+             ('message', 'A message to Peter'), ('done', 'Fixed'),
+             ('hub', 'Digital Hub') if not agents else ('agent', 'An agent: a system with its own account'),
+             ('now', 'ServiceNow: the case record'), ('nexthink', 'Nexthink: watches every laptop')]
     if agents:
-        d.el.append(f'<circle cx="712" cy="{y}" r="13" fill="{TINT}" stroke="{TEAL}" stroke-width="1.5"/>')
-        glyph(d, 'smart_toy', 712, y - 1, 16)
-        d.t(734, y + 5, 'An agent: a system with its own account', 15, 400, fill=SECOND)
-    d.t(W - 20, y + 5, label, 15, 700, 'end', fill=INK)
+        items += [('cloud', 'Microsoft 365 Cloud Update'), ('intune', 'Microsoft Intune')]
+    items += [('arrow', 'Words on an arrow: the data that moves'), ('both', 'Reads and writes the record')]
+    cw, rh = (W - 84) / 5, 50
+    for k, (key, text) in enumerate(items):
+        x, y = 64 + (k % 5) * cw, END + 70 + (k // 5) * rh
+        ix = x + 18
+        if key in ('peter', 'everyone'):
+            d.el.append(f'<circle cx="{ix}" cy="{y}" r="18" fill="{TINT}"/>')
+            glyph(d, 'laptop_outline' if key == 'peter' else 'groups', ix, y, 22)
+        elif key == 'engineer':
+            d.el.append(f'<circle cx="{ix}" cy="{y}" r="17" fill="#fff" stroke="{TEAL}" stroke-width="1.5"/>')
+            glyph(d, 'support_agent', ix, y, 22)
+        elif key in ('alert', 'message', 'done'):
+            d.el.append(f'<circle cx="{ix}" cy="{y}" r="13" fill="{RED if key == "alert" else TEAL}"/>')
+            glyph(d, {'alert': 'notifications', 'message': 'chat_bubble', 'done': 'check_circle'}[key], ix, y, 16, '#fff')
+        elif key == 'hub':
+            d.el.append(f'<circle cx="{ix}" cy="{y}" r="18" fill="#f5c000"/>')
+            glyph(d, 'hub', ix, y, 22, '#fff')
+        elif key == 'agent':
+            d.el.append(f'<circle cx="{ix}" cy="{y}" r="18" fill="{TINT}" stroke="{TEAL}" stroke-width="1.5"/>')
+            glyph(d, 'smart_toy', ix, y, 22)
+        elif key == 'arrow':
+            d.el.append(f'<path d="M{x} {y}h32" stroke="{LINE}" stroke-width="1.8" marker-end="url(#m{d.uid})"/>')
+        elif key == 'both':
+            d.el.append(f'<path d="M{x + 2} {y}h32" stroke="{LINE}" stroke-width="1.8" marker-start="url(#m{d.uid})" marker-end="url(#m{d.uid})"/>')
+        else:
+            mark(d, key, ix, y, 18)
+        n = len(wrap(text, cw - 54, 15))
+        d.lines(x + 46, y + 5 - (n - 1) * 9.5, text, cw - 54, 15, 400, SECOND, lh=19)
 
 
 STEPS = [
