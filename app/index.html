@@ -649,7 +649,15 @@ $('tabhub').onclick = openHub;
 $('railhub').onclick = openHub;
 $('examples').append(...EXAMPLES.map(([label, text, j]) => {
   const b = el('button', '', label);
-  b.onclick = async () => { if (busy) return; await openHub(); intake(text, j); };
+  b.onclick = async () => {
+    if (busy) return;
+    busy = true;
+    await openHub();
+    input.value = '';
+    for (const ch of text) { input.value += ch; await wait(35); }
+    await wait(400);
+    intake(text, j);
+  };
   return b;
 }));
 
