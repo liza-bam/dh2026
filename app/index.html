@@ -229,13 +229,24 @@ async function talkToTracy(text) {
 // Tickets stay in this browser, so a later conversation can ask about them ("how is my Visio?")
 const tickets = {
   all() { try { return JSON.parse(localStorage.getItem('dh-tickets')) || []; } catch { return []; } },
-  add(what, team) {
-    const t = { num: 'INC' + Math.floor(1000000 + Math.random() * 9000000), what, team, status: 'Open', at: new Date().toISOString() };
+  add(what, team, kind = 'INC', status = 'Open') {
+    const t = { num: kind + Math.floor(1000000 + Math.random() * 9000000), what, team, status, at: new Date().toISOString() };
     try { localStorage.setItem('dh-tickets', JSON.stringify([...tickets.all(), t])); } catch { /* storage off: the ticket still shows in this conversation */ }
-    request(t.num, `${what}. ${team}, open`);
+    request(t.num, `${what}. ${team}, ${status.toLowerCase()}`);
     return t.num;
   },
+  set(num, status) {
+    const all = tickets.all(), t = all.find(x => x.num === num);
+    if (t) { t.status = status; try { localStorage.setItem('dh-tickets', JSON.stringify(all)); } catch { /* storage off */ } }
+    const it = document.querySelector(`#reqs [data-k="${num}"] span`);
+    if (it) it.textContent = it.textContent.replace(/, [^,]*$/, `, ${status.toLowerCase()}`);
+  },
 };
+function later(label) {
+  const box = el('div', 'switch'), b = el('button', '', label);
+  box.append(b); $('now').after(box);
+  return new Promise(r => { b.onclick = () => { box.remove(); r(); }; });
+}
 function unwait(key) {
   const box = document.getElementById('waits');
   box.querySelector(`[data-k="${key}"]`)?.remove();
@@ -335,11 +346,24 @@ const m = {
   async installSoftware(app) {
     step('Fix agent', `Checks in ServiceNow that ${app} is approved for this role`);
     const a = await card('Install software', `${app} is approved for you`, ['About 5 minutes'], ['Install now', 'Later']);
-    if (a === 'Later') { await m.declined(`${app} install`); return false; }
+    const num = tickets.add(`${app} install`, 'Software', 'REQ', a === 'Later' ? 'Install later' : 'Installing');
+    step('ServiceNow ticket', `Request ${num}: ${app}, ${a === 'Later' ? 'install later' : 'installing'}`);
+    if (a === 'Later') {
+      step('Fix agent', 'The journey sets one reminder, before the client call');
+      await say(`OK. Your request is ${num}. I will check with you before your call.`);
+      now('The employee goes back to work. Nobody needs to look at the ticket: the agent comes back by itself.');
+      await later('Two hours later');
+      step('Fix agent', 'Comes back once, as the journey says. Sees the client call at 3 pm in the calendar');
+      if (await card('Install software', `Ready to install ${app}?`, ['Your client call is at 3 pm', 'About 5 minutes'], ['Install now', 'Not now']) === 'Not now') {
+        step('Fix agent', 'No more reminders. The request stays open');
+        await say(`OK. Request ${num} stays open: install it any time from My requests.`);
+        return false;
+      }
+      tickets.set(num, 'Installing');
+    }
     step('Intune', `Starts the ${app} install`, 'system');
-    request(app, 'Installing');
     await say(`Installing ${app}. I will tell you when it is ready.`);
-    return true;
+    return num;
   },
   async getApproval(agent, who, what) {
     step(agent, `Asks ${who} in Teams: ${what}`);
@@ -545,7 +569,8 @@ const scenarios = [
   { title: 'Failed software install', where: 'Digital Hub in Teams, on the laptop', async run() {
     await ask(['I need Visio for a client call today']);
     context(); front('Software request: routes to the fix agent');
-    if (!await m.installSoftware('Visio')) return;
+    const req = await m.installSoftware('Visio');
+    if (!req) return;
     await wait(1500);
     step('Nexthink', 'The install failed: the disk is almost full', 'system');
     await say('The install stopped: your disk is almost full.');
@@ -570,6 +595,7 @@ const scenarios = [
     await m.continueElsewhere('Digital Hub in Teams, on the phone');
     await wait(1500);
     step('Tracy', 'Fixed in the remote session: the installer cache was broken', 'live');
+    tickets.set(req, 'Installed');
     await tracy('You fixed the broken installer cache and Visio is now installed on their laptop. Tell them, and wish them luck with the client call.', 'Visio is installed on your laptop. Good luck with the call.');
     step('Fix agent', 'Drafts a new fix: check the disk and clear the installer cache before installing');
     step('Engineer', 'Approves the new fix. Next time it runs automatically.', 'done');
