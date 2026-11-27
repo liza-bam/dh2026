@@ -65,6 +65,10 @@ Of the ten, six need no decision: ordering a device, proxy access to mail and ca
 
 A stolen laptop and a scam email look serious, but there is nothing for an agent to decide. The steps are always the same: confirm it is you, lock and wipe, sign out everywhere, a new password, a replacement. Microsoft Defender judges whether an email is a threat, and the real calls (was client data exposed, must the client be told) belong to the security team. Security must always be fast and never wrong, so it runs as fixed flows with a clean audit trail, not on a model's judgment.
 
+Two more reasons keep models out of security actions. A scam email is text written by the attacker: a model that reads it and acts on it gives the attacker a way to instruct the agent. And models do help in security, but in a narrow role: Microsoft Defender uses them to triage reported email and to brief analysts, while the flows act and people decide.
+
+The intake agent only recognizes that a message is about security. When in doubt, it sends the case to the security flow: a false alarm costs a minute, a missed attack costs far more.
+
 So every request takes one of three paths.
 
 ### 1. Simple actions: fixed flows

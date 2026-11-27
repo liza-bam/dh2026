@@ -15,7 +15,7 @@ Research named the ten most common IT requests at EY. I asked one question of ea
 - **No:** a new monitor, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email.
 - **Yes:** a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open.
 
-The first six run as fixed flows. Security above all: a stolen laptop or a scam email must always be handled fast and never wrong, so the steps are fixed, Microsoft Defender judges the email, and the security team makes the real calls. Agents get only the other four.
+The first six run as fixed flows. Security above all: a stolen laptop or a scam email must always be handled fast and never wrong, so the steps are fixed, Microsoft Defender judges the email, and the security team makes the real calls. When in doubt, the intake agent sends a case to security: a false alarm is cheap. Agents get only the other four.
 
 And not one big agent: small ones, one per domain. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset; the agent picks the step and the moment. Anything else goes up to people.
 
