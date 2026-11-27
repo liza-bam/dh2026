@@ -11,7 +11,21 @@
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:#eef3f4;color:var(--ink);font:400 15px/1.5 Inter,sans-serif}
 .wrap{display:flex;gap:24px;justify-content:center;align-items:flex-start;padding:24px 12px;flex-wrap:wrap}
-.phone{width:390px;max-width:100%;height:780px;max-height:calc(100vh - 48px);display:flex;flex-direction:column;background:#f5f5f5;border:10px solid #1d1d1f;border-radius:36px;overflow:hidden}
+.device{display:flex;flex-direction:column;background:#f5f5f5;border:10px solid #1d1d1f;overflow:hidden;max-width:100%}
+.device.phone{width:390px;height:780px;max-height:calc(100vh - 48px);border-radius:36px}
+.device.desktop{width:1040px;height:680px;border-radius:14px}
+.body{flex:1;display:flex;min-height:0}
+.convo{flex:1;display:flex;flex-direction:column;min-height:0}
+.rail,.side{display:none}
+.desktop .rail{display:flex;flex-direction:column;gap:14px;width:56px;padding:14px 12px;background:#464775}
+.rail i{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.25)}.rail i.on{background:#fff}
+/* Desktop side panel: the 2019 portal widgets, next to the chat */
+.desktop .side{display:block;width:300px;padding:14px;border-left:1px solid var(--hair);background:#fff;overflow-y:auto}
+.side h3{font-size:13px;margin:0 0 6px;color:var(--second)}
+.side section{margin-bottom:18px}
+.item{font-size:13px;padding:8px 10px;border:1px solid var(--hair);border-radius:8px;margin-bottom:6px}
+.item b{display:block}.item span{color:var(--second)}
+.empty{font-size:13px;color:var(--second)}
 .top{background:var(--frame);color:#fff;padding:12px 16px}
 .top b{display:block;font-size:17px}
 .top small{opacity:.85;font-size:12px}
@@ -51,12 +65,27 @@ button:disabled{opacity:.45;cursor:default}
 </head>
 <body>
 <div class="wrap">
-  <section class="phone" aria-label="Digital Hub chat">
+  <section class="device phone" id="frame" aria-label="Digital Hub chat">
     <header class="top"><b id="device">Digital Hub demo</b><small>Concept mock-up. Not Microsoft Teams.</small></header>
-    <div class="chat" id="chat" aria-live="polite"></div>
-    <div class="compose">
-      <div class="chips" id="chips"></div>
-      <form class="row" id="form"><input id="input" placeholder="Write to Digital Hub" autocomplete="off"><button>Send</button></form>
+    <div class="body">
+      <nav class="rail" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i></nav>
+      <div class="convo">
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="compose">
+          <div class="chips" id="chips"></div>
+          <form class="row" id="form"><input id="input" placeholder="Write to Digital Hub" autocomplete="off"><button>Send</button></form>
+        </div>
+      </div>
+      <aside class="side">
+        <section><h3>My requests</h3><div id="reqs"><p class="empty">Nothing open</p></div></section>
+        <section><h3>Waiting for someone</h3><div id="waits"><p class="empty">Nothing waiting</p></div></section>
+        <section><h3>Approved fixes</h3><p class="empty">The fix agent runs them for you. You can also ask for one in the chat.</p>
+          <div class="item"><b>Browser</b><span>Clear cookies, fix pop-up blocking</span></div>
+          <div class="item"><b>Windows</b><span>Clean up the disk, repair the installer</span></div>
+          <div class="item"><b>Compliance</b><span>Check and fix PC compliance</span></div>
+          <div class="item"><b>Connection</b><span>Update the VPN app, fix frequent lockouts</span></div>
+        </section>
+      </aside>
     </div>
   </section>
   <aside class="log">
@@ -115,7 +144,27 @@ function send(text) {
   input.value = '';
   const r = onSend; onSend = null; r(text);
 }
-const device = text => { document.getElementById('device').textContent = text; };
+// The frame shows the device the conversation is on: phone, or laptop when the screen is wide enough
+function device(text) {
+  document.getElementById('device').textContent = text;
+  const desk = !text.includes('phone') && window.innerWidth >= 1100;
+  document.getElementById('frame').className = 'device ' + (desk ? 'desktop' : 'phone');
+}
+// Desktop widgets: open requests and what waits for someone else
+function widget(id, key, title, status) {
+  const box = document.getElementById(id);
+  box.querySelector('.empty')?.remove();
+  let it = box.querySelector(`[data-k="${key}"]`);
+  if (!it) { it = el('div', 'item'); it.dataset.k = key; it.append(el('b'), el('span')); box.append(it); }
+  it.querySelector('b').textContent = title;
+  it.querySelector('span').textContent = status;
+}
+const request = (title, status) => widget('reqs', title, title, status);
+function unwait(key) {
+  const box = document.getElementById('waits');
+  box.querySelector(`[data-k="${key}"]`)?.remove();
+  if (!box.children.length) box.append(el('p', 'empty', 'Nothing waiting'));
+}
 
 // Behind the scenes ----------------------------------------------------------------------
 function step(who, text, kind = 'agent') {
@@ -135,6 +184,7 @@ const m = {
     const a = await card('Order a device', item, lines, ['Order', 'Not now']);
     if (a === 'Not now') { await say('OK. The order is saved if you change your mind.'); return false; }
     step('SAP Ariba', `Order placed: ${item}`, 'system');
+    request(item, 'Ordered');
     return true;
   },
   async installSoftware(app) {
@@ -142,14 +192,17 @@ const m = {
     const a = await card('Install software', `${app} is approved for you`, ['About 5 minutes'], ['Install now', 'Later']);
     if (a === 'Later') { await say('OK. I will remind you in an hour.'); return false; }
     step('Intune', `Starts the ${app} install`, 'system');
+    request(app, 'Installing');
     await say(`Installing ${app}. I will tell you when it is ready.`);
     return true;
   },
   async getApproval(agent, who, what) {
     step(agent, `Asks ${who} in Teams: ${what}`);
     await card('Get approval', `Waiting for ${who}`, [what, 'I will tell you as soon as they answer']);
+    widget('waits', who, who, what);
     await wait(2500);
     step(who, 'Approves in Teams', 'system');
+    unwait(who);
   },
   async confirmRisky(title, lines, action) {
     for (;;) {
@@ -173,16 +226,19 @@ const m = {
   async handOver(who, lines, button) {
     step('Intake agent', 'Hands over: who, what happened, what was tried, the logs');
     step(who, 'Gets the handoff card. No need to ask again.', 'live');
+    request('Case with ' + who, 'In progress');
     await wait(800);
     note(`${who} joined the chat`);
     return card('Hand over to a person', `${who} joined`, lines, button ? [button] : [], { live: true });
   },
   async status(title, lines) {
+    request(title, lines[0]);
     await card('Status and updates', title, lines);
   },
   async feedback() {
     const a = await card('Feedback', 'How did we do?', [], ['Great', 'OK', 'Not good']);
     step('ServiceNow', `Case closed. Rating: ${a}`, 'system');
+    document.querySelectorAll('#reqs .item span').forEach(x => { if (['Installing', 'In progress'].includes(x.textContent)) x.textContent = 'Solved'; });
     await say('Thank you. The case is closed.');
   },
   async continueElsewhere(where) {
