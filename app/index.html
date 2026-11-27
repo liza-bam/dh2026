@@ -504,8 +504,9 @@ const scenarios = [
   { title: 'Lost laptop', where: 'Digital Hub in Teams, on the phone', async run() {
     await ask(['My laptop was stolen at the airport']);
     front('Lost device: routes to the devices agent');
-    if (!await m.confirmRisky('Lock and wipe your laptop?', ['Nobody can open it', 'Your files are safe in OneDrive'], 'Lock and wipe')) return;
+    step('Devices agent', 'A stolen laptop is the exception: locks and wipes at once, without asking');
     step('Intune', 'Laptop locked and wiped', 'system');
+    await say('Your laptop is locked and wiped. Nobody can open it, and your files are safe in OneDrive.');
     step('Identity agent', 'Signs him out everywhere and asks for a new password');
     await m.verifyIdentity('Approve the request in Authenticator, then set a new password');
     step('Devices agent', 'Files the loss report in ServiceNow');
