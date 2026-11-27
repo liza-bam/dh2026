@@ -54,6 +54,8 @@ Visual: [V19-1] Ticket Trends, Crash bugs and Automated Solutions, 2019.
 
 Visual: [D19-12] SW update issue and resolution, 2019.
 
+Visual: [D19-13] A bad update, 2019.
+
 The blueprint has six stages and four actors: the customer using the Digital Hub front end, the Digital Hub service layer, the backend systems and the technical support team.
 
 | Stage | What happens |
@@ -70,6 +72,8 @@ In the blueprint the first customer files the ticket; in the video Digital Hub f
 ### 2026: the same stages
 
 Peter sees the same thing as in 2019. Behind the scenes, each step that once needed a script and a hand-written integration is now a platform feature.
+
+Visual: [D26-17] A bad update, 2026.
 
 | Stage | Who acts | Data, and where it comes from | Written to | Through |
 |---|---|---|---|---|

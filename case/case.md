@@ -26,6 +26,8 @@ Visual: [V19-1] Ticket Trends, Crash bugs and Automated Solutions, 2019.
 
 Visual: [D19-12] SW update issue and resolution, 2019.
 
+Visual: [D19-13] A bad update, 2019.
+
 ## Why it was hard
 
 - Four teams and four vendors, and every agreement negotiated again and again.
@@ -47,14 +49,7 @@ The 2019 journey works now, with one change: AI only where a step needs a decisi
 
 Peter sees the same thing as in 2019. Behind the scenes, the platforms now do what we had to script.
 
-| Stage | 2019 | 2026 |
-|---|---|---|
-| Submit | Digital Hub files a ticket and offers a workaround | Nexthink records the crash and files an incident in ServiceNow. The Software agent messages Peter first, with a workaround from the knowledge base |
-| Confirm | Digital Hub finds similar tickets. An engineer confirms the cause and blocks the update | Nexthink flags the version that crashes more than others, and ServiceNow finds similar incidents. The Software agent links them to one problem. ServiceNow's problem agent prepares the analysis, and an engineer confirms the cause. A flow pauses the update |
-| Identify | Digital Hub lists everyone using the update | Nexthink and Microsoft 365 Cloud Update show who has the new version |
-| Notify | The people affected hear that the update is blocked and a fix is underway | A flow messages everyone on the problem in Teams |
-| Resolve | The engineer writes the steps, and Digital Hub runs them | ServiceNow's problem agent proposes the steps, and the engineer approves them. A flow changes the settings and rolls the update out in waves |
-| Inform | "We fixed the problem", and a sentiment score | A flow closes every linked incident. Each person gets a message and a one-tap rating |
+Visual: [D26-17] A bad update, 2026.
 
 ## What I designed
 
