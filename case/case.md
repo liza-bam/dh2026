@@ -1,6 +1,14 @@
-# What I would change today
+# Digital Hub, 2026
 
-**Most IT support needs no AI.**
+**IT support with AI agents. The first decision was where not to use them.**
+
+A rethink of the EY Digital Hub I designed in 2019 (https://sandy.tayts.com/dh.html): the same research, the same ten journeys, rebuilt for today.
+
+**Role:** UX, product and service designer. Service design, agent architecture.
+
+**Year:** 2026, my own project.
+
+## Most IT support needs no AI
 
 Of the ten journeys EY's research named, I asked one question of each: does solving it need a decision?
 
@@ -36,6 +44,18 @@ Independence grows one action at a time: first the agent proposes and an enginee
 A script does what was asked. An agent solves the real problem. Visio will not install twenty minutes before a client call: the script restarts, reinstalls, cleans the disk and opens a ticket. The agent reads the laptop, sees a broken installer cache and the call, opens the diagram in the browser now and fixes the laptop after the call.
 
 Visual: [D26-8] A script and an agent.
+
+## What it costs
+
+An estimate, not a measurement. Per 10,000 employees a month:
+
+- **About 13,000 requests.** MetricNet puts the average at about 1.3 first-line tickets per user a month.
+- **People at the help desk: about $268,000.** MetricNet's 2023 average is $20.61 per contact.
+- **Models: about $300.** The intake agent costs about $0.0001 a request, measured in the demo. Fixed flows use almost no model at all; domain agents on small models and team agents on a large one make up the rest.
+
+The model cost is a rounding error. The saving is in requests that never reach a person, and in time: MetricNet estimates that an avoided first-line ticket saves the employee about 20 minutes. At EY, that is billable time.
+
+Not counted: ServiceNow and Nexthink licenses, which EY already pays for, and the engineers' time approving new fixes. The shares that go to agents and to teams are assumptions.
 
 ## What the employee sees
 

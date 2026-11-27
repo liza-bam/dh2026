@@ -174,6 +174,27 @@ In 2019 the heart of Digital Hub was support that acts before people notice a pr
 ### What we measure
 One number hides too much, so agents get two. How many cases an agent is allowed to take, and how many of those it solves. ServiceNow's own first-line agent shows why: 15% of incidents are eligible for it, and it solves 46% of those. Digital Hub grows both numbers, one action at a time. A case counts as solved only if it does not come back.
 
+### What it costs
+
+An estimate, not a measurement, per 10,000 employees a month.
+
+**Volume.** MetricNet's benchmarks put the average at about 1.3 first-line tickets per user a month: about 13,000 requests.
+
+**Today, with people.** MetricNet's 2023 North American average is $20.61 per contact (fully loaded). 13,000 × $20.61 ≈ $268,000 a month. Desktop support costs more per ticket (about $62 to $70), and an escalated ticket costs the sum of every level it passes.
+
+**With Digital Hub, the models:**
+- Intake agent: about $0.0001 a request, measured in the demo on a small model ($0.10 per million tokens in, $0.50 out). 13,000 requests ≈ $1.30.
+- Fixed flows: no model decides anything, so no model cost beyond the intake.
+- Domain agents: assume 40% of requests (5,200) at about $0.01 each on a small model, a few tool calls per case ≈ $52.
+- Team agents: assume 10% (1,300) at about $0.20 each on a large model ($2 per million tokens in, $10 out), with long histories ≈ $260.
+- Total ≈ $315 a month.
+
+**Where the money really is.** The models are a rounding error next to people. The saving comes from requests that never reach a person, and from the employee's time: MetricNet estimates that an avoided first-line ticket saves the user about 20 minutes. 13,000 requests × 20 minutes ≈ 4,300 hours a month. At a firm that bills its people's time to clients, that is the bigger number.
+
+**Not counted.** ServiceNow, Nexthink and Microsoft licenses (EY already pays for them), the engineers' time approving new fixes, building and testing the agents, and the people who still handle what agents cannot. The 40% and 10% shares are assumptions; the demo would measure the real ones.
+
+Sources: MetricNet benchmarks via HDI (2020: tickets per user, cost per level, time saved; 2023: cost per contact).
+
 ### Why this works
 Most requests are simple, and simple requests run on flows and small models, so the first rule holds from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.
 
