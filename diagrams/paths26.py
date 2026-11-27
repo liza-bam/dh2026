@@ -7,9 +7,9 @@ from cards26 import symbol
 LINE = '#8fa3ab'
 PANEL = '#f4f7f8'
 HAIR = '#dce4e7'
-W, X0 = 1180, 20
+LW, X0 = 250, 20
 HEAD = 64        # lane header
-GAP = 60         # space between rows
+GAP = 50         # space between rows
 FS = 17          # step text
 NOTE = 17        # side notes and branch labels
 
@@ -20,6 +20,7 @@ LANES = {
     'team': ('Network team agent', 'smart_toy'),
     'flow': ('Fixed flow', 'account_tree'),
     'engineer': ('Engineer', 'engineering'),
+    'ariba': ('SAP Ariba agent', 'logo:ariba_mark'),
 }
 
 
@@ -40,7 +41,8 @@ def tag(d, x, y, s, anchor='start'):
 class Lanes:
     def __init__(self, uid, label, lanes):
         self.lanes = lanes
-        self.lw = (W - 2 * X0) / len(lanes)
+        self.lw = LW
+        self.W = W = 2 * X0 + LW * len(lanes)
         self.d = Rich(uid, W, 2000, label)
         self.rows = []       # (lane, kind, text, branch, other, y, h)
 
@@ -52,11 +54,11 @@ class Lanes:
         self.rows.append([lane, kind, text, taken, other])
 
     def height(self, kind, text):
-        w = self.lw - 40
+        w = self.lw - 28
         from svg import wrap
         if kind == 'dia':
             return max(110, 80 + len(wrap(text, w * 0.68, FS)) * 23)
-        return 30 + len(wrap(text, w - 20, FS)) * 23
+        return 30 + len(wrap(text, w - 32, FS)) * 23
 
     def draw(self, footnote):
         d = self.d
@@ -71,10 +73,14 @@ class Lanes:
             x = X0 + i * self.lw
             d.rect(x, X0, self.lw, bottom - X0, PANEL if i % 2 == 0 else '#fff', 'none', rx=0, sw=0)
             name, ic = LANES[lane]
-            glyph(d, ic, x + 20, X0 + 20, 22)
-            d.t(x + 52, X0 + 39, name, 18, 600)
-        d.el.append(f'<line x1="{X0}" y1="{X0 + HEAD}" x2="{W - X0}" y2="{X0 + HEAD}" stroke="{HAIR}" stroke-width="1"/>')
-        d.rect(X0, X0, W - 2 * X0, bottom - X0, 'none', HAIR, rx=0, sw=1)
+            if ic.startswith('logo:'):
+                d.wordmark(ic[5:], x + 18, X0 + 21, 100, 21)
+                d.t(x + 128, X0 + 39, name.replace('SAP Ariba ', ''), 18, 600)
+            else:
+                glyph(d, ic, x + 20, X0 + 20, 22)
+                d.t(x + 52, X0 + 39, name, 18, 600)
+        d.el.append(f'<line x1="{X0}" y1="{X0 + HEAD}" x2="{self.W - X0}" y2="{X0 + HEAD}" stroke="{HAIR}" stroke-width="1"/>')
+        d.rect(X0, X0, self.W - 2 * X0, bottom - X0, 'none', HAIR, rx=0, sw=1)
         # edges first, so the steps sit on top of them
         for a, b in zip(self.rows, self.rows[1:]):
             ax, bx = self.cx(a[0]), self.cx(b[0])
@@ -82,12 +88,12 @@ class Lanes:
             if ax == bx:
                 d.arrow((ax, ay), (bx, by - 3))
             else:
-                my = ay + GAP / 2
+                my = ay + 30
                 d.arrow((ax, ay), (ax, my), (bx, my), (bx, by - 3))
             if a[3]:
-                tag(d, ax + 10, ay + 20, a[3])
+                tag(d, ax + 10, ay + 19, a[3])
         for lane, kind, text, taken, other, y, h in self.rows:
-            cx, w = self.cx(lane), self.lw - 40
+            cx, w = self.cx(lane), self.lw - 28
             x = cx - w / 2
             if kind == 'dia':
                 d.el.append(f'<polygon points="{cx},{y} {cx + w / 2},{y + h / 2} {cx},{y + h} {cx - w / 2},{y + h / 2}" '
@@ -99,24 +105,24 @@ class Lanes:
                     d.t(cx, ty + i * 23, ln, FS, 600, anchor='middle')
             elif kind == 'say':
                 d.rect(x, y, w, h, '#fff', TEAL, rx=0, sw=1.5)
-                d.lines(x + 16, y + 28, text, w - 20, FS, 600, INK, lh=23)
+                d.lines(x + 16, y + 28, text, w - 32, FS, 600, INK, lh=23)
             else:
                 d.rect(x, y, w, h, '#fff', HAIR, rx=0, sw=1)
-                d.lines(x + 16, y + 28, text, w - 20, FS, 400, INK, lh=23)
+                d.lines(x + 16, y + 28, text, w - 32, FS, 400, INK, lh=23)
             if other:
                 self.side(cx, y + h / 2, w, other)
-        d.lines(X0, bottom + 40, footnote, W - 2 * X0, 18, 400, INK, lh=26)
-        d.H = bottom + 76
+        d.lines(X0, bottom + 40, footnote, self.W - 2 * X0, 17, 400, INK, lh=24)
+        d.H = bottom + 40 + 24 * len(__import__('svg').wrap(footnote, self.W - 2 * X0, 17)) + 10
         return d
 
     def side(self, cx, cy, w, other):
         """The branch not taken: a dashed arrow into the next lane and a short note."""
         d = self.d
-        right = cx + self.lw < W - X0
+        right = cx + self.lw < self.W - X0
         x1 = cx + w / 2 if right else cx - w / 2
-        x2 = x1 + 34 if right else x1 - 34
+        x2 = x1 + 22 if right else x1 - 22
         d.el.append(f'<path d="M{x1} {cy}H{x2}" fill="none" stroke="{LINE}" stroke-width="1.6" stroke-dasharray="5 4"/>')
-        nw = self.lw - 50
+        nw = self.lw - 26
         nx = x2 + 6 if right else x2 - 6 - nw
         label, text = other
         tag(d, nx, cy - 6, label)
@@ -124,15 +130,17 @@ class Lanes:
 
 
 def fixed():
-    L = Lanes('pa1', 'Path 1, a fixed flow: an employee asks for a second monitor; the intake agent sees no decision is needed and starts the ordering flow; no model decides anything after that',
-              ['employee', 'intake', 'flow'])
+    L = Lanes('pa1', 'Path 1, a fixed flow: an employee asks for a second monitor; the intake agent sees no decision is needed and starts the ordering flow; SAP Ariba’s own agent does the buying',
+              ['employee', 'intake', 'flow', 'ariba'])
     L.add('employee', 'say', '“I need a second monitor.”')
     L.add('intake', 'dia', 'Needs a decision?', taken='No: an order', other=('Yes', 'A domain agent takes it.'))
     L.add('flow', 'box', 'Shows a shop card: three monitors for the employee’s role.')
     L.add('employee', 'box', 'Picks one, and where to deliver it.')
-    L.add('flow', 'box', 'Orders it in SAP Ariba and opens a ServiceNow request.')
-    L.add('employee', 'box', 'Gets the number, then “shipped” and “delivered”.')
-    return L.draw('After the intake, no model decides anything. The same request goes the same way every time.')
+    L.add('flow', 'box', 'Sends the order to SAP Ariba.')
+    L.add('ariba', 'box', 'Fills in the requisition with the contract supplier and routes the approval.')
+    L.add('flow', 'box', 'Opens a ServiceNow request and gives the number.')
+    L.add('employee', 'box', 'Gets “shipped”, then “delivered”.')
+    return L.draw('Digital Hub adds no AI after the intake. SAP Ariba brings its own agent for the buying.')
 
 
 def domain():

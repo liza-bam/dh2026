@@ -32,7 +32,7 @@ It had one limit. The AI bot could only handle cases someone had written in adva
 
 The support paths already followed the logic 2026 uses: monitoring finds a problem, AI scripts try to fix it, a person works the ticket when they fail, and every manual fix is checked for automation. Building it was the hard part: four teams (Digital Hub, Automation, ServiceNow, Genesys) and their vendors, agreements negotiated again and again, integrations written by hand, and a new script for every new case. It cost so much that manual support was cheaper.
 
-What changed by 2026: the platforms ship their own agents (ServiceNow, Nexthink, Microsoft Defender), so they are connected rather than built; agents reach systems through standard connectors; an agent gets its own identity, like an employee (Microsoft Entra Agent ID), so access is agreed once; and small models cost little, about $300 a month for 10,000 employees. The 2019 paths can work now, with one change: AI only where a request needs a decision.
+What changed by 2026: the platforms ship their own agents (ServiceNow, Nexthink, SAP Ariba, Microsoft Defender), so they are connected rather than built; agents reach systems through standard connectors; an agent gets its own identity, like an employee (Microsoft Entra Agent ID), so access is agreed once; and small models cost little, about $300 a month for 10,000 employees. The 2019 paths can work now, with one change: AI only where a request needs a decision.
 
 Visual: [D19-11] Support paths, 2019.
 
@@ -79,6 +79,8 @@ So every request takes one of three paths.
 
 ### 1. Simple actions: fixed flows
 Ordering a device, proxy access to mail and calendar, joining a Teams channel, resetting a password, a stolen laptop, a scam email, booking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
+
+Digital Hub adds no AI after the intake, but the platforms it calls may bring their own. An order goes to SAP Ariba, where Joule fills in the requisition with the contract supplier and routes the approval; the employee never searches Ariba.
 
 Visual: [D26-14] Path 1: a fixed flow.
 

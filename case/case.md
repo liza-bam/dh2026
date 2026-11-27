@@ -22,7 +22,7 @@ It cost so much that manual support was cheaper.
 
 ## What changed
 
-- **Platforms ship their own agents.** ServiceNow, Nexthink and Microsoft Defender: connected, not built.
+- **Platforms ship their own agents.** ServiceNow, Nexthink, SAP Ariba and Microsoft Defender: connected, not built.
 - **Standard connectors.** Agents reach the systems without hand-written integrations.
 - **Agents get identities, like employees.** Microsoft Entra Agent ID: access is agreed once.
 - **Small models are cheap.** About $300 a month for 10,000 employees.
