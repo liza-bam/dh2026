@@ -504,11 +504,11 @@ const scenarios = [
   { title: 'Lost laptop', where: 'Digital Hub in Teams, on the phone', async run() {
     await ask(['My laptop was stolen at the airport']);
     front('Lost device: routes to the devices agent');
-    step('Devices agent', 'A stolen laptop is the exception: locks and wipes at once, without asking');
+    await m.verifyIdentity('Approve the request in Authenticator on your phone');
+    step('Devices agent', 'It is him: locks and wipes at once, without asking more');
     step('Intune', 'Laptop locked and wiped', 'system');
-    await say('Your laptop is locked and wiped. Nobody can open it, and your files are safe in OneDrive.');
-    step('Identity agent', 'Signs him out everywhere and asks for a new password');
-    await m.verifyIdentity('Approve the request in Authenticator, then set a new password');
+    step('Identity agent', 'Signs him out everywhere and sends a link for a new password');
+    await say('Your laptop is locked and wiped. Nobody can open it, and your files are safe in OneDrive. You are signed out everywhere: set a new password with the link on your phone.');
     step('Devices agent', 'Files the loss report in ServiceNow');
     await m.orderDevice('Replacement laptop', ['Same model, set up for you', 'Locker at your office, tomorrow 10:00']);
     await say('One more question: was client data on it?');
@@ -554,12 +554,17 @@ const scenarios = [
       await card(null, 'Your mailbox is full: verify your account', ['From: it-support@mai1box-help.com'], ['Report'], { echo: false });
       note('You tapped Report in Outlook');
     }
+    // From the chat the employee has already said what happened: do not ask it again
+    const said = fromChat ? await ask([]) : '';
     step('Microsoft Defender', 'Enterprise agent: confirms phishing, removes it from every mailbox', 'system');
-    m.continueElsewhere('Digital Hub in Teams, on the laptop');
+    if (!fromChat) m.continueElsewhere('Digital Hub in Teams, on the laptop');
     await say('Thanks for reporting it. It was a scam, and it is now gone from everyone’s inbox.');
-    await say('Did you click the link or type your password?');
-    const r = await ask(['I typed my password', 'I did not click anything']);
-    if (r === 'I typed my password') {
+    let typed = /password/i.test(said);
+    if (!fromChat) {
+      await say('Did you click the link or type your password?');
+      typed = await ask(['I typed my password', 'I did not click anything']) === 'I typed my password';
+    }
+    if (typed) {
       front('Password entered on a scam page: routes to the identity agent');
       if (!await m.confirmRisky('Change your password now?', ['You will be signed out on all devices'], 'Change password')) return;
       await m.verifyIdentity('Approve the request in Authenticator, then set a new password');

@@ -147,7 +147,7 @@ If the agent decided on its own whether to come back, the same request could go 
 Three rules decide when a person steps in.
 
 - **A person gets the whole story.** Who the employee is, what happened, what was tried, the logs. Nobody asks the employee anything again.
-- **Risky actions wait for a yes.** Wiping a device, giving access to client data or spending beyond the policy always waits for a person to confirm.
+- **Risky actions wait for a yes.** A lost laptop is wiped as soon as the employee confirms it is them. Giving access to client data or spending beyond the policy always waits for a person to approve.
 - **Solved means it stays solved.** The target is that nine cases in ten never reach the help desk, and a case counts only if it does not come back.
 
 Visual: [D26-3] Handoff, confirmation and the target.

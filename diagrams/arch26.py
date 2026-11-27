@@ -37,7 +37,7 @@ AGENTS = [
     ('Identity agent', 'lock', 'Resets passwords, unlocks accounts', 'Never reads mail or files', 'Small model', [('azure', 'Entra ID')]),
     ('Workplace agent', 'room', 'Rebooks rooms, files facilities requests', 'Never sees meeting content', 'Small model', [('office', 'Office 365')]),
     ('Access agent', 'approve', 'Asks owners, grants access once they say yes', 'Never approves its own request', 'Small model', [('azure', 'Entra ID'), ('workday', 'Workday')]),
-    ('Devices agent', 'hardware', 'Locks, orders, starts the data transfer', 'Wipes only after the employee confirms', 'Small model', [(None, 'Intune'), ('ariba', 'SAP Ariba')]),
+    ('Devices agent', 'hardware', 'Locks, orders, starts the data transfer', 'Wipes only once the employee is verified', 'Small model', [(None, 'Intune'), ('ariba', 'SAP Ariba')]),
     ('Fix agent', 'tools', 'Runs fixes; the large model drafts new ones', 'Never runs a new fix before an engineer approves', 'Small model', [('nexthink', 'Nexthink'), (None, 'Intune')]),
     ('Watcher agent', 'software', 'Reads telemetry, opens cases itself', 'Never changes a device', 'Small model', [('nexthink', 'Nexthink'), ('now', 'ServiceNow')]),
 ]
