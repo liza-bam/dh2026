@@ -28,7 +28,7 @@ def mark(d, key, x, y, r):
         d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>')
         d.el.append(f'<image href="{vec(name)}" x="{x - s / 2}" y="{y - s / 2}" width="{s}" height="{s}"/>')
 
-W = 1180
+W = 1340
 X0, COL = 140, 160            # first column centre, column width
 TOP, BOT = 96, 470            # top of the people band, top of the systems band
 PY, R = 250, 44               # people circles
@@ -55,10 +55,13 @@ def person(d, i, kind, badge=None):
     if kind == 'peter':
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="{TINT}"/>')
         glyph(d, 'laptop_outline', x, PY, 50)
+    elif kind == 'everyone':
+        d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="{TINT}"/>')
+        glyph(d, 'groups', x, PY, 50)
     else:
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="#fff" stroke="{TEAL}" stroke-width="2"/>')
         glyph(d, 'support_agent', x, PY, 50)
-    d.t(x, PY + R + 22, 'Peter' if kind == 'peter' else 'Engineer', 15, 700, 'middle', fill=INK)
+    d.t(x, PY + R + 22, {'peter': 'Peter', 'engineer': 'Engineer', 'everyone': 'Everyone else'}[kind], 15, 700, 'middle', fill=INK)
     if badge:
         bx, by = x + 32, PY - 32
         col = RED if badge == 'alert' else TEAL
@@ -160,12 +163,13 @@ def frame(d, label, agents=True):
 
 STEPS = [
     ('Crash', 'Visio won’t start after the update'),
-    ('Ticket', 'A ticket opens. Peter does nothing'),
+    ('Ticket', 'A ticket opens, and Peter is told'),
     ('Workaround', 'Peter keeps working'),
     ('Cause', 'The engineer finds out why'),
     ('Hold', 'The update stops for everyone else'),
     ('Fix', 'The fix is written and approved'),
     ('Fixed', 'Peter hears back and rates it'),
+    ('Everyone', 'Everyone else gets the fix and notices nothing'),
 ]
 
 
@@ -201,13 +205,21 @@ def under(d, i, key, name, label, up=True, left=False):
     d.t(x - 8 if left else x + 8, (SYB + 58 + SY3 - SR) / 2 + 5, label, 14, 600, 'end' if left else 'start', fill=SECOND)
 
 
+def everyone(d, i):
+    """Step 8: the fix reaches everyone else; they see nothing, so no arrow."""
+    person(d, i, 'everyone')
+    d.t(cx(i), 400, 'Sees nothing:', 15, 600, 'middle', fill=SECOND)
+    d.t(cx(i), 420, 'Visio just works', 15, 600, 'middle', fill=SECOND)
+
+
 def build19():
-    d = base('bu19', 'A bad Visio update in 2019: Peter is told at each step, the engineer searches for the cause and writes the fix, Digital Hub scripts do the rest; every step reads and writes the ServiceNow ticket', '2019')
+    d = base('bu19', 'A bad Visio update in 2019: Peter is told at each step and everyone else gets the fix without noticing, the engineer searches for the cause and writes the fix, Digital Hub scripts do the rest; every step reads and writes the ServiceNow ticket', '2019')
     # 1 Peter's Visio crashes; Nexthink records it
     person(d, 0, 'peter', 'alert'); system(d, cx(0), SY1, 'nexthink', 'Nexthink')
     vline(d, cx(0), PY + R + 32, SY1 - SR - 6, 'Crash\nand version', 410)
-    # 2 Digital Hub opens a ticket
-    system(d, cx(1), SY1, 'hub'); record(d, 1, 'Ticket', first=True)
+    # 2 Digital Hub opens a ticket and tells Peter
+    person(d, 1, 'peter', 'message'); system(d, cx(1), SY1, 'hub'); record(d, 1, 'Ticket', first=True)
+    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'We opened\na ticket', 410)
     hline(d, cx(0) + SR + 6, cx(1) - SR - 8, SY1)
     d.t((cx(0) + cx(1)) / 2, SY1 - 10, 'Crash', 15, 600, 'middle', fill=SECOND)
     both(d, cx(1), SY1 + SR + 6, SYB - 34)
@@ -228,20 +240,27 @@ def build19():
     vline(d, cx(5), PY + R + 32, SY1 - SR - 6, 'Steps she\nwrote', 410)
     both(d, cx(5), SY1 + SR + 6, SYB - 34)
     # 7 Peter hears back and rates it; the ticket closes
-    person(d, 6, 'peter', 'done'); system(d, cx(6), SY1, 'hub'); record(d, 6, 'Closed')
+    person(d, 6, 'peter', 'done'); system(d, cx(6), SY1, 'hub'); record(d, 6, 'Ticket closed')
     pair(d, cx(6), '\u201cWe fixed it\u201d', 'Rating', ly=410)
     both(d, cx(6), SY1 + SR + 6, SYB - 34)
+    # 8 Digital Hub runs the same steps for everyone else; nobody notices
+    everyone(d, 7); system(d, cx(7), SY1, 'hub'); record(d, 7, 'All closed')
+    both(d, cx(7), SY1 + SR + 6, SYB - 34)
     return d
 
 
 def build26():
-    d = base('bu26', 'A bad Visio update in 2026: Peter sees the same steps; agents and flows do the work; the engineer only says yes; every step reads and writes the ServiceNow record', '2026')
+    d = base('bu26', 'A bad Visio update in 2026: Peter sees the same steps and everyone else gets the fix without noticing; agents and flows do the work; the engineer only says yes; every step reads and writes the ServiceNow record', '2026')
     # 1 Peter's Visio crashes; Nexthink records it
     person(d, 0, 'peter', 'alert'); system(d, cx(0), SY1, 'nexthink', 'Nexthink')
     vline(d, cx(0), PY + R + 32, SY1 - SR - 6, 'Crash\nand version', 410)
-    # 2 a webhook opens the incident; no agent, no person
+    # 2 a webhook opens the incident; the Software agent tells Peter
     record(d, 1, 'Incident', first=True)
-    path(d, (cx(0) + SR + 6, SY1), (cx(1), SY1), (cx(1), SYB - 34), label='Webhook', at=((cx(0) + cx(1)) / 2 + 10, SY1 - 10))
+    mid = cx(0) + 80
+    path(d, (cx(0) + SR + 6, SY1), (mid, SY1), (mid, SYB), (cx(1) - 34, SYB), label='Webhook', at=(mid + 40, (SY1 + SYB) / 2 + 5))
+    person(d, 1, 'peter', 'message'); robot(d, cx(1), SY1, 'Digital Hub')
+    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'We opened\na ticket', 410)
+    both(d, cx(1), SY1 + SR + 14, SYB - 34)
     # 3 the Software agent gives the workaround from the knowledge base
     person(d, 2, 'peter', 'message'); robot(d, cx(2), SY1, 'Digital Hub'); record(d, 2, 'Workaround')
     vline(d, cx(2), SY1 - SR - 6, PY + R + 32, 'Visio in\nthe browser', 410)
@@ -261,16 +280,12 @@ def build26():
     person(d, 5, 'engineer'); robot(d, cx(5), SY1, 'ServiceNow'); record(d, 5, 'Change: fix')
     pair(d, cx(5), 'Steps,\nready', 'Yes', ly=410)
     both(d, cx(5), SY1 + SR + 14, SYB - 34)
-    # the approved change runs: Intune sets the settings, then Cloud Update rolls the update out in waves
-    x = cx(5)
-    system(d, x - 40, SY3, 'intune', 'Intune'); system(d, x + 40, SY3, 'cloud', 'Cloud Update')
-    for dx in (-40, 40):
-        d.el.append(f'<path d="M{x:.0f} {SYB + 58:.0f}V{SYB + 72:.0f}H{x + dx:.0f}V{SY3 - SR - 6:.0f}" fill="none" stroke="{LINE}" '
-                    f'stroke-width="1.8" stroke-linejoin="round" marker-end="url(#m{d.uid})"/>')
-    d.t(x - 48, SYB + 100, 'Settings', 14, 600, 'end', fill=SECOND)
-    d.t(x + 48, SYB + 100, 'In waves', 14, 600, 'start', fill=SECOND)
-    # 7 Cloud Update rolls the update out; everything closes; the Software agent tells Peter
-    person(d, 6, 'peter', 'done'); robot(d, cx(6), SY1, 'Digital Hub'); record(d, 6, 'All closed')
+    under(d, 5, 'intune', 'Intune', 'Settings', up=False)
+    # 7 the Software agent tells Peter; his incident closes
+    person(d, 6, 'peter', 'done'); robot(d, cx(6), SY1, 'Digital Hub'); record(d, 6, 'Incident closed')
     pair(d, cx(6), '\u201cWe fixed it\u201d', 'Rating', ly=410)
     both(d, cx(6), SY1 + SR + 14, SYB - 34)
+    # 8 Cloud Update rolls the update out to everyone else in waves; nobody notices; everything closes
+    everyone(d, 7); record(d, 7, 'All closed')
+    under(d, 7, 'cloud', 'Cloud Update', 'In waves', up=False, left=True)
     return d

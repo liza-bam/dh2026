@@ -48,7 +48,7 @@ In 2019 I designed how EY's IT support would stop a bad software update before i
 
 From the 2019 video "Ticket Trends, Crash bugs and Automated Solutions" and its blueprint "SW update issue and resolution".
 
-Peter opens Visio after a new update, and it won't start. Digital Hub files a ticket and offers a workaround: Visio on a virtual machine. Peter keeps working. Behind the scenes, Digital Hub finds similar tickets in ServiceNow and asks technical support to look. An engineer, Linda, finds the cause in Nexthink: the new Visio update. Digital Hub postpones the update for everyone scheduled to get it. Linda writes the steps (change the settings, then push the update), Digital Hub runs them and tells the people affected. Peter gets "We fixed the problem with your Visio update." Everyone else never sees the bug.
+Peter opens Visio after a new update, and it won't start. Digital Hub files a ticket and tells him: "We see Visio isn't working. We've opened a ticket, don't worry." It offers a workaround: Visio on a virtual machine. Peter keeps working. Behind the scenes, Digital Hub finds similar tickets in ServiceNow and asks technical support to look. An engineer, Linda, finds the cause in Nexthink: the new Visio update. Digital Hub postpones the update for everyone scheduled to get it. Linda writes the steps (change the settings, then push the update), Digital Hub runs them and tells the people affected. Peter gets "All fine, we fixed the problem with your Visio update." Then the same steps run for everyone else who was due the update. They never see the bug and never notice anything happened.
 
 Visual: [V19-1] Ticket Trends, Crash bugs and Automated Solutions, 2019.
 
@@ -77,14 +77,16 @@ Visual: [D26-17] A bad update, 2026.
 
 | Stage | Who acts | Data, and where it comes from | Written to | Through |
 |---|---|---|---|---|
-| Submit | Nexthink records the crash, and its monitor raises an alert. A webhook files an incident. The Software agent messages Peter first, with a workaround: Visio in the browser | Crash, device, app version: Nexthink. Workaround: the knowledge base | Incident: the crash data and the workaround | Nexthink webhook to ServiceNow; Teams |
+| Submit | Nexthink records the crash, and its monitor raises an alert. A webhook files an incident. The Software agent tells Peter a ticket is open, then gives him a workaround: Visio in the browser | Crash, device, app version: Nexthink. Workaround: the knowledge base | Incident: the crash data and the workaround | Nexthink webhook to ServiceNow; Teams |
 | Confirm | Nexthink flags the version that crashes more than others. ServiceNow finds similar incidents. The Software agent links them to one problem. ServiceNow's Problems investigation agent prepares the analysis. An engineer confirms the cause and approves a change. A flow pauses the update | Nexthink: crashes by version. ServiceNow: similar incidents, changes, affected devices | Problem: linked incidents, the cause. Change: the pause | ServiceNow API; Microsoft 365 Apps admin center (Cloud Update) |
 | Identify | A flow lists everyone affected | Nexthink: devices with the new version and their crashes. Cloud Update: which devices have the update | Problem: the people affected | Nexthink API; Cloud Update |
 | Notify | A flow messages everyone on the problem | The problem record | Each linked incident: the message sent | Teams |
-| Resolve | ServiceNow's problem agent proposes the steps, and the engineer approves them in a change. A flow changes the settings, then rolls the update out in waves | Nexthink remote actions or Intune: the settings. Cloud Update: the update | Change: the fix. Knowledge base: the known error and its fix | Nexthink API or Intune; Cloud Update |
+| Resolve | ServiceNow's problem agent proposes the steps, and the engineer approves them in a change. A flow changes the settings, then rolls the update out to everyone else in waves; they never see the bug | Nexthink remote actions or Intune: the settings. Cloud Update: the update | Change: the fix. Knowledge base: the known error and its fix | Nexthink API or Intune; Cloud Update |
 | Inform | A flow closes every linked incident. Each person gets a message and a one-tap rating | The problem record | Incidents closed; the ratings | Teams; ServiceNow survey |
 
-What Peter sees, in order: "Visio crashed. Here is a way to keep working." "It's not just you. We're on it." "We fixed the problem with your Visio update." "How did we do?"
+What Peter sees, in order: "We see Visio isn't working. We've opened a ticket, don't worry." "Here is a way to keep working." "It's not just you. We're on it." "All fine, we fixed the problem with your Visio update." "How did we do?"
+
+What everyone else sees: nothing. The update reaches them after the fix, and Visio just works.
 
 ### What the platforms bring
 
@@ -95,7 +97,7 @@ What Peter sees, in order: "Visio crashed. Here is a way to keep working." "It's
 
 ### What I design
 
-The first rule: people do as little as possible. Peter does nothing between the workaround and the fix; he only reads messages and keeps working. The engineer only decides: she confirms the cause and approves two changes, the pause and the fix. Everyone else does nothing at all. In 2019 the engineer searched Nexthink and wrote the fix by hand; in 2026 the analysis and the steps come to her ready.
+Everything is seen from the employee's side: for them, it just sorts itself out. The first rule: people do as little as possible. Peter does nothing between the workaround and the fix; he only reads messages and keeps working. The engineer only decides: she confirms the cause and approves two changes, the pause and the fix. Everyone else does nothing at all. In 2019 the engineer searched Nexthink and wrote the fix by hand; in 2026 the analysis and the steps come to her ready.
 
 What that takes:
 

@@ -20,7 +20,9 @@ A bad Visio update takes both halves of this diagram. Monitoring catches the cra
 
 ## A bad update, 2019
 
-Peter opens Visio after an update, and it won't start. Digital Hub files a ticket and gives him a workaround, Visio on a virtual machine, so he keeps working. Behind the scenes it finds similar tickets and calls in support. An engineer finds the cause: the new update. Digital Hub holds the update back from everyone else, runs the engineer's fix and tells the people affected: "We fixed the problem with your Visio update." Everyone else never sees the bug.
+Peter opens Visio after an update, and it won't start. Digital Hub files a ticket and tells him: "We see Visio isn't working. We've opened a ticket, don't worry." It gives him a workaround, Visio on a virtual machine, so he keeps working. Behind the scenes it finds similar tickets and calls in support. An engineer finds the cause: the new update. Digital Hub holds the update back from everyone else, runs the engineer's fix and tells Peter: "All fine, we fixed the problem with your Visio update."
+
+Then the same fix reaches everyone else who was due the update. They never see the bug and never notice anything happened.
 
 Visual: [V19-1] Ticket Trends, Crash bugs and Automated Solutions, 2019.
 
@@ -47,13 +49,13 @@ The 2019 journey works now, with one change: AI only where a step needs a decisi
 
 ## The same journey, 2026
 
-Peter sees the same thing as in 2019. Behind the scenes, the platforms now do what we had to script.
+Peter sees the same thing as in 2019: "We see Visio isn't working, we've opened a ticket" at the start, "All fine, we fixed it" at the end, and nothing to do in between. Everyone else gets the fix in waves and never sees the bug. Behind the scenes, the platforms now do what we had to script.
 
 Visual: [D26-17] A bad update, 2026.
 
 ## What I designed
 
-The platforms are the parts. The journey is the design, and its first rule is that people do as little as possible. Peter only reads messages and keeps working. The engineer only says yes or no.
+The platforms are the parts. The journey is the design, and its first rule is that people do as little as possible. Everything is seen from the employee's side: for them, it just sorts itself out. Peter only reads messages and keeps working. The engineer only says yes or no. Everyone else does nothing and notices nothing.
 
 What that takes:
 
