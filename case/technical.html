@@ -881,102 +881,85 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 - <strong>Excel crashes on the client model.</strong> The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
 - <strong>Outlook will not connect.</strong> First the agent checks whether Microsoft 365 is down for everyone. If it is, it fixes nothing, files no ticket and says when it will be back. If it is only this employee, it clears the cached sign-in and the Outlook profile.
 - <strong>No sound in a Teams call that starts in 10 minutes.</strong> The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
-- <strong>Acrobat says the license has expired.</strong> Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent decides</b><span>Is the problem on the employee’s laptop? If so, the smallest fix that brings it back to standard. A lost file is a different problem</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 716" role="img" aria-label="How the Software agent decides: is the problem on the employee’s laptop; if so, the smallest fix that brings it back to standard; a lost file is a different problem; an app that is not on the approved list goes to a larger model and a person" class="case-diagram" width="1200" height="716">
+- <strong>Acrobat says the license has expired.</strong> Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent works</b><span>Many people affected: a ticket. No license: renew or ask the manager. Otherwise the laptop back to standard, smallest fix first</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 616" role="img" aria-label="How the Software agent works: if the program fails for many people, a ticket for the Nexthink agent; if the license is missing, renew it or ask the manager; otherwise bring the laptop back to standard, smallest fix first, then a person" class="case-diagram" width="1200" height="616">
 <defs><marker id="mag26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
-<rect x="20" y="20" width="270" height="72" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="34" y="46" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">An app does not work</text>
-<text x="34" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The employee writes in, or the</text>
-<text x="34" y="85" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">watcher spots it.</text>
-<path d="M155 92 L155 116" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<path d="M20 56 L8 56 L8 513 L20 513" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="20" y="116" width="270" height="136" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
-<text x="34" y="142" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Is it the laptop?</text>
-<text x="34" y="164" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Or is the problem elsewhere: the</text>
-<text x="34" y="181" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">service, the license, the account,</text>
-<text x="34" y="198" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">the network?</text>
-<path d="M290 175 L320 175" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<text x="292" y="196" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">No</text>
-<path d="M305 175 L305 104 L750 104 L750 116" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<path d="M750 104 L1042 104 L1042 116" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="320" y="116" width="276" height="136" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="334" y="142" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">The service is down</text>
-<text x="334" y="164" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">It is down for everyone. Nothing to</text>
-<text x="334" y="181" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">fix on the laptop: the agent says</text>
-<text x="334" y="198" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">when it will work again.</text>
-<rect x="334" y="220" width="67" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
-<text x="368" y="235" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Outlook</text>
-<rect x="612" y="116" width="276" height="136" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="626" y="142" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">The license has run out</text>
-<text x="626" y="164" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">If the employee is entitled, the</text>
-<text x="626" y="181" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">agent renews it. If not, the</text>
-<text x="626" y="198" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">manager approves.</text>
-<rect x="626" y="220" width="67" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
-<text x="660" y="235" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Acrobat</text>
-<rect x="904" y="116" width="276" height="136" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="918" y="142" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">The account or the network</text>
-<text x="918" y="164" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The agent checks the account. A</text>
-<text x="918" y="181" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">network problem goes to the network</text>
-<text x="918" y="198" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">team.</text>
-<path d="M155 252 L155 282" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<text x="162" y="272" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">Yes</text>
-<rect x="20" y="282" width="270" height="150" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
-<text x="34" y="308" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">2. Bring it back to standard</text>
-<text x="34" y="330" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Every laptop is set up from a</text>
-<text x="34" y="347" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">standard image. The agent tries the</text>
-<text x="34" y="364" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">smallest fix first, and the next</text>
-<text x="34" y="381" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">only if it did not help.</text>
-<path d="M290 357 L320 357" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="320" y="282" width="200" height="150" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="334" y="308" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A known fix</text>
-<text x="334" y="330" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Clear a cache, turn off</text>
-<text x="334" y="347" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">an add-in, switch the</text>
-<text x="334" y="364" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">headset.</text>
-<rect x="334" y="400" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
-<text x="360" y="415" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Excel</text>
-<rect x="393" y="400" width="95" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
-<text x="440" y="415" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Teams sound</text>
-<path d="M520 357 L540 357" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="540" y="282" width="200" height="150" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="554" y="308" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Reinstall the app</text>
-<text x="554" y="330" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Remove it and install it</text>
-<text x="554" y="347" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">again. Harmless, so the</text>
-<text x="554" y="364" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">agent does not ask.</text>
-<rect x="554" y="400" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
-<text x="580" y="415" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Visio</text>
-<path d="M740 357 L760 357" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="760" y="282" width="200" height="150" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="774" y="308" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Reset the laptop</text>
-<text x="774" y="330" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Back to standard. Takes</text>
-<text x="774" y="347" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">about an hour, so it</text>
-<text x="774" y="364" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">asks: now or tonight?</text>
-<text x="774" y="381" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Files are safe in</text>
-<text x="774" y="398" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">OneDrive.</text>
-<path d="M960 357 L980 357" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="980" y="282" width="200" height="150" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="994" y="308" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A person from IT</text>
-<text x="994" y="330" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Takes over and already</text>
-<text x="994" y="347" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">knows everything that</text>
-<text x="994" y="364" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">was tried.</text>
-<rect x="994" y="400" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
-<text x="1020" y="415" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Visio</text>
-<rect x="20" y="462" width="270" height="110" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
-<text x="34" y="488" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">3. Is it about a file?</text>
-<text x="34" y="510" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">A lost or damaged file is a</text>
-<text x="34" y="527" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">different problem.</text>
-<path d="M290 513 L320 513" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<path d="M305 513 L305 450 L970 450 L970 462" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
-<rect x="320" y="462" width="420" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="334" y="488" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Usually simple</text>
-<text x="334" y="510" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The file comes back from the OneDrive recycle bin or an</text>
-<text x="334" y="527" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">earlier version.</text>
-<rect x="760" y="462" width="420" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="774" y="488" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Sometimes hard</text>
-<text x="774" y="510" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Client data, a deleted shared folder, two versions that</text>
-<text x="774" y="527" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">clash: a stronger agent works on it together with a</text>
-<text x="774" y="544" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">person.</text>
-<rect x="20" y="602" width="1160" height="80" rx="12" fill="#f7fafb" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="40" y="632" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">An app that is not on the approved list</text>
-<text x="40" y="658" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The agent does not install it. A larger model checks the request and suggests an approved app that does the same; if none fits, a person decides.</text>
+<rect x="20" y="20" width="300" height="72" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="34" y="46" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A program does not work</text>
+<text x="34" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The employee writes to Digital Hub. The</text>
+<text x="34" y="85" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Software agent takes it.</text>
+<path d="M170 92 L170 120" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="20" y="120" width="300" height="110" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
+<text x="34" y="146" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Does it fail for many people?</text>
+<text x="34" y="168" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The agent checks the service status</text>
+<text x="34" y="185" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">itself.</text>
+<path d="M320 175 L380 175" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<text x="336" y="167" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">Yes</text>
+<rect x="380" y="120" width="790" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="394" y="146" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A ticket for the Nexthink agent</text>
+<text x="394" y="168" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Nothing to fix on this laptop. The Software agent files a ticket and gives the employee the number. The</text>
+<text x="394" y="185" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Nexthink agent takes it: updates, network, system fixes.</text>
+<rect x="394" y="198" width="67" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="428" y="213" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Outlook</text>
+<path d="M170 230 L170 260" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<text x="178" y="250" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">No</text>
+<rect x="20" y="260" width="300" height="112" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
+<text x="34" y="286" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">2. Does the employee have a license?</text>
+<text x="34" y="308" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">If yes, go to step 3.</text>
+<path d="M320 316 L380 316" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<text x="326" y="336" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">No</text>
+<path d="M350 316 L350 250 L1020 250 L1020 260" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="380" y="260" width="470" height="112" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="394" y="286" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Entitled: the agent renews it</text>
+<text x="394" y="308" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Then step 3, if the program still does not work.</text>
+<rect x="394" y="340" width="67" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="428" y="355" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Acrobat</text>
+<rect x="870" y="260" width="300" height="112" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="884" y="286" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Not entitled</text>
+<text x="884" y="308" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">The agent fills in the request and</text>
+<text x="884" y="325" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">sends it to the manager. Once approved,</text>
+<text x="884" y="342" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">it renews.</text>
+<path d="M170 372 L170 402" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<text x="178" y="392" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">Yes</text>
+<rect x="20" y="402" width="300" height="180" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
+<text x="34" y="428" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">3. Bring the laptop back to standard</text>
+<text x="34" y="450" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Every laptop is set up from a standard</text>
+<text x="34" y="467" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">image. The smallest fix first; the next</text>
+<text x="34" y="484" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">only if the program still does not</text>
+<text x="34" y="501" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">work.</text>
+<path d="M320 492 L380 492" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="380" y="402" width="186" height="180" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="394" y="428" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A known fix</text>
+<text x="394" y="450" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Clear a cache, switch</text>
+<text x="394" y="467" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">the headset, turn off</text>
+<text x="394" y="484" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">an add-in (it asks</text>
+<text x="394" y="501" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">first).</text>
+<rect x="394" y="550" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="420" y="565" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Excel</text>
+<rect x="453" y="550" width="95" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="500" y="565" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Teams sound</text>
+<path d="M566 492 L578 492" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="578" y="402" width="186" height="180" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="592" y="428" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Reinstall the program</text>
+<text x="592" y="450" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Harmless, so the agent</text>
+<text x="592" y="467" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">does not ask.</text>
+<rect x="592" y="550" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="618" y="565" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Visio</text>
+<path d="M764 492 L776 492" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="776" y="402" width="186" height="180" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="790" y="428" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Reset the laptop</text>
+<text x="790" y="450" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">About an hour, so it</text>
+<text x="790" y="467" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">asks: now or tonight?</text>
+<text x="790" y="484" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Files are safe in</text>
+<text x="790" y="501" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">OneDrive.</text>
+<path d="M962 492 L974 492" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
+<rect x="974" y="402" width="186" height="180" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="988" y="428" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A person from IT</text>
+<text x="988" y="450" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Takes over and already</text>
+<text x="988" y="467" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">knows everything that</text>
+<text x="988" y="484" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">was tried.</text>
+<rect x="988" y="550" width="53" height="22" rx="11" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1"/>
+<text x="1014" y="565" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Visio</text>
+<text x="380" y="604" font-family="'Inter', sans-serif" font-size="12" font-weight="400" fill="#3f5f6b" text-anchor="start">Between steps: still not working.</text>
 </svg></figure>
 <h4>The Software agent in full</h4>
 <p>Defined the way ServiceNow defines its first-line AI specialist: a role, the kinds of problems it takes (its skills), the actions it can use (its tools), clear limits, and a rule for when to hand over.</p>
