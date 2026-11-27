@@ -49,7 +49,7 @@ def column(d, x, y, w, h, title, model, sub, items, note=None, dark=False):
 
 
 def build():
-    d = Rich('a26', 1200, 912, 'Digital Hub 2026 architecture: one way in; three paths: fixed flows, domain agents on small models, '
+    d = Rich('a26', 1200, 932, 'Digital Hub 2026 architecture: one way in; three paths: fixed flows, domain agents on small models, '
              'team agents on a large model; the systems they reach; and the rules every agent follows, with people at every level')
 
     # channels
@@ -104,12 +104,12 @@ def build():
         d.t(x + 50, y + 42, what, 12, 400, fill=SECOND)
 
     # rules and people
-    d.rect(20, 824, 700, 76, '#fff', '#223640', rx=14, sw=1.5)
+    d.rect(20, 824, 700, 96, '#fff', '#223640', rx=14, sw=1.5)
     d.t(40, 852, 'Every agent', 15, 600)
     d.lines(40, 876, 'Has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes.', 660, 13, 400, SECOND, lh=17)
-    d.rect(736, 824, 444, 76, Z['agent'][0], Z['agent'][1], dashed=True, rx=14)
+    d.rect(736, 824, 444, 96, Z['agent'][0], Z['agent'][1], dashed=True, rx=14)
     for i in range(3):
-        d.image(f'agent{i + 1}', 752 + i * 34, 840, 40, round_=True, ring=Z['agent'][1])
-    d.lines(880, 856, 'People at every level: they approve, take over and decide.', 286, 14, 600, lh=19)
-    d.H = 912
+        d.image(f'agent{i + 1}', 752 + i * 34, 852, 40, round_=True, ring=Z['agent'][1])
+    d.lines(880, 866, 'People at every level: they approve, take over and decide.', 286, 14, 600, lh=19)
+    d.H = 932
     return d
