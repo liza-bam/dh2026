@@ -71,11 +71,10 @@ Ordering a device, giving an assistant access, joining a Teams channel, resettin
 ### 2. Problems: small agents, one for each domain
 Not one big agent that knows everything. Small agents, each an expert in one domain, on small models: cheaper to run, safer because each can touch only its own systems, and easier to test before release.
 
-A failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. Each domain has its own agent: Security; Devices; Software; Mail, calendar and Teams; Workplace. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
+A failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. Each domain has its own agent: Security; Devices; Software; Mail and calendar; Workplace. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
 - what it does on its own, like clearing temporary files;
 - what waits for the employee's yes;
 - how many tries it gets before it brings in a person;
-- what it never does: the Software agent never wipes a device.
 
 **Why a small agent is enough.** Agents have no open internet: vendor knowledge goes into their libraries in advance, checked and kept up to date. And the system around them is strict: laptops are standard and centrally managed, apps install automatically, files live in OneDrive. So every software problem has a short ladder: a known fix; repair or reinstall the app; reset the laptop to its standard state, with files and apps coming back by themselves; a person. The agent does not need to understand everything. It picks the step and the time with the employee: "Resetting takes an hour. Now or tonight?" Anything outside its library goes to the second-line team.
 
@@ -83,13 +82,15 @@ Within those limits the agent leads the case itself: it checks, tries, changes t
 
 Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads and asks the Security agent whether the account is fine. For a stolen laptop, Security leads and hands the replacement to Devices. The employee talks to one agent the whole time.
 
-**The agents and what they never do**
-- **Security:** stolen devices, scams, locked accounts. Wipes a device only once the employee is verified.
-- **Devices:** ordering and replacing devices, hardware faults. Never wipes a device.
-- **Software:** installs, repairs, VPN, apps. Never runs a new fix before an engineer approves it.
-- **Mail, calendar and Teams:** delegation, mailboxes, channels. Never reads the content of mail.
-- **Workplace:** rooms, desks, facilities. Never sees meeting content.
-- **Watcher:** reads telemetry and opens cases before people notice. Never changes a device.
+**The agents**
+- **Security:** stolen devices, scams, locked accounts.
+- **Devices:** ordering and replacing devices, hardware faults.
+- **Software:** installs, repairs, VPN, apps.
+- **Mail and calendar:** delegation, mailboxes, Teams channels.
+- **Workplace:** rooms, desks, facilities.
+- **Watcher:** reads telemetry and opens cases before people notice.
+
+One rule for all of them: every agent has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes, and a new fix runs only after an engineer approves it.
 
 **The Software agent: five cases, one ladder**
 - **Visio will not install.** A full disk: the agent clears temporary files itself. A broken installer cache: after two tries, a person takes over in a remote session.
@@ -131,7 +132,7 @@ Nine layers, each with one job.
 
 1. **Channels.** Teams, the Digital Hub website, email and voice. It is one conversation, wherever it starts.
 2. **Intake agent.** Reads every request and sends it down one of the three paths: a fixed flow, a domain agent or a team. Small model. Changes nothing in any system itself.
-3. **Domain agents.** Security; Devices; Software; Mail, calendar and Teams; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. The watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
+3. **Domain agents.** Security; Devices; Software; Mail and calendar; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. The watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
 4. **Team agents.** One for each second-line team, working for the engineers, not the employees. Large model: few cases, hard ones.
 5. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
 6. **Knowledge.** A library for each domain and each team. Agents answer only from approved EY sources, with a link to the source.
@@ -139,7 +140,7 @@ Nine layers, each with one job.
 8. **Governance.** Every agent is registered, tested on real scenarios before release, has a budget and a level of independence for each action, and every action is logged.
 9. **People.** Employees who approve, live support, engineers and the security team: the cases that need judgment.
 
-Visuals: [D26-1] What changes, [D26-2] Architecture (both to redraw).
+Visual: [D26-2] Architecture, the simple version. The nine layers above are the detail behind it.
 
 ## Ten scenarios
 
