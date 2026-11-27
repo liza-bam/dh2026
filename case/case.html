@@ -29,18 +29,18 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <p><strong>Role:</strong> UX, product and service designer. Service design, agent architecture, prototype.</p>
 <p><strong>Year:</strong> 2026, my own project.</p>
 <p><strong>Links:</strong> live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).</p>
-<h2>Half of IT support needs no AI</h2>
+<h2>Most IT support needs no AI</h2>
 <p>Research named the ten most common IT requests at EY. I asked one question of each: does solving it need a decision?</p>
 <ul>
-<li><strong>No:</strong> a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room.</li>
-<li><strong>Yes:</strong> a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop.</li>
+<li><strong>No:</strong> a new monitor, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email.</li>
+<li><strong>Yes:</strong> a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open.</li>
 </ul>
-<p>The first five run as fixed flows. Agents get only the other five.</p>
+<p>The first six run as fixed flows. Security above all: a stolen laptop or a scam email must always be handled fast and never wrong, so the steps are fixed, Microsoft Defender judges the email, and the security team makes the real calls. Agents get only the other four.</p>
 <p>And not one big agent: small ones, one per domain. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset; the agent picks the step and the moment. Anything else goes up to people.</p>
 <h2>What I designed</h2>
 <ul>
 <li><strong>One way in.</strong> A small, cheap model reads what the employee writes and picks the path.</li>
-<li><strong>An agent for each domain.</strong> Security, Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.</li>
+<li><strong>An agent for each domain.</strong> Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.</li>
 <li><strong>Agents for the people behind the help desk, too.</strong> When nothing fits, the ticket goes to the right team, and that team's agent helps its engineers. What they solve becomes a fix for next time.</li>
 <li><strong>Help before anyone asks.</strong> A watcher agent finds the full disk before Visio fails.</li>
 </ul>
@@ -76,13 +76,15 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <rect x="38" y="346" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="52" y="368" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">A new device</text>
 <rect x="38" y="388" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="52" y="410" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">An assistant’s access</text>
+<text x="52" y="410" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Proxy access</text>
 <rect x="38" y="430" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="52" y="452" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">A Teams channel</text>
 <rect x="38" y="472" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="52" y="494" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">A password reset</text>
 <rect x="38" y="514" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="52" y="536" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">A meeting room</text>
+<text x="52" y="536" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">A stolen laptop</text>
+<rect x="38" y="556" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
+<text x="52" y="578" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">A scam email</text>
 <rect x="415" y="240" width="370" height="400" rx="14" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
 <text x="433" y="274" font-family="'Inter', sans-serif" font-size="18" font-weight="600" fill="#223640" text-anchor="start">Domain agents</text>
 <rect x="669.48" y="256" width="101.52" height="24" rx="12" fill="#fff" stroke="#2c6e7e" stroke-width="1.5"/>
@@ -90,18 +92,16 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="433" y="300" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Problems that need a decision. One agent leads</text>
 <text x="433" y="318" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">each case.</text>
 <rect x="433" y="346" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="447" y="368" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Security</text>
+<text x="447" y="368" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Devices</text>
 <rect x="433" y="388" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="447" y="410" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Devices</text>
+<text x="447" y="410" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Software</text>
 <rect x="433" y="430" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="447" y="452" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Software</text>
+<text x="447" y="452" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Mail and calendar</text>
 <rect x="433" y="472" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="447" y="494" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Mail and calendar</text>
-<rect x="433" y="514" width="334" height="34" rx="8" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
-<text x="447" y="536" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Workplace</text>
-<text x="433" y="570" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">When it gets stuck, a person takes over with the</text>
-<text x="433" y="588" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">whole story. A watcher agent finds problems</text>
-<text x="433" y="606" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">before anyone asks.</text>
+<text x="447" y="494" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">Workplace</text>
+<text x="433" y="528" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">When it gets stuck, a person takes over with the</text>
+<text x="433" y="546" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">whole story. A watcher agent finds problems</text>
+<text x="433" y="564" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">before anyone asks.</text>
 <rect x="810" y="240" width="370" height="400" rx="14" fill="#f7fafb" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="828" y="274" font-family="'Inter', sans-serif" font-size="18" font-weight="600" fill="#223640" text-anchor="start">Team agents</text>
 <rect x="1071.44" y="256" width="94.55999999999999" height="24" rx="12" fill="#2c6e7e" stroke="#2c6e7e" stroke-width="1.5"/>
@@ -186,7 +186,7 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="660" y="203" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#2c6e7e" text-anchor="middle">Acrobat</text>
 <rect x="904" y="110" width="276" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="918" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Account or network</text>
-<text x="918" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Bring in the Security agent or the</text>
+<text x="918" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Check the account, or bring in the</text>
 <text x="918" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">network team.</text>
 <path d="M155 220 L155 250" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
 <text x="162" y="240" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">Yes</text>
@@ -242,13 +242,13 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 </svg></figure>
 <h2>What the employee sees</h2>
 <ul>
-<li><strong>Real choices.</strong> A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.</li>
+<li><strong>Real choices.</strong> A short catalog of monitors. Three levels of proxy access, from seeing the calendar to sending email.</li>
 <li><strong>No nagging.</strong> Tap Later, and the agent offers one reminder in 15 minutes. Then it starts the install itself, and you can still cancel.</li>
 <li><strong>Never explain twice.</strong> When a person takes over, they already know everything that was tried.</li>
 <li><strong>A record of everything.</strong> Every request gets a number, even when agents do all the work.</li>
 </ul>
 <h2>Try it</h2>
-<p>Three journeys on a phone: a monitor, an assistant's access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.</p>
+<p>Three journeys on a phone: a monitor, proxy access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.</p>
 <p>https://digital-hub-demo.alexandra-tayts.workers.dev</p>
 <h2>Lessons learned</h2>
 <p>To write at the end.</p>

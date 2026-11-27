@@ -11,7 +11,7 @@ Working notes for building the live demo. The logic, architecture, agents and ru
 ## What is in the demo now
 
 - Phone only, in a Teams-like frame. No laptop view.
-- Three journeys switched on: New device (a small shop), Assistant's Outlook (a level of control), Software install (Visio: the agent fails twice and a person takes over). "Something else" files a ticket.
+- Three journeys switched on: New device (a small shop), Proxy access (a level of control), Software install (Visio: the agent fails twice and a person takes over). "Something else" files a ticket.
 - The other seven journeys stay in the code, switched off (`ON` list in `app/index.html`). A request for one of them files a ticket.
 - Right panel: "Version 1: fixed journeys", large buttons, then "You can describe these problems in your own words. The agent understands them too." Version 2 is not mentioned until it exists, and then it is a link.
 - A button types the sentence into the input quickly, then sends it. The real intake model still picks the journey.

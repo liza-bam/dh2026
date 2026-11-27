@@ -55,23 +55,25 @@ Visual: [D26-6] Stack scorecard.
 
 ## The logic: does it need a decision?
 
-**Half of IT support needs no AI.** The whole design follows from three decisions: what gets no AI at all, what goes to agents, and which agents.
+**Most IT support needs no AI.** The whole design follows from three decisions: what gets no AI at all, what goes to agents, and which agents.
 
 The starting point is research: the ten most common IT requests at EY. I sort them by one question: does solving it need a decision?
 
 Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
 
-Of the ten, five need no decision: ordering a device, an assistant's access, a Teams channel, a password reset, a meeting room. Five do: a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. That leaves five problems for agents to think about, not ten.
+Of the ten, six need no decision: ordering a device, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email. Four do: a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open. That leaves four problems for agents to think about, not ten.
+
+A stolen laptop and a scam email look serious, but there is nothing for an agent to decide. The steps are always the same: confirm it is you, lock and wipe, sign out everywhere, a new password, a replacement. Microsoft Defender judges whether an email is a threat, and the real calls (was client data exposed, must the client be told) belong to the security team. Security must always be fast and never wrong, so it runs as fixed flows with a clean audit trail, not on a model's judgment.
 
 So every request takes one of three paths.
 
 ### 1. Simple actions: fixed flows
-Ordering a device, giving an assistant access, joining a Teams channel, resetting a password, rebooking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
+Ordering a device, proxy access to mail and calendar, joining a Teams channel, resetting a password, a stolen laptop, a scam email, booking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
 
 ### 2. Problems: small agents, one for each domain
 Not one big agent that knows everything. Small agents, each an expert in one domain, on small models: cheaper to run, safer because each can touch only its own systems, and easier to test before release.
 
-A failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. Each domain has its own agent: Security; Devices; Software; Mail and calendar; Workplace. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
+A meeting room that does not work, a failed install, VPN at a hotel, client files that will not open. Each domain has its own agent: Devices; Software; Mail and calendar; Workplace. Security has no agent of its own: Microsoft Defender judges threats, the security team decides, and the rest runs as fixed flows. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
 - what it does on its own, like clearing temporary files;
 - what waits for the employee's yes;
 - how many tries it gets before it brings in a person;
@@ -84,7 +86,7 @@ A failed install, VPN at a hotel, client files that will not open, a scam email,
 
 So the agent knows what each laptop should look like. A diagnosis is the difference between the laptop and its image, and fixing it means bringing the laptop back to the image. The agent asks three questions:
 
-1. **Is it this laptop?** Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, or bring in the Security agent or the network team.
+1. **Is it this laptop?** Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, check the account, or bring in the network team.
 2. **If it is, what is the lightest step back to the image?** A known fix (clear a cache, turn off an add-in, switch the headset); then repair or reinstall the app; then reset the laptop to its image, with files and apps coming back by themselves; then a person. Harmless steps need no question. A reset takes time, so the agent picks the moment with the employee: "It takes an hour. Now or tonight?"
 3. **Is it about data?** Most "where is my file" cases are simple: the OneDrive recycle bin or an earlier version, run as a fixed flow. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent on a large model works on it with a person, because the stakes are high and every case is different.
 
@@ -94,10 +96,9 @@ The agent does not need to understand everything. Anything outside its library g
 
 Within those limits the agent leads the case itself: it checks, tries, changes the plan and tells the employee what is happening. Simple actions in its domain still run as fixed flows: the Devices agent does not improvise an order.
 
-Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads and asks the Security agent whether the account is fine. For a stolen laptop, Security leads and hands the replacement to Devices. The employee talks to one agent the whole time.
+Many problems cross domains. A VPN that will not connect can be the app, the account or the hotel network. So every case has one lead agent, and it brings in the others when it needs them. For the VPN, the Software agent leads, checks the account and brings in the network team if the hotel network is the problem. For a meeting room, the Workplace agent leads and asks the Devices agent about the screen. The employee talks to one agent the whole time.
 
 **The agents**
-- **Security:** stolen devices, scams, locked accounts.
 - **Devices:** ordering and replacing devices, hardware faults.
 - **Software:** installs, repairs, VPN, apps.
 - **Mail and calendar:** delegation, mailboxes, Teams channels.
@@ -146,7 +147,7 @@ Nine layers, each with one job.
 
 1. **Channels.** Teams, the Digital Hub website, email and voice. It is one conversation, wherever it starts.
 2. **Intake agent.** Reads every request and sends it down one of the three paths: a fixed flow, a domain agent or a team. Small model. Changes nothing in any system itself.
-3. **Domain agents.** Security; Devices; Software; Mail and calendar; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. The watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
+3. **Domain agents.** Devices; Software; Mail and calendar; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. The watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
 4. **Team agents.** One for each second-line team, working for the engineers, not the employees. Large model: few cases, hard ones.
 5. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
 6. **Knowledge.** A library for each domain and each team. Agents answer only from approved EY sources, with a link to the source.
@@ -188,7 +189,7 @@ If the agent decided on its own whether to come back, the same request could go 
 ## Rules for the employee's experience
 
 - **Never ask twice.** If the employee has already said what happened, nobody asks again: not the agent, not a person.
-- **Real choices, not yes or no.** A catalog of monitors and where to deliver. A level of access for an assistant: see the calendar, manage the calendar, calendar and email.
+- **Real choices, not yes or no.** A catalog of monitors and where to deliver. A level of proxy access: see the calendar, manage the calendar, calendar and email.
 - **Harmless steps need no question.** Clearing temporary files is not risky: the agent does it and says so.
 - **Declining is a choice, not a dead end.** Not now: "Is it urgent?" Yes: straight to a person, no more questions. No: "Shall I file a ticket?" Yes: it is filed and the number given. Never mind: cancelled.
 - **Confirmation means "it is me".** A stolen laptop: the employee confirms who they are in Authenticator, and the laptop is locked and wiped at once, without a second question.
@@ -209,7 +210,7 @@ Visual: [D26-3] Handoff, confirmation and the target.
 The live demo runs on a phone, inside a Teams-like frame: https://digital-hub-demo.alexandra-tayts.workers.dev
 
 - A real intake agent on a small model reads what the visitor writes and picks the path. Its cost is shown for every request.
-- Three journeys are switched on, each showing something different: a new monitor (a small shop), an assistant's access to Outlook (a choice of the level of control), and a failed Visio install (the agent fails twice and a person takes over with the whole story). The other seven stay in the code, switched off; a request for one of them files a ticket.
+- Three journeys are switched on, each showing something different: a new monitor (a small shop), proxy access to mail and calendar (a choice of the level of control), and a failed Visio install (the agent fails twice and a person takes over with the whole story). The other seven stay in the code, switched off; a request for one of them files a ticket.
 - Tracy, the live support person, is played by a larger model with a face and the support playbook.
 - Next to the phone, "How it runs" shows every agent and system as it acts: its model, memory, tools and cost.
 - Next: the domain agents become real agents with tools and limits, starting with the Software agent for Visio.

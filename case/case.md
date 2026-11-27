@@ -8,21 +8,21 @@
 
 **Links:** live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).
 
-## Half of IT support needs no AI
+## Most IT support needs no AI
 
 Research named the ten most common IT requests at EY. I asked one question of each: does solving it need a decision?
 
-- **No:** a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room.
-- **Yes:** a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop.
+- **No:** a new monitor, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email.
+- **Yes:** a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open.
 
-The first five run as fixed flows. Agents get only the other five.
+The first six run as fixed flows. Security above all: a stolen laptop or a scam email must always be handled fast and never wrong, so the steps are fixed, Microsoft Defender judges the email, and the security team makes the real calls. Agents get only the other four.
 
 And not one big agent: small ones, one per domain. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset; the agent picks the step and the moment. Anything else goes up to people.
 
 ## What I designed
 
 - **One way in.** A small, cheap model reads what the employee writes and picks the path.
-- **An agent for each domain.** Security, Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.
+- **An agent for each domain.** Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.
 - **Agents for the people behind the help desk, too.** When nothing fits, the ticket goes to the right team, and that team's agent helps its engineers. What they solve becomes a fix for next time.
 - **Help before anyone asks.** A watcher agent finds the full disk before Visio fails.
 
@@ -42,14 +42,14 @@ Visual: [D26-8] How the Software agent decides.
 
 ## What the employee sees
 
-- **Real choices.** A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.
+- **Real choices.** A short catalog of monitors. Three levels of proxy access, from seeing the calendar to sending email.
 - **No nagging.** Tap Later, and the agent offers one reminder in 15 minutes. Then it starts the install itself, and you can still cancel.
 - **Never explain twice.** When a person takes over, they already know everything that was tried.
 - **A record of everything.** Every request gets a number, even when agents do all the work.
 
 ## Try it
 
-Three journeys on a phone: a monitor, an assistant's access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.
+Three journeys on a phone: a monitor, proxy access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.
 
 https://digital-hub-demo.alexandra-tayts.workers.dev
 

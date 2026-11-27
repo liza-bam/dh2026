@@ -32,7 +32,7 @@ def build():
     d.arrow((290, 165), (320, 165), color=TEAL, label='No', at=(293, 158))
     box(d, 320, 110, 276, 110, 'Down for everyone', 'Fix nothing. Say when it is back.', ['Outlook'])
     box(d, 612, 110, 276, 110, 'No license', 'Hand it to the approval flow.', ['Acrobat'])
-    box(d, 904, 110, 276, 110, 'Account or network', 'Bring in the Security agent or the network team.')
+    box(d, 904, 110, 276, 110, 'Account or network', 'Check the account, or bring in the network team.')
 
     # 2. the lightest step back to the image
     d.arrow((155, 220), (155, 250), color=TEAL, label='Yes', at=(162, 240))

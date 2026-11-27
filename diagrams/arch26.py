@@ -76,9 +76,9 @@ def build():
 
     # three paths
     column(d, 20, 240, 370, 400, 'Fixed flows', None, 'Simple actions. No model decides anything: the employee chooses, the systems act.',
-           ['A new device', 'An assistant\u2019s access', 'A Teams channel', 'A password reset', 'A meeting room'])
+           ['A new device', 'Proxy access', 'A Teams channel', 'A password reset', 'A stolen laptop', 'A scam email'])
     column(d, 415, 240, 370, 400, 'Domain agents', 'Small models', 'Problems that need a decision. One agent leads each case.',
-           ['Security', 'Devices', 'Software', 'Mail and calendar', 'Workplace'],
+           ['Devices', 'Software', 'Mail and calendar', 'Workplace'],
            'When it gets stuck, a person takes over with the whole story. A watcher agent finds problems before anyone asks.', dark=True)
     column(d, 810, 240, 370, 400, 'Team agents', 'Large model', 'Nothing fits: a ticket goes to the right team, and its agent helps the engineers.',
            ['Network', 'Messaging', 'End-user computing'],

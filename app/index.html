@@ -549,7 +549,7 @@ const scenarios = [
     await m.grantAccess('Access agent', 'Entra ID', 'the Halden files', 'Open SharePoint');
     await m.feedback();
   } },
-  { title: 'Outlook access for an assistant', where: 'Digital Hub in Teams, on the laptop', async run() {
+  { title: 'Outlook access for an assistant', label: 'Proxy access', where: 'Digital Hub in Teams, on the laptop', async run() {
     await ask(['My new assistant needs access to my calendar and inbox']);
     context(); front('Delegation: routes to the access agent');
     step('Access agent', 'Finds a new assistant on his team in Workday');
@@ -662,7 +662,7 @@ const EXAMPLES = [
   ['Lost laptop', 'My laptop was stolen at the airport', 'Lost laptop'],
   ['Client files', 'I cannot open the Halden client folder in SharePoint', 'Client files in SharePoint'],
   ['New device', 'I need a second monitor', 'Ordering a peripheral'],
-  ["Assistant's Outlook", 'My new assistant needs access to my calendar and inbox', 'Outlook access for an assistant'],
+  ['Proxy access', 'My new assistant needs access to my calendar and inbox', 'Outlook access for an assistant'],
   ['Scam email', 'I clicked a link in a strange email and typed my password', 'Email scam'],
   ['Software install', 'I need Visio for a client call today', 'Failed software install'],
   ['Something else', 'The printer on floor 3 keeps jamming', null],
@@ -730,7 +730,7 @@ async function intake(text, offline) {
   } else { await say('Free text works in the hosted demo. Here, use the buttons on the right.'); busy = false; return; }
   const s = scenarios.find(x => x.title === r.journey && ON.includes(x.title));
   if (!s && !r.ticket) r.ticket = { category: r.journey, urgency: 'normal', group: 'Service desk', summary: text, label: r.journey.toLowerCase() };
-  step('Fixed journey?', s ? `Yes: ${s.title}` : 'No journey yet');
+  step('Fixed journey?', s ? `Yes: ${s.label || s.title}` : 'No journey yet');
   document.querySelectorAll('.branches span')[s ? 0 : 1].classList.add('taken');
   if (s) {
     fromChat = true;
