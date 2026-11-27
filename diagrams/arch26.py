@@ -1,4 +1,4 @@
-"""D26-2. Architecture 2026, simple: one way in, three paths (fixed flows, domain agents, team agents), the systems, and the rules every agent follows."""
+"""D26-2. Architecture 2026, simple: one way in, three paths (fixed flows, domain agents, team agents), the systems, and the systems they work with."""
 from rich import Rich, Z
 from svg import SECOND
 from transition import TEAL, TINT
@@ -49,8 +49,8 @@ def column(d, x, y, w, h, title, model, sub, items, note=None, dark=False):
 
 
 def build():
-    d = Rich('a26', 1200, 932, 'Digital Hub 2026 architecture: one way in; three paths: fixed flows, domain agents on small models, '
-             'team agents on a large model; the systems they reach; and the rules every agent follows, with people at every level')
+    d = Rich('a26', 1200, 850, 'Digital Hub 2026 architecture: one way in; three paths: fixed flows, domain agents on small models, '
+             'team agents on a large model; and the systems they work with')
 
     # channels
     d.rect(20, 20, 1160, 76, '#f7fafb', '#dce4e7', rx=14)
@@ -75,25 +75,25 @@ def build():
         d.arrow((600, 208), (cx, 236), color=TEAL)
 
     # three paths
-    column(d, 20, 240, 370, 372, 'Fixed flows', None, 'Simple actions. No model decides anything: the employee chooses, the systems act.',
+    column(d, 20, 240, 370, 400, 'Fixed flows', None, 'Simple actions. No model decides anything: the employee chooses, the systems act.',
            ['A new device', 'An assistant\u2019s access', 'A Teams channel', 'A password reset', 'A meeting room'])
-    column(d, 415, 240, 370, 372, 'Domain agents', 'Small models', 'Problems that need a decision. One agent leads each case.',
+    column(d, 415, 240, 370, 400, 'Domain agents', 'Small models', 'Problems that need a decision. One agent leads each case.',
            ['Security', 'Devices', 'Software', 'Mail and calendar', 'Workplace'],
-           'A watcher agent finds problems before anyone asks.', dark=True)
-    column(d, 810, 240, 370, 372, 'Team agents', 'Large model', 'Nothing fits: a ticket goes to the right team, and its agent helps the engineers.',
+           'When it gets stuck, a person takes over with the whole story. A watcher agent finds problems before anyone asks.', dark=True)
+    column(d, 810, 240, 370, 400, 'Team agents', 'Large model', 'Nothing fits: a ticket goes to the right team, and its agent helps the engineers.',
            ['Network', 'Messaging', 'End-user computing'],
            'What the engineers solve comes back to the domain agents as a new fix.')
 
     # systems: what the agents work with
-    d.rect(20, 632, 1160, 176, '#f7fafb', '#dce4e7', rx=14)
-    d.t(40, 664, 'Systems the agents work with', 16, 600)
+    d.rect(20, 660, 1160, 176, '#f7fafb', '#dce4e7', rx=14)
+    d.t(40, 692, 'Systems the agents work with', 16, 600)
     SYS = [('now', 'ServiceNow', 'Tickets and requests'), ('workday', 'Workday', 'Who the employee is: role, team'),
            ('azure', 'Entra ID', 'Accounts, passwords, access'), (None, 'Intune', 'Laptops: installs, locks, wipes'),
            ('nexthink', 'Nexthink', 'How each laptop is doing'), ('office', 'Office 365', 'Mail, calendar, Teams'),
            ('ariba', 'SAP Ariba', 'Ordering devices')]
     for k, (key, name, what) in enumerate(SYS):
         x = 40 + (k % 4) * 284
-        y = 680 + (k // 4) * 62
+        y = 708 + (k // 4) * 62
         d.rect(x, y, 270, 54, '#fff', '#dce4e7', rx=10)
         if key:
             d.logo(key, x + 12, y + 13, 28)
@@ -103,13 +103,5 @@ def build():
         d.t(x + 50, y + 24, name, 14, 600)
         d.t(x + 50, y + 42, what, 12, 400, fill=SECOND)
 
-    # rules and people
-    d.rect(20, 824, 700, 96, '#fff', '#223640', rx=14, sw=1.5)
-    d.t(40, 852, 'Every agent', 15, 600)
-    d.lines(40, 876, 'Has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes.', 660, 13, 400, SECOND, lh=17)
-    d.rect(736, 824, 444, 96, Z['agent'][0], Z['agent'][1], dashed=True, rx=14)
-    for i in range(3):
-        d.image(f'agent{i + 1}', 752 + i * 34, 852, 40, round_=True, ring=Z['agent'][1])
-    d.lines(880, 866, 'People at every level: they approve, take over and decide.', 286, 14, 600, lh=19)
-    d.H = 932
+    d.H = 850
     return d
