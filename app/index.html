@@ -17,8 +17,10 @@ body{margin:0;background:#eef3f4;color:var(--ink);font:400 15px/1.5 Inter,sans-s
 .body{flex:1;display:flex;min-height:0}
 .convo{flex:1;display:flex;flex-direction:column;min-height:0}
 .rail,.side{display:none}
-.desktop .rail{display:flex;flex-direction:column;gap:14px;width:56px;padding:14px 12px;background:#464775}
-.rail i{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.25)}.rail i.on{background:#fff}
+.desktop .rail{display:flex;flex-direction:column;gap:6px;width:72px;padding:10px 4px;background:#464775}
+.rb{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:0;padding:6px 2px;border:0;border-radius:6px;background:none;color:#fff;font:400 10px Inter,sans-serif}
+.rb .ic{width:26px;height:26px}.rail .ic svg{stroke:#fff}
+.rb.hub .ic{background:var(--hub);border-radius:7px;padding:3px}.rb.hub svg{stroke:#fff}
 /* Desktop side panel: the 2019 portal widgets, next to the chat */
 .desktop .side{display:block;width:300px;padding:14px;border-left:1px solid var(--hair);background:#fff;overflow-y:auto}
 .side h3{font-size:13px;margin:0 0 6px;color:var(--second)}
@@ -57,10 +59,10 @@ button:disabled{opacity:.45;cursor:default}
 .tabs{display:flex;justify-content:space-around;padding:6px 4px 8px;background:#fff;border-top:1px solid var(--hair)}
 .desktop .tabs{display:none}
 .tab{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:0;padding:4px 6px;border:0;background:none;color:var(--second);font:400 11px Inter,sans-serif}
-.tab i{width:22px;height:22px;border-radius:6px;background:#c7c8e8}
-.tab.hub i{background:var(--hub)}.tab.hub{color:var(--ink);font-weight:600}
-.tab.on{color:var(--frame)}.tab.on i{outline:2px solid var(--frame)}
-.rail .hub{background:var(--hub)}
+.ic{display:block;width:24px;height:24px}.ic svg{width:100%;height:100%;fill:none;stroke:var(--second);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--frame);font-weight:600}.tab.on svg{stroke:var(--frame)}
+/* Digital Hub, pinned: a yellow tile with a white headset */
+.tab.hub .ic{background:var(--hub);border-radius:7px;padding:3px}.tab.hub svg{stroke:#fff;stroke-width:2}
 .home-row{display:flex;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--hair)}
 .home-row i{width:36px;height:36px;border-radius:50%;background:#d7d8f0;flex:none}
 .home-row b{display:block;font-size:14px}.home-row span{font-size:13px;color:var(--second)}
@@ -99,7 +101,7 @@ button:disabled{opacity:.45;cursor:default}
   <section class="device phone" id="frame" aria-label="Digital Hub chat">
     <header class="top"><b id="device">Digital Hub demo</b><small>Concept mock-up. Not Microsoft Teams.</small></header>
     <div class="body">
-      <nav class="rail"><i title="Activity"></i><i title="Chat"></i><i title="Teams"></i><i title="Calendar"></i><i class="hub" id="railhub" title="Digital Hub"></i></nav>
+      <nav class="rail"><button class="rb"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a5 5 0 0 0-5 5v3.5L5.5 15h13L17 12.5V9a5 5 0 0 0-5-5z"/><path d="M10 18a2 2 0 0 0 4 0"/></svg></span>Activity</button><button class="rb"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v9H10l-4 3v-3H5z"/></svg></span>Chat</button><button class="rb"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="13" rx="2"/><path d="M4.5 10h15M9 4v4M15 4v4"/></svg></span>Calendar</button><button class="rb"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5h3l1.5 4-2 1.3a9 9 0 0 0 4.7 4.7l1.3-2 4 1.5v3a2 2 0 0 1-2 2A14 14 0 0 1 5 6.5a2 2 0 0 1 2-2z"/></svg></span>Calls</button><button class="rb hub" id="railhub"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 13v-1a6 6 0 0 1 12 0v1"/><rect x="4.5" y="13" width="3.5" height="5" rx="1.2"/><rect x="16" y="13" width="3.5" height="5" rx="1.2"/></svg></span>Digital Hub</button></nav>
       <div class="convo">
         <div class="chat" id="chat" aria-live="polite"></div>
         <div class="compose hidden" id="compose">
@@ -118,7 +120,7 @@ button:disabled{opacity:.45;cursor:default}
         </section>
       </aside>
     </div>
-    <nav class="tabs"><button class="tab"><i></i>Activity</button><button class="tab on" id="tabchat"><i></i>Chat</button><button class="tab"><i></i>Teams</button><button class="tab"><i></i>Calendar</button><button class="tab hub" id="tabhub"><i></i>Digital Hub</button></nav>
+    <nav class="tabs"><button class="tab"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a5 5 0 0 0-5 5v3.5L5.5 15h13L17 12.5V9a5 5 0 0 0-5-5z"/><path d="M10 18a2 2 0 0 0 4 0"/></svg></span>Activity</button><button class="tab on" id="tabchat"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v9H10l-4 3v-3H5z"/></svg></span>Chat</button><button class="tab"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="13" rx="2"/><path d="M4.5 10h15M9 4v4M15 4v4"/></svg></span>Calendar</button><button class="tab"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5h3l1.5 4-2 1.3a9 9 0 0 0 4.7 4.7l1.3-2 4 1.5v3a2 2 0 0 1-2 2A14 14 0 0 1 5 6.5a2 2 0 0 1 2-2z"/></svg></span>Calls</button><button class="tab hub" id="tabhub"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 13v-1a6 6 0 0 1 12 0v1"/><rect x="4.5" y="13" width="3.5" height="5" rx="1.2"/><rect x="16" y="13" width="3.5" height="5" rx="1.2"/></svg></span>Digital Hub</button></nav>
   </section>
   <aside class="guide">
     <p class="now" id="now"></p>
