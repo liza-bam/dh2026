@@ -402,8 +402,16 @@ const scenarios = [
     if (r === 'Still not working') {
       step('Intake agent', 'The fix did not help: the problem is on the network side');
       await say('The problem is on the network side. I am bringing in a person.');
-      await m.handOver('Tracy from IT', ['She already knows what happened'], null);
-      await say('I see it: the hotel network blocks the VPN. Use your phone hotspot for now, I have filed it with the network team.', 'Tracy', true);
+      await m.handOver('Tracy from IT', ['She already knows: you are at a hotel, the VPN app is updated, it still does not connect'], 'Allow remote session');
+      step('Tracy', 'Reads the handoff: hotel network, VPN app updated, still no connection');
+      await say('I see the whole story. Many hotel networks block the usual VPN connection. I am switching your VPN to the mode that works through hotel Wi-Fi.', 'Tracy', true);
+      step('Tracy', 'Switches the VPN to the hotel-friendly mode in the remote session');
+      await wait(1500);
+      await say('Done. Try to connect now.', 'Tracy', true);
+      await ask(['Connected, thank you']);
+      await say('Great. The VPN will now pick this mode on its own in any hotel.', 'Tracy', true);
+      step('Fix agent', 'Drafts a new fix: switch to the hotel-friendly mode when the usual one fails');
+      step('Engineer', 'Approves the new fix. Next time the fix agent does it without a person');
     }
     await m.feedback();
   } },
