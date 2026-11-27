@@ -93,6 +93,7 @@ button:disabled{opacity:.45;cursor:default}
 .details{margin-top:8px;font-size:13px}.details p{margin:4px 0}.details ol{margin:6px 0 0;padding-left:18px;color:var(--second)}
 .total{margin-top:8px;font-size:14px;font-weight:600}
 .switch{display:flex;gap:6px;margin-top:16px}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.examples button{text-align:left;min-height:44px;font-size:15px;border-color:var(--frame);color:var(--frame)}
 </style>
 </head>
 <body>
@@ -124,8 +125,9 @@ button:disabled{opacity:.45;cursor:default}
   <aside class="guide">
     <p class="now" id="now"></p>
     <h2>Version 1: ten fixed journeys</h2>
-    <p>Describe a problem in your own words. A small, cheap model sends it to one of ten journeys, or files a ticket.</p>
-    <p class="empty">Meeting room · VPN · Password · Channel access · Lost laptop · Client files · Assistant's Outlook · New device · Scam email · Software install</p>
+    <p>A small, cheap model sends each request to one of ten journeys, or files a ticket.</p>
+    <div class="examples" id="examples"></div>
+    <p>You can describe the same ten problems in your own words. The agent understands them too.</p>
     <h2>How it runs</h2>
     <div class="flow" id="agents"><p class="empty">Nothing yet</p></div>
     <p class="total" id="total"></p>
@@ -605,6 +607,20 @@ const scenarios = [
 ];
 
 // Start: something is not working, and Teams is already open ---------------------------------
+// Each button sends what a person would write; the intake model still picks the journey
+const EXAMPLES = [
+  ['Meeting room', 'The screen in room 4B is not working, my meeting starts in 10 minutes', 'Meeting room'],
+  ['VPN', 'VPN does not connect from the hotel', 'VPN offsite'],
+  ['Password', 'I am locked out of my laptop', 'Password reset'],
+  ['Channel access', 'I need access to the Atlas client channel', 'Teams channel access'],
+  ['Lost laptop', 'My laptop was stolen at the airport', 'Lost laptop'],
+  ['Client files', 'Canvas will not open the Atlas client files', 'Client files in Canvas'],
+  ["Assistant's Outlook", 'My new assistant needs access to my calendar and inbox', 'Outlook access for an assistant'],
+  ['New device', 'I need a second monitor', 'Ordering a peripheral'],
+  ['Scam email', 'I clicked a link in a strange email and typed my password', 'Email scam'],
+  ['Software install', 'I need Visio for a client call today', 'Failed software install'],
+  ['Something else', 'The printer on floor 3 keeps jamming', null],
+];
 let place = 'phone';
 function home() {
   device(`Teams, on the ${place}`);
@@ -631,10 +647,15 @@ async function openHub() {
 }
 $('tabhub').onclick = openHub;
 $('railhub').onclick = openHub;
+$('examples').append(...EXAMPLES.map(([label, text, j]) => {
+  const b = el('button', '', label);
+  b.onclick = async () => { if (busy) return; await openHub(); intake(text, j); };
+  return b;
+}));
 
 // The intake agent: a small model picks a fixed journey, or fills a ticket and labels it
 const live = location.protocol.startsWith('http') && !location.hostname.endsWith('claudeusercontent.com');
-async function intake(text) {
+async function intake(text, offline) {
   busy = true;
   topic = text;
   me(text);
@@ -649,7 +670,10 @@ async function intake(text) {
       step('Intake agent', `${r.usage.in} tokens in, ${r.usage.out} out: $${r.usage.cost.toFixed(5)}`);
       spend('Intake agent', r.usage.cost);
     } catch (e) { await say('I cannot reach the intake agent right now. Try again in a minute.'); busy = false; return; }
-  } else { await say('This preview cannot reach the model. Open the hosted demo to try it.'); busy = false; return; }
+  } else if (offline !== undefined) {
+    step('Intake agent', 'Offline preview: routed without the model');
+    r = { journey: offline || 'none', ticket: offline ? null : { category: 'Printing', urgency: 'normal', group: 'Workplace', summary: 'The printer on floor 3 keeps jamming.', label: 'printer jams' } };
+  } else { await say('Free text works in the hosted demo. Here, use the buttons on the right.'); busy = false; return; }
   const s = scenarios.find(x => x.title === r.journey);
   step('Fixed journey?', s ? `Yes: ${s.title}` : 'No journey yet');
   document.querySelectorAll('.branches span')[s ? 0 : 1].classList.add('taken');
