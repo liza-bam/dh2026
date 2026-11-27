@@ -12,6 +12,7 @@ import agent26
 import split26
 import cards26
 import paths26
+import support19
 
 # In the artifact viewer, #links need a script to scroll inside the page
 LINK_JS = """<script>(function(){function go(id){var t=id&&document.getElementById(decodeURIComponent(id));if(t)t.scrollIntoView();}
@@ -32,6 +33,7 @@ D19 = [
     ('D19-8', 'Scenario: password reset', 'Help at the point of need, on the phone and on the Windows lock screen', d_scenarios.password),
     ('D19-9', 'Scenario: meeting room', 'The room is changed before the meeting is lost; the bot and a live agent step in when needed', d_scenarios.meeting_room),
     ('D19-10', 'Scenario: VPN access offsite', 'The error is found before the employee calls, with the likely cause and a short lesson', d_scenarios.vpn),
+    ('D19-11', 'Support paths, 2019', 'Designed for EY Digital Hub: automation first, a person when it fails, and every manual fix checked for automation', support19.build),
 ]
 
 D26 = [

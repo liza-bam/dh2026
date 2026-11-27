@@ -30,6 +30,12 @@ Digital Hub reached the final round of the bid. The client called it the stronge
 
 It had one limit. The AI bot could only handle cases someone had written in advance, and every proactive behavior was a separate script. Anything new became a ticket. That limit is where 2026 starts.
 
+The support paths already followed the logic 2026 uses: monitoring finds a problem, AI scripts try to fix it, a person works the ticket when they fail, and every manual fix is checked for automation. Building it was the hard part: four teams (Digital Hub, Automation, ServiceNow, Genesys) and their vendors, agreements negotiated again and again, integrations written by hand, and a new script for every new case. It cost so much that manual support was cheaper.
+
+What changed by 2026: the platforms ship their own agents (ServiceNow, Nexthink, Microsoft Defender), so they are connected rather than built; agents reach systems through standard connectors; an agent gets its own identity, like an employee (Microsoft Entra Agent ID), so access is agreed once; and small models cost little, about $300 a month for 10,000 employees. The 2019 paths can work now, with one change: AI only where a request needs a decision.
+
+Visual: [D19-11] Support paths, 2019.
+
 Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support. The rest of D19 behind "see more diagrams".
 
 ## Three rules before any agent

@@ -8,7 +8,26 @@
 
 ## Where it started
 
-In 2019 I designed Digital Hub for EY (https://sandy.tayts.com/dh.html): ten journeys from research, each a fixed flow. In 2026 I asked where AI agents would help today.
+In 2019 I designed Digital Hub for EY (https://sandy.tayts.com/dh.html). Its support paths already used AI: monitoring, self-healing scripts, and a check on every manual fix: can it be automated?
+
+Visual: [D19-11] Support paths, 2019.
+
+## Why it was hard
+
+- Four teams and four vendors, and every agreement negotiated again and again.
+- Every integration written by hand.
+- Every new case a new script.
+
+It cost so much that manual support was cheaper.
+
+## What changed
+
+- **Platforms ship their own agents.** ServiceNow, Nexthink and Microsoft Defender: connected, not built.
+- **Standard connectors.** Agents reach the systems without hand-written integrations.
+- **Agents get identities, like employees.** Microsoft Entra Agent ID: access is agreed once.
+- **Small models are cheap.** About $300 a month for 10,000 employees.
+
+The 2019 paths work now, with one change: AI only where a request needs a decision.
 
 ## Where AI helps
 
