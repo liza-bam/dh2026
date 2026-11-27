@@ -357,17 +357,18 @@ const m = {
     const num = tickets.add(`${app} install`, 'Software', 'REQ', a === 'Later' ? 'Install later' : 'Installing');
     step('ServiceNow ticket', `Request ${num}: ${app}, ${a === 'Later' ? 'install later' : 'installing'}`);
     if (a === 'Later') {
-      // The employee said "a client call": the agent does not guess which one, it shows today's calls from the calendar
-      step('Fix agent', 'Reads today\'s calendar: two client calls');
-      const call = await card('Install software', 'Which call is it?', ['From your calendar today'],
-        ['Atlas kickoff\n2:00 pm', 'Northwind review\n4:30 pm', 'Another call\nNot in my calendar'], { stack: true });
-      const known = { 'Atlas kickoff': ['1:30 pm', '2 pm'], 'Northwind review': ['4 pm', '4:30 pm'] }[call];
-      step('Fix agent', known ? `The journey sets one reminder: ${known[0]}, before ${call}` : 'The journey sets one reminder: in an hour');
-      await say(known ? `OK. Your request is ${num}. I will check with you at ${known[0]}, before ${call}.` : `OK. Your request is ${num}. I will check with you in an hour.`);
+      // One short reminder: 15 minutes is soon enough for a call today
+      if (await card('Install software', 'Shall I remind you in 15 minutes?', [], ['Yes', 'No']) === 'No') {
+        step('Fix agent', 'No reminder. The request stays open');
+        await say(`OK. Request ${num} stays open: install it any time from My requests.`);
+        return false;
+      }
+      step('Fix agent', 'The journey sets one reminder: in 15 minutes');
+      await say(`OK. Your request is ${num}. I will remind you in 15 minutes.`);
       now('The employee goes back to work. Nobody needs to look at the ticket: the agent comes back by itself.');
-      await later(known ? `At ${known[0]}` : 'An hour later');
+      await later('15 minutes later');
       step('Fix agent', 'Comes back once, as the journey says');
-      if (await card('Install software', known ? `${call} is at ${known[1]}. Install ${app} now?` : `Ready to install ${app}?`, ['About 5 minutes'], ['Install now', 'Not now']) === 'Not now') {
+      if (await card('Install software', `Ready to install ${app}?`, ['About 5 minutes'], ['Install now', 'Not now']) === 'Not now') {
         step('Fix agent', 'No more reminders. The request stays open');
         await say(`OK. Request ${num} stays open: install it any time from My requests.`);
         return false;
