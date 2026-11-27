@@ -6,11 +6,11 @@ The technical document behind the case study: the full logic, architecture, agen
 
 **Title:** Digital Hub, 2026
 
-**Subtitle:** In 2019 I designed IT support for EY that fixes problems before people notice them. In 2026 I rebuilt it with AI agents, on my own.
+**Subtitle:** In 2019 I designed IT support for EY that fixes problems before people notice them. In 2026 I went back and asked how I would build it today, with AI agents.
 
 **Role:** UX, product and service designer. Service design, agent architecture, prototype.
 
-**Timeline:** 2019–2020 proposal for EY at Wipro; 2026 rebuild.
+**Timeline:** 2019–2020 for EY; 2026, my own project.
 
 **Links:** live demo (when built), 2019 case study, diagrams.
 
@@ -18,15 +18,15 @@ The technical document behind the case study: the full logic, architecture, agen
 
 **Problem.** EY employees work on tight client deadlines, but one IT issue meant 3+ support channels, 30%+ of cases lost between teams, and the same checks again and again. In 2019 I designed Digital Hub to solve problems before people noticed them, but every case the bot could handle had to be written in advance.
 
-**What I did.** Took the 2019 service as the brief and rebuilt it with specialized AI agents: the same journeys, the same employee data, the same systems, with agents doing the work people had to script. Re-evaluated the stack, gave agents access the way people get it, and built a live demo.
+**What I did.** Went back to the 2019 service and asked how I would build it today: the same journeys, the same employee data, the same systems, with agents only where a step needs a decision. Followed one 2019 scenario, a bad software update, through both years, checked the stack again, and built a demo.
 
 ## Where it started: 2019
 
-In 2019, on Wipro's proposal for EY, I designed Digital Hub: one app for every IT issue, live status on every request, and support that acts before people notice a problem. I led a team of 7 through the ten journeys EY's discovery named, from password resets to lost laptops, and built them from shared modules so the same task always looked the same.
+In 2019 I designed Digital Hub for EY: one app for every IT issue, live status on every request, and support that acts before people notice a problem. I led a team of 7 through the ten journeys found in research, from password resets to lost laptops, and built them from shared modules so the same task always looked the same.
 
 The delivery plan followed the same idea. The first journey, the laptop refresh, was the MVP. Every next journey reused its modules and added only what was unique to it, about two sprints each. The rollout went in waves: 500 people in the UK first, then 17,500; in the US and India, 20,000 first; in other countries, 500, then 2,000, then everyone, each in its own language. And the platform sat on top of EY's systems through APIs, so EY could change a system without changing what employees saw.
 
-Digital Hub reached the final round of the bid. The client called it the strongest part of the proposal, and more than 50 later Wipro bids were built on it.
+Digital Hub reached the final round of the bid. The client called it the strongest part of the proposal, and more than 50 later bids were built on it.
 
 It had one limit. The AI bot could only handle cases someone had written in advance, and every proactive behavior was a separate script. Anything new became a ticket. That limit is where 2026 starts.
 
@@ -36,7 +36,7 @@ What changed by 2026: the platforms ship their own agents (ServiceNow, Nexthink,
 
 Visual: [D19-11] Support paths, 2019.
 
-Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support. The rest of D19 behind "see more diagrams".
+Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support.
 
 ## The use case: a bad update, 2019 and 2026
 
@@ -108,15 +108,8 @@ What Peter sees, in order: "Visio crashed. Here is a way to keep working." "It's
 - Microsoft 365 Apps Cloud Update: https://learn.microsoft.com/microsoft-365-apps/admin-center/cloud-update
 - Cloud Update general availability: https://techcommunity.microsoft.com/t5/microsoft-365-blog/cloud-update-reaches-general-availability-transforming-microsoft/ba-p/4440710
 
-## Three rules before any agent
+## The stack, checked again
 
-### 1. It costs less than the help desk it replaces
-Every solved case has a price: model calls, licences, the engineer who approves a new fix. Fixed flows and domain agents run on small, cheap models. The large model works only where cases are few and hard. Cost is measured per solved case, against the cost of the same case at the help desk.
-
-### 2. Agents get access the way people do
-Each agent has its own identity, its own role and only the rights that role needs. The password agent resets passwords and nothing else. Risky actions wait for a person.
-
-### 3. A new year means a new look at the stack
 Some platforms I had to design around in 2019 are gone. Others became stronger. I checked each one against six questions:
 - Can agents act through it, not just read from it?
 - Does it give agents their own identity and keep them within the employee's rights?
@@ -125,7 +118,7 @@ Some platforms I had to design around in 2019 are gone. Others became stronger. 
 - Is every agent action on record?
 - Can we change the model or the vendor without rebuilding?
 
-Eight platforms stay, and each now has a way for agents to act through it. Two go: the Avaamo bot, because the intake agent does its job, and Wipro Holmes, because fixes now run through Nexthink and Intune.
+Eight platforms stay, and each now has a way for agents to act through it. Two go: the Avaamo bot, because the intake agent does its job, and the 2019 AI scripts library, because fixes now run through Nexthink and Intune.
 
 Visual: [D26-6] Stack scorecard.
 
@@ -135,7 +128,7 @@ Visual: [D26-6] Stack scorecard.
 
 The starting point is research: the ten most common IT requests at EY. I sort them by one question: does solving it need a decision?
 
-Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
+Ordering a monitor does not. The steps are always the same, and the rules decide: which monitor the person may have, and whether it comes from stock or is bought. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
 
 Of the ten, six need no decision: ordering a device, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email. Four do: a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open. That leaves four problems for agents to think about, not ten.
 
@@ -148,21 +141,17 @@ The intake agent only recognizes that a message is about security. When in doubt
 So every request takes one of three paths.
 
 ### 1. Simple actions: fixed flows
-Ordering a device, proxy access to mail and calendar, joining a Teams channel, resetting a password, a stolen laptop, a scam email, booking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
+Ordering a device, proxy access to mail and calendar, joining a Teams channel, resetting a password, a stolen laptop, a scam email. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the rules and the employee's choices decide, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
 
-Digital Hub adds no AI after the intake, but the platforms it calls may bring their own. An order goes to SAP Ariba, where Joule fills in the requisition with the contract supplier and routes the approval; the employee never searches Ariba.
-
-Visual: [D26-14] Path 1: a fixed flow.
+Digital Hub adds no AI after the intake. An order follows ServiceNow's catalog: ServiceNow picks the model by the person's role, checks stock first, and only then sends SAP Ariba a ready part number to buy from the contract supplier.
 
 ### 2. Problems: small agents, one for each domain
 Not one big agent that knows everything. Small agents, each an expert in one domain, on small models: cheaper to run, safer because each can touch only its own systems, and easier to test before release.
 
-Visual: [D26-15] Path 2: a domain agent.
-
 A meeting room that does not work, a failed install, VPN at a hotel, client files that will not open. Each domain has its own agent: Devices; Software; Mail and calendar; Workplace. Security has no agent of its own: Microsoft Defender judges threats, the security team decides, and the rest runs as fixed flows. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
 - what it does on its own, like clearing temporary files;
 - what waits for the employee's yes;
-- how many tries it gets before it brings in a person;
+- how many tries it gets before it brings in a person.
 
 **Why a small agent is enough.** The system around it is strict:
 - Every laptop starts from a standard image for its group: auditors, consultants, designers and a few others. The groups differ, but each image is fixed.
@@ -193,14 +182,13 @@ Many problems cross domains. A VPN that will not connect can be the app, the acc
 - **Software:** installs, repairs, VPN, apps.
 - **Mail and calendar:** delegation, mailboxes, Teams channels.
 - **Workplace:** rooms, desks, facilities.
-- **Watcher:** reads telemetry and opens cases before people notice.
 
 One rule for all of them: every agent has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes, and a new fix runs only after an engineer approves it.
 
 **The Software agent: five cases, one ladder** (diagram [D26-8])
 - **Visio will not install, with a client call in 20 minutes.** The data shows a broken installer cache, so no restart or clean-up. The call comes first: Visio in the browser now, the laptop fixed after the call. If the repair fails, a person takes over in a remote session.
 - **Excel crashes on the client model.** The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
-- **Outlook will not connect.** First the agent checks whether Microsoft 365 is down for everyone. If it is, there is nothing to fix on the laptop: it files a ticket for the Nexthink agent and gives the employee the number. If it is only this employee, it clears the cached sign-in and the Outlook profile.
+- **Outlook will not connect.** First the agent checks whether Microsoft 365 is down for everyone. If it is, there is nothing to fix on the laptop: it files a ticket for the team and gives the employee the number. If it is only this employee, it clears the cached sign-in and the Outlook profile.
 - **No sound in a Teams call that starts in 10 minutes.** The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
 - **Acrobat says the license has expired.** Entitled: the agent reactivates it. Not entitled: it fills in the request and sends it to the manager; once approved, it renews.
 
@@ -215,7 +203,7 @@ Defined the way ServiceNow defines its first-line AI specialist: a role, the kin
 **Tools.** Each one reaches a single system, within the agent's own rights.
 - Read the laptop (Nexthink): disk, crashes, app versions, recent errors.
 - Check the service (Microsoft 365 status, the vendor's status): does it fail for many people?
-- File a ticket for the Nexthink agent (ServiceNow).
+- File a ticket for the team, or link the incident to a problem (ServiceNow).
 - Send the manager a request (Teams), filled in by the agent.
 - Check the license (ServiceNow): is the employee entitled?
 - Read the image and the catalog: what should be on the employee's laptop.
@@ -245,10 +233,8 @@ When nothing fits, the intake agent fills a ServiceNow ticket and sends it to th
 
 What a team solves goes back down. Its agent turns the solution into knowledge or a new fix for the first line, an engineer approves it, and next time the same case never becomes a ticket.
 
-Visual: [D26-16] Path 3: a team agent.
-
 ### Before anyone asks
-In 2019 the heart of Digital Hub was support that acts before people notice a problem. In 2026 that is the watcher agent. It reads device telemetry, finds the disk that is almost full or the VPN app that is out of date, opens the case itself and gives it to the right domain agent. The agent fixes it quietly, or tells the employee in one message what it did. The best request is the one nobody has to make.
+In 2019 the heart of Digital Hub was support that acts before people notice a problem. In 2026 the platforms do the watching: Nexthink's monitors find the problem, a webhook files the case in ServiceNow, and the right domain agent takes it. The agent fixes it quietly, or tells the employee in one message what it did. The bad update above is this path. The best request is the one nobody has to make.
 
 ### How it grows
 - **New flows and new skills.** Ticket labels show what people ask most. A frequent simple request becomes a new fixed flow. A frequent problem becomes a new skill for its domain agent.
@@ -280,7 +266,7 @@ An estimate, not a measurement, per 10,000 employees a month.
 Sources: MetricNet benchmarks via HDI (2020: tickets per user, cost per level, time saved; 2023: cost per contact).
 
 ### Why this works
-Most requests are simple, and simple requests run on flows and small models, so the first rule holds from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.
+Most requests are simple, and simple requests run on flows and small models, so the cost stays low from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.
 
 Agents go only where a decision is needed. Everything else stays a cheap, predictable flow.
 
@@ -288,15 +274,13 @@ The logic was checked against the market in November 2026: ServiceNow's AI front
 
 <small>Gartner expects over 40% of agentic AI projects to be canceled by the end of 2027 because of cost, unclear value or weak risk controls, and warns about "agent washing": chatbots and RPA renamed as agents. Digital Hub uses an agent only where a flow cannot do the job.</small>
 
-Visual: [D26-7] Delivery plan (to redraw).
-
 ## Architecture
 
 Nine layers, each with one job.
 
 1. **Channels.** Teams, the Digital Hub website, email and voice. It is one conversation, wherever it starts.
 2. **Intake agent.** Reads every request and sends it down one of the three paths: a fixed flow, a domain agent or a team. Small model. Changes nothing in any system itself.
-3. **Domain agents.** Devices; Software; Mail and calendar; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. The watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
+3. **Domain agents.** Devices; Software; Mail and calendar; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. Every case has one lead agent, which brings in the others. All run on small models, each with its own identity and only the rights its domain needs.
 4. **Team agents.** One for each second-line team, working for the engineers, not the employees. Large model: few cases, hard ones.
 5. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
 6. **Knowledge.** A library for each domain and each team. Agents answer only from approved EY sources, with a link to the source.
@@ -305,12 +289,6 @@ Nine layers, each with one job.
 9. **People.** Employees who approve, live support, engineers and the security team: the cases that need judgment.
 
 Visual: [D26-2] Architecture, the simple version. The nine layers above are the detail behind it.
-
-## Ten scenarios
-
-The ten scenarios are the ten journeys from 2019, now run by agents. Each card shows how a scenario starts, which agent does the work, which systems it uses, what solved looks like, and when a person steps in. Three of the ten never reach the help desk at all: channel access, Outlook access for an assistant and ordering a peripheral.
-
-Visual: [D26-4] The 10 scenarios.
 
 ## Modules
 
@@ -338,7 +316,7 @@ If the agent decided on its own whether to come back, the same request could go 
 ## Rules for the employee's experience
 
 - **Never ask twice.** If the employee has already said what happened, nobody asks again: not the agent, not a person.
-- **Real choices, not yes or no.** A catalog of monitors and where to deliver. A level of proxy access: see the calendar, manage the calendar, calendar and email.
+- **Real choices, not yes or no.** A level of proxy access: see the calendar, manage the calendar, calendar and email.
 - **Harmless steps need no question.** Clearing temporary files is not risky: the agent does it and says so.
 - **Declining is a choice, not a dead end.** Not now: "Is it urgent?" Yes: straight to a person, no more questions. No: "Shall I file a ticket?" Yes: it is filed and the number given. Never mind: cancelled.
 - **Confirmation means "it is me".** A stolen laptop: the employee confirms who they are in Authenticator, and the laptop is locked and wiped at once, without a second question.
