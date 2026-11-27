@@ -38,19 +38,26 @@ def cards(uid, label, items, h=230):
 
 
 def agents():
-    return cards('ag4', 'Small agents: one per domain, kept small by a strict system, ready agents where they exist, agents for the second line too', [
-        ('smart_toy', 'One agent per domain', 'Devices, Software, Mail and calendar, Workplace. Small, cheap, easy to test.'),
-        ('fact_check', 'Kept small', 'Standard laptop images, an approved app list, files in OneDrive, no open internet.'),
-        ('verified_user', 'Ready agents stay', 'Microsoft Defender judges threats. Nexthink takes what fails for many people.'),
-        ('engineering', 'The second line too', 'Team agents help engineers. What they solve becomes a new fix.')])
+    return cards('ag4', 'Four small agents, one for each domain: Devices, Software, Mail and calendar, Workplace', [
+        ('devices', 'Devices', 'Hardware faults and replacements.'),
+        ('apps', 'Software', 'Installs, repairs, VPN, apps.'),
+        ('calendar_month', 'Mail and calendar', 'Delegation, mailboxes, Teams channels.'),
+        ('meeting_room', 'Workplace', 'Rooms, desks, facilities.')], h=200)
+
+
+def system():
+    return cards('sy4', 'Why a small agent is enough: standard images, an approved catalog, files in OneDrive, no open internet', [
+        ('laptop_mac', 'A standard image', 'Every laptop starts from a fixed image for its group.'),
+        ('fact_check', 'An approved catalog', 'Software comes only from the list for each image.'),
+        ('cloud', 'Files in OneDrive', 'Nothing important lives on the laptop.'),
+        ('public_off', 'No open internet', 'Vendor knowledge is checked and loaded in advance.')], h=200)
 
 
 def fence():
-    return cards('fn4', 'The fence: what an agent does on its own, what waits for a yes, when it gives up, and what it never does', [
-        ('check_circle', 'On its own', 'Reads the laptop. Runs approved, harmless fixes.'),
-        ('thumb_up', 'After a yes', 'Anything the employee would notice, like a restart.'),
-        ('support_agent', 'Gives up in time', 'Two failed fixes, and a person takes over with the whole story.'),
-        ('front_hand', 'Never', 'Apps or fixes that are not approved.')], h=200)
+    return cards('fn3', 'The fence of the Software agent: three steps, in order', [
+        ('groups', '1. Fails for many people?', 'Nothing to fix on this laptop. The agent files a ticket for the Nexthink agent and gives the employee the number.'),
+        ('license', '2. A license?', 'Entitled: the agent renews it. Not entitled: it fills in the request for the manager, then renews.'),
+        ('settings_backup_restore', '3. Back to standard', 'Smallest fix first: a known fix, a reinstall, a reset of the laptop (it asks when), then a person.')], h=220)
 
 
 def cost():

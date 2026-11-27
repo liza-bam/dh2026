@@ -20,11 +20,23 @@ One way in, three paths.
 
 Visual: [D26-2] Architecture.
 
-## Small agents, each with a fence
+## Small agents, one for each domain
 
-Visual: [D26-10] Small agents.
+Not one big agent that knows everything. Small models: cheaper, each touches only its own systems, easy to test.
 
-Visual: [D26-11] The fence.
+Visual: [D26-10] Four small agents.
+
+## Why a small agent is enough
+
+The agent knows what each laptop should look like. A diagnosis is the difference from the image, and a fix brings the laptop back to it.
+
+Visual: [D26-13] A strict system.
+
+## The fence
+
+The rules make a fence for each agent. For the Software agent it has three steps.
+
+Visual: [D26-11] The Software agent.
 
 ## Inside the fence, the agent decides
 
