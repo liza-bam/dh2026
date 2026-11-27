@@ -1,6 +1,6 @@
 """Picture cards for the case: small agents, the fence, and the cost."""
 from rich import Rich
-from svg import SECOND
+from svg import SECOND, INK
 from transition import TEAL, TINT
 
 import os
@@ -61,16 +61,16 @@ def fence():
 
 
 def cost():
-    d = Rich('cs26', 1180, 300, 'Cost per 10,000 employees a month: about $268,000 for people at the help desk against about $300 for the models')
-    d.t(20, 40, 'Per 10,000 employees a month, about 13,000 requests', 16, 600)
-    d.t(20, 92, 'People at the help desk', 15, 600)
-    d.rect(260, 66, 820, 40, '#9aa5aa', '#9aa5aa', rx=8)
-    d.t(1096, 92, '$268,000', 16, 600)
-    d.t(20, 152, 'Models', 15, 600)
-    d.rect(260, 126, 3, 40, TEAL, TEAL, rx=1)
-    d.t(276, 152, '$300', 16, 600, fill=TEAL)
-    d.rect(20, 196, 1140, 84, TINT, TINT, rx=12)
-    d.t(44, 230, 'The real saving is time', 16, 600)
-    d.t(44, 258, "About 20 minutes of the employee's time for every request that never reaches a person. At EY, that is billable time.", 14, 400, fill=SECOND)
-    d.H = 300
+    d = Rich('cs26', 1180, 350, 'Cost per 10,000 employees a month: about $268,000 for people at the help desk against about $300 for the models')
+    d.t(20, 44, 'Per 10,000 employees a month, about 13,000 requests', 20, 600)
+    d.t(20, 112, 'People at the help desk', 18, 600)
+    d.rect(300, 80, 740, 48, '#9aa8ae', '#9aa8ae', rx=0)
+    d.t(1056, 112, '$268,000', 20, 600)
+    d.t(20, 184, 'Models', 18, 600)
+    d.rect(300, 152, 4, 48, TEAL, TEAL, rx=0)
+    d.t(318, 184, '$300', 20, 600, fill=TEAL)
+    d.rect(20, 228, 1140, 102, TINT, TINT, rx=0)
+    d.t(44, 268, 'The real saving is time', 20, 600)
+    d.t(44, 302, "About 20 minutes of the employee's time for every request that never reaches a person. At EY, that is billable time.", 17, 400, fill=INK)
+    d.H = 350
     return d
