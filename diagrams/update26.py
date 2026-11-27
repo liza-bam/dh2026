@@ -4,6 +4,29 @@ from rich import Rich
 from svg import SECOND, INK
 from transition import TEAL, TINT
 from cards26 import symbol
+import base64
+from pathlib import Path
+
+VEC = Path(__file__).parent / 'assets' / 'vector'
+
+
+def vec(name):
+    return 'data:image/svg+xml;base64,' + base64.b64encode((VEC / f'{name}.svg').read_bytes()).decode()
+
+
+def mark(d, key, x, y, r):
+    """A platform logo in a disc, drawn from vector files so it stays sharp."""
+    if key == 'now':
+        d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#293e40"/>')
+        d.el.append(f'<image href="{vec("servicenow")}" x="{x - r}" y="{y - r}" width="{2 * r}" height="{2 * r}"/>')
+    elif key == 'nexthink':
+        d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#0044ac"/>')
+        d.t(x, y + 5, 'nexthink', round(r * 0.4), 600, 'middle', fill='#fff')
+    else:
+        name = {'cloud': 'office', 'intune': 'intune'}[key]
+        s = r * 1.15
+        d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>')
+        d.el.append(f'<image href="{vec(name)}" x="{x - s / 2}" y="{y - s / 2}" width="{s}" height="{s}"/>')
 
 W = 1180
 X0, COL = 140, 160            # first column centre, column width
@@ -31,10 +54,10 @@ def person(d, i, kind, badge=None):
     x = cx(i)
     if kind == 'peter':
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="{TINT}"/>')
-        glyph(d, 'laptop_mac', x, PY, 50)
+        glyph(d, 'laptop_outline', x, PY, 50)
     else:
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="#fff" stroke="{TEAL}" stroke-width="2"/>')
-        glyph(d, 'engineering', x, PY, 50)
+        glyph(d, 'support_agent', x, PY, 50)
     d.t(x, PY + R + 22, 'Peter' if kind == 'peter' else 'Engineer', 15, 700, 'middle', fill=INK)
     if badge:
         bx, by = x + 32, PY - 32
@@ -53,19 +76,11 @@ def robot(d, x, y, name):
 
 
 def system(d, x, y, key, name=None):
-    if key == 'intune':
-        d.el.append(f'<circle cx="{x}" cy="{y}" r="{SR}" fill="#fff" stroke="#dce4e7"/>')
-        d.t(x, y + 9, 'Intune', 15, 700, 'middle')
-    elif key == 'hub':
+    if key == 'hub':
         d.el.append(f'<circle cx="{x}" cy="{y}" r="{SR}" fill="#f5c000"/>')
-        glyph(d, 'hub', x, y - 4, 38, '#fff')
-        w = len('Digital Hub') * 8.2 + 18
-        d.rect(x - w / 2, y + SR - 12, w, 22, TEAL, TEAL, rx=11, sw=0)
-        d.t(x, y + SR + 4, 'Digital Hub', 14, 600, 'middle', fill='#fff')
-    elif key == 'cloud':
-        d.logo('office', x - SR, y - SR, 2 * SR)
+        glyph(d, 'hub', x, y, 40, '#fff')
     else:
-        d.logo(key, x - SR, y - SR, 2 * SR)
+        mark(d, key, x, y, SR)
     if name:
         for k, ln in enumerate(name.split('\n')):
             d.t(x, y + SR + 21 + k * 19, ln, 15, 600, 'middle', fill=SECOND)
@@ -165,7 +180,7 @@ def base(uid, label, year):
 def record(d, i, caption, first=False):
     """The ServiceNow record: the one thread every step reads and writes."""
     x = cx(i)
-    d.logo('now', x - 28, SYB - 28, 56)
+    mark(d, 'now', x, SYB, 28)
     d.t(x, SYB + 48, caption, 15, 600, 'middle', fill=SECOND)
     if not first:
         d.el.append(f'<path d="M{cx(i - 1) + 32:.0f} {SYB}H{x - 34:.0f}" fill="none" stroke="{LINE}" stroke-width="1.8" marker-end="url(#m{d.uid})"/>')
@@ -195,11 +210,11 @@ def build19():
     system(d, cx(1), SY1, 'hub'); record(d, 1, 'Ticket', first=True)
     hline(d, cx(0) + SR + 6, cx(1) - SR - 8, SY1)
     d.t((cx(0) + cx(1)) / 2, SY1 - 10, 'Crash', 15, 600, 'middle', fill=SECOND)
-    both(d, cx(1), SY1 + SR + 14, SYB - 34)
+    both(d, cx(1), SY1 + SR + 6, SYB - 34)
     # 3 Digital Hub offers the workaround
     person(d, 2, 'peter', 'message'); system(d, cx(2), SY1, 'hub'); record(d, 2, 'Workaround')
     vline(d, cx(2), SY1 - SR - 6, PY + R + 32, 'Virtual\nmachine', 410)
-    both(d, cx(2), SY1 + SR + 14, SYB - 34)
+    both(d, cx(2), SY1 + SR + 6, SYB - 34)
     # 4 the engineer searches Nexthink; the ticket shows three similar ones
     person(d, 3, 'engineer'); system(d, cx(3), SY1, 'nexthink'); record(d, 3, '3 similar tickets')
     pair(d, cx(3), 'The cause:\nthe update', 'She searches', ly=410, down_first=True)
@@ -207,15 +222,15 @@ def build19():
     # 5 Digital Hub holds the update and tells Peter
     person(d, 4, 'peter', 'message'); system(d, cx(4), SY1, 'hub'); record(d, 4, 'Update held')
     vline(d, cx(4), SY1 - SR - 6, PY + R + 32, 'Update held,\nfix underway', 410)
-    both(d, cx(4), SY1 + SR + 14, SYB - 34)
+    both(d, cx(4), SY1 + SR + 6, SYB - 34)
     # 6 the engineer writes the steps; Digital Hub runs them
     person(d, 5, 'engineer'); system(d, cx(5), SY1, 'hub'); record(d, 5, 'Fix')
     vline(d, cx(5), PY + R + 32, SY1 - SR - 6, 'Steps she\nwrote', 410)
-    both(d, cx(5), SY1 + SR + 14, SYB - 34)
+    both(d, cx(5), SY1 + SR + 6, SYB - 34)
     # 7 Peter hears back and rates it; the ticket closes
     person(d, 6, 'peter', 'done'); system(d, cx(6), SY1, 'hub'); record(d, 6, 'Closed')
     pair(d, cx(6), '\u201cWe fixed it\u201d', 'Rating', ly=410)
-    both(d, cx(6), SY1 + SR + 14, SYB - 34)
+    both(d, cx(6), SY1 + SR + 6, SYB - 34)
     return d
 
 
@@ -248,7 +263,7 @@ def build26():
     both(d, cx(5), SY1 + SR + 14, SYB - 34)
     # the approved change runs: Intune sets the settings, then Cloud Update rolls the update out in waves
     x = cx(5)
-    system(d, x - 40, SY3, 'intune'); system(d, x + 40, SY3, 'cloud', 'Cloud Update')
+    system(d, x - 40, SY3, 'intune', 'Intune'); system(d, x + 40, SY3, 'cloud', 'Cloud Update')
     for dx in (-40, 40):
         d.el.append(f'<path d="M{x:.0f} {SYB + 58:.0f}V{SYB + 72:.0f}H{x + dx:.0f}V{SY3 - SR - 6:.0f}" fill="none" stroke="{LINE}" '
                     f'stroke-width="1.8" stroke-linejoin="round" marker-end="url(#m{d.uid})"/>')
