@@ -74,8 +74,12 @@ So every request takes one of three paths.
 ### 1. Simple actions: fixed flows
 Ordering a device, proxy access to mail and calendar, joining a Teams channel, resetting a password, a stolen laptop, a scam email, booking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
 
+Visual: [D26-14] Path 1: a fixed flow.
+
 ### 2. Problems: small agents, one for each domain
 Not one big agent that knows everything. Small agents, each an expert in one domain, on small models: cheaper to run, safer because each can touch only its own systems, and easier to test before release.
+
+Visual: [D26-15] Path 2: a domain agent.
 
 A meeting room that does not work, a failed install, VPN at a hotel, client files that will not open. Each domain has its own agent: Devices; Software; Mail and calendar; Workplace. Security has no agent of its own: Microsoft Defender judges threats, the security team decides, and the rest runs as fixed flows. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
 - what it does on its own, like clearing temporary files;
@@ -162,6 +166,8 @@ Defined the way ServiceNow defines its first-line AI specialist: a role, the kin
 When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.
 
 What a team solves goes back down. Its agent turns the solution into knowledge or a new fix for the first line, an engineer approves it, and next time the same case never becomes a ticket.
+
+Visual: [D26-16] Path 3: a team agent.
 
 ### Before anyone asks
 In 2019 the heart of Digital Hub was support that acts before people notice a problem. In 2026 that is the watcher agent. It reads device telemetry, finds the disk that is almost full or the VPN app that is out of date, opens the case itself and gives it to the right domain agent. The agent fixes it quietly, or tells the employee in one message what it did. The best request is the one nobody has to make.

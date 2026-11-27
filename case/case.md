@@ -2,47 +2,33 @@
 
 **IT support with AI agents. The first decision was where not to use them.**
 
-A rethink of the EY Digital Hub I designed in 2019 (https://sandy.tayts.com/dh.html): the same research, the same ten journeys, rebuilt for today.
-
 **Role:** UX, product and service designer. Service design, agent architecture.
 
 **Year:** 2026, my own project.
 
-## Most IT support needs no AI
+## Where it started
 
-I asked one question of each journey: does solving it need a decision?
+In 2019 I designed Digital Hub for EY (https://sandy.tayts.com/dh.html): ten journeys from research, each a fixed flow. In 2026 I asked where AI agents would help today.
+
+## Where AI helps
+
+Only where solving a request needs a decision. Of the ten journeys, six need none and four do.
 
 Visual: [D26-9] Six and four.
 
-## How it works
+## One way in, three paths
 
-One way in, three paths.
+An intake agent on a small model reads the request and picks the path: a fixed flow, a domain agent, or a ticket to a team and its agent.
 
 Visual: [D26-2] Architecture.
 
-## Small agents, one for each domain
+## One request on each path
 
-Not one big agent that knows everything. Small models: cheaper, each touches only its own systems, easy to test.
+Visual: [D26-14] Path 1: a fixed flow.
 
-Visual: [D26-10] Four small agents.
+Visual: [D26-15] Path 2: a domain agent.
 
-## Why a small agent is enough
-
-The agent knows what each laptop should look like. A diagnosis is the difference from the image, and a fix brings the laptop back to it.
-
-Visual: [D26-13] A strict system.
-
-## The fence
-
-The rules make a fence for each agent. For the Software agent it has three steps.
-
-Visual: [D26-11] The Software agent.
-
-## Inside the fence, the agent decides
-
-A script does what was asked. An agent solves the real problem.
-
-Visual: [D26-8] A script and an agent.
+Visual: [D26-16] Path 3: a team agent.
 
 ## What it costs
 

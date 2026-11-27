@@ -11,6 +11,7 @@ import scorecard26
 import agent26
 import split26
 import cards26
+import paths26
 
 # In the artifact viewer, #links need a script to scroll inside the page
 LINK_JS = """<script>(function(){function go(id){var t=id&&document.getElementById(decodeURIComponent(id));if(t)t.scrollIntoView();}
@@ -37,6 +38,9 @@ D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
     ('D26-9', 'Six and four', 'Of the ten journeys, six run as fixed flows and four go to agents', split26.build),
     ('D26-2', 'Architecture', 'One way in, three paths, and the systems the agents work with', arch26.build),
+    ('D26-14', 'Path 1: a fixed flow', 'An employee orders a second monitor', paths26.fixed),
+    ('D26-15', 'Path 2: a domain agent', 'Visio will not install, with a client call in 20 minutes', paths26.domain),
+    ('D26-16', 'Path 3: a team agent', 'The office Wi-Fi keeps dropping', paths26.team),
     ('D26-10', 'Four small agents', 'One for each domain, on small models', cards26.agents),
     ('D26-13', 'A strict system', 'What every laptop and every agent starts from', cards26.system),
     ('D26-11', 'The Software agent', 'Three steps, in order', cards26.fence),
