@@ -32,6 +32,8 @@ Working draft. Diagram IDs refer to `diagrams.html`. Sections marked "to write" 
 
 In 2019, on Wipro's proposal for EY, I designed Digital Hub: one app for every IT issue, live status on every request, and support that acts before people notice a problem. I led a team of 7 through the ten journeys EY's discovery named, from password resets to lost laptops, and built them from shared modules so the same task always looked the same.
 
+The delivery plan followed the same idea. The first journey, the laptop refresh, was the MVP. Every next journey reused its modules and added only what was unique to it, about two sprints each. The rollout went in waves: 500 people in the UK first, then 17,500; in the US and India, 20,000 first; in other countries, 500, then 2,000, then everyone, each in its own language. And the platform sat on top of EY's systems through APIs, so EY could change a system without changing what employees saw.
+
 Digital Hub reached the final round of the bid. The client called it the strongest part of the proposal, and more than 50 later Wipro bids were built on it.
 
 It had one limit. The AI bot could only handle cases someone had written in advance, and every proactive behavior was a separate script. Anything new became a ticket. That limit is where 2026 starts.
@@ -66,6 +68,8 @@ Visual: [D26-6] Stack scorecard.
 ## The logic: how Digital Hub grows
 
 An orchestrator that talks to every employee from day one makes the best demo and the worst plan. EY is a very large company, and every conversation on a large model costs money. So Digital Hub starts cheap and earns the right to use the large model.
+
+The plan grows out of 2019: start with one set of journeys, reuse modules for the next ones, roll out in waves. What changes is where new journeys come from. In 2019 each one cost about two sprints of design and build. In 2026 the requests themselves show which journey to build next.
 
 ### Stage 1. Ten fixed journeys from day one
 The ten most common requests from 2019 become fixed journeys: the same steps every time, built from shared modules. An intake agent on a small model reads every request and picks the journey.
