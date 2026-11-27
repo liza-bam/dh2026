@@ -24,26 +24,12 @@ code{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:4px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 @media (max-width:700px){.grid{grid-template-columns:1fr}}
 small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
-</style></head><body><main><h1>Digital Hub, 2026</h1>
-<p><strong>IT support for EY, rebuilt with AI agents. The first decision was where not to use them.</strong></p>
-<p><strong>Role:</strong> UX, product and service designer. Service design, agent architecture, prototype.</p>
-<p><strong>Year:</strong> 2026, my own project.</p>
-<p><strong>Links:</strong> live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).</p>
-<h2>Most IT support needs no AI</h2>
-<p>Research named the ten most common IT requests at EY. I asked one question of each: does solving it need a decision?</p>
-<ul>
-<li><strong>No:</strong> a new monitor, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email.</li>
-<li><strong>Yes:</strong> a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open.</li>
-</ul>
-<p>The first six run as fixed flows. Security above all: a stolen laptop or a scam email must always be handled fast and never wrong, so the steps are fixed, Microsoft Defender judges the email, and the security team makes the real calls. When in doubt, the intake agent sends a case to security: a false alarm is cheap. Agents get only the other four.</p>
-<p>And not one big agent: small ones, one per domain. They stay small because the system around them is strict: standard laptops, apps that install themselves, files in OneDrive. A software problem has a short ladder, from a known fix to a reset; the agent picks the step and the moment. Anything else goes up to people.</p>
-<h2>What I designed</h2>
-<ul>
-<li><strong>One way in.</strong> A small, cheap model reads what the employee writes and picks the path.</li>
-<li><strong>An agent for each domain.</strong> Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.</li>
-<li><strong>Agents for the people behind the help desk, too.</strong> When nothing fits, the ticket goes to the right team, and that team's agent helps its engineers. What they solve becomes a fix for next time.</li>
-<li><strong>Help before anyone asks.</strong> A watcher agent finds the full disk before Visio fails.</li>
-</ul>
+</style></head><body><main><h1>What I would change today</h1>
+<p><strong>Most IT support needs no AI.</strong></p>
+<p>Of the ten journeys EY's research named, six need no decision: a new device, proxy access to mail and calendar, a Teams channel, a password reset, a stolen laptop, a scam email. They run as fixed flows: the employee chooses, the systems act. Security above all: it must always be fast and never wrong, so its steps are fixed and people make the real calls.</p>
+<p>Four need a decision: a meeting room that does not work, a failed install, VPN at a hotel, client files that will not open. Only these go to agents.</p>
+<h2>Small agents, each with a fence</h2>
+<p>Every request comes in through one intake agent on a small model. Simple actions go to fixed flows. Problems go to an agent for their domain: Devices, Software, Mail and calendar, Workplace. Each has its own tools and a fence: what it does on its own, what waits for a yes, when it calls a person. Anything that fits nowhere goes to the right team as a ticket, and that team has its own agent to help its engineers.</p>
 <p>Visual: [D26-2] Architecture.</p><figure class="fig" id="D26-2"><figcaption><b><span class="fid">D26-2</span>Architecture</b><span>One way in, three paths, and the systems the agents work with</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-label="Digital Hub 2026 architecture: one way in; three paths: fixed flows, domain agents on small models, team agents on a large model; and the systems they work with" class="case-diagram" width="1200" height="850">
 <defs><marker id="ma26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
 <rect x="20" y="20" width="1160" height="76" rx="14" fill="#f7fafb" stroke="#dce4e7" stroke-width="1.5"/>
@@ -154,13 +140,8 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="658" y="794" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#223640" text-anchor="start">SAP Ariba</text>
 <text x="658" y="812" font-family="'Inter', sans-serif" font-size="12" font-weight="400" fill="#3f5f6b" text-anchor="start">Ordering devices</text>
 </svg></figure>
-<h2>How an agent works</h2>
-<p>A fence, and freedom inside it.</p>
-<p>Every laptop starts from a standard image for its group, and software comes from an approved list. That gives the Software agent its fence:
-- If a program fails for many people, it files a ticket for the Nexthink agent and tells the employee.
-- If the license is missing, it renews it, or sends the manager a ready request.
-- On the laptop it uses only approved fixes. Anything the employee would notice waits for a yes. After two fixes that did not work, a person from IT takes over with the whole story.</p>
-<p>Inside the fence, it decides for itself, from the laptop's data and the person's situation. A script does what was asked. The agent solves the real problem.</p>
+<h2>Inside the fence, the agent decides</h2>
+<p>A script does what was asked. An agent solves the real problem. Visio will not install twenty minutes before a client call: the script restarts, reinstalls, cleans the disk and opens a ticket. The agent reads the laptop, sees the call, opens the diagram in the browser now and fixes the laptop after the call.</p>
 <p>Visual: [D26-8] A script and an agent.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>A script and an agent</b><span>The same case: the script does what was asked, the agent solves the real problem, inside a fence</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="The same case, a script and an agent: a consultant cannot install Visio 20 minutes before a client call. The 2019 script runs the same steps and opens a ticket; the 2026 agent reads the laptop, sees the call, gives the diagram in the browser now and fixes the laptop after the call, inside a fence of what it may do" class="case-diagram" width="1200" height="640">
 <defs><marker id="mag26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
 <rect x="20" y="20" width="1160" height="70" rx="12" fill="#f7fafb" stroke="#dce4e7" stroke-width="1.5"/>
@@ -213,16 +194,5 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="20" y="584" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">The script does what was asked: install Visio.</text>
 <text x="20" y="610" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#2c6e7e" text-anchor="start">The agent solves the real problem: the diagram on the call. Inside the fence, it is free to choose how.</text>
 </svg></figure>
-<h2>What the employee sees</h2>
-<ul>
-<li><strong>Real choices.</strong> A short catalog of monitors. Three levels of proxy access, from seeing the calendar to sending email.</li>
-<li><strong>No nagging.</strong> Tap Later, and the agent offers one reminder in 15 minutes. Then it starts the install itself, and you can still cancel.</li>
-<li><strong>Never explain twice.</strong> When a person takes over, they already know everything that was tried.</li>
-<li><strong>A record of everything.</strong> Every request gets a number, even when agents do all the work.</li>
-</ul>
-<h2>Try it</h2>
-<p>Three journeys on a phone: a monitor, proxy access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.</p>
-<p>https://digital-hub-demo.alexandra-tayts.workers.dev</p>
-<h2>Lessons learned</h2>
-<p>To write at the end.</p>
+<p>Technical document: https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY</p>
 <p><small>Gartner expects over 40% of agentic AI projects to be canceled by the end of 2027 because of cost, unclear value or weak risk controls, and warns about "agent washing": chatbots and RPA renamed as agents. Digital Hub uses an agent only where a flow cannot do the job.</small></p></main></body></html>
