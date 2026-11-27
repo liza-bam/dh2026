@@ -36,6 +36,8 @@ Every laptop starts from a standard image for its group: auditors, consultants, 
 2. **If it is, what is the lightest step back to the standard?** A known fix, then reinstalling the app, then resetting the laptop to its image. Files stay in OneDrive.
 3. **Is it about data?** Most "where is my file" cases are a restore from OneDrive. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent works on it with a person.
 
+Like ServiceNow's first-line AI specialist, each agent has a role, the kinds of problems it takes, its tools, clear limits and a rule for when to hand over: two fixes that did not work, and a person takes over with the whole story.
+
 Software outside the catalog is never the small agent's call. A larger model checks the request and offers an approved alternative; a person decides.
 
 Visual: [D26-8] How the Software agent decides.

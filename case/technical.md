@@ -118,6 +118,40 @@ One rule for all of them: every agent has its own identity, touches only its own
 - **No sound in a Teams call that starts in 10 minutes.** The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
 - **Acrobat says the license has expired.** Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.
 
+#### The Software agent in full
+
+Defined the way ServiceNow defines its first-line AI specialist: a role, the kinds of problems it takes (its skills), the actions it can use (its tools), clear limits, and a rule for when to hand over.
+
+**Role.** Brings a laptop's software back to its standard image, with as little of the employee's time as possible.
+
+**Takes.** Software problems on one managed laptop: an app that will not install, crashes, will not connect, has no sound, or asks for a license. Anything else goes back to the intake agent, which picks another path.
+
+**Tools.** Each one reaches a single system, within the agent's own rights.
+- Read the laptop (Nexthink): disk, crashes, app versions, recent errors.
+- Check the service (Microsoft 365 status, the vendor's status): is it down for everyone?
+- Check the license (ServiceNow): is the employee entitled?
+- Read the image and the catalog: what should be on this laptop.
+- Run a known fix (Intune): only fixes from the approved library.
+- Reinstall an app (Intune): only apps from the catalog.
+- Reset the laptop to its image (Intune).
+- Show the employee a choice: a card with options, never a form.
+- Hand over (ServiceNow): a ticket with the whole story, for a person or a team.
+
+**Steps.** The three questions: is it this laptop; if so, the lightest step back to the image; is it about data.
+
+**Limits.**
+- **Does on its own:** reads anything on the laptop it was given; runs fixes marked harmless (clear a cache or temporary files, restart an app); reinstalls an app from the catalog.
+- **Waits for a yes:** anything the employee would notice: turning off an add-in, restarting the laptop, resetting it to the image. For a reset it also asks when.
+- **Acts only when the data points to one cause.** Two possible causes: one question to the employee. No clear cause: a person.
+- **Gives up in time:** two fixes that did not work, or two questions without an answer, and a person takes over.
+- **Never:** installs software outside the catalog, runs a fix that is not in the library, touches another laptop, or changes an account.
+
+**Hands over with the whole story:** what the employee said, what the laptop showed, what was tried and what happened. Nobody asks again.
+
+**Independence, step by step.** First supervised: the agent proposes each action and an engineer approves it. Then it acts on its own for harmless fixes. Then within its full limits. The same switch exists for ServiceNow's specialists, so a team can watch the agent before trusting it.
+
+**Measured by:** how many cases it was allowed to take, how many it solved, how many came back, and why it handed over.
+
 ### 3. Everything else: a ticket to the right team, and that team's agent
 When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.
 

@@ -959,6 +959,30 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <text x="40" y="578" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">Software outside the catalog</text>
 <text x="40" y="602" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Never the small agent’s call. A larger model checks the request and offers an approved alternative; a person decides.</text>
 </svg></figure>
+<h4>The Software agent in full</h4>
+<p>Defined the way ServiceNow defines its first-line AI specialist: a role, the kinds of problems it takes (its skills), the actions it can use (its tools), clear limits, and a rule for when to hand over.</p>
+<p><strong>Role.</strong> Brings a laptop's software back to its standard image, with as little of the employee's time as possible.</p>
+<p><strong>Takes.</strong> Software problems on one managed laptop: an app that will not install, crashes, will not connect, has no sound, or asks for a license. Anything else goes back to the intake agent, which picks another path.</p>
+<p><strong>Tools.</strong> Each one reaches a single system, within the agent's own rights.
+- Read the laptop (Nexthink): disk, crashes, app versions, recent errors.
+- Check the service (Microsoft 365 status, the vendor's status): is it down for everyone?
+- Check the license (ServiceNow): is the employee entitled?
+- Read the image and the catalog: what should be on this laptop.
+- Run a known fix (Intune): only fixes from the approved library.
+- Reinstall an app (Intune): only apps from the catalog.
+- Reset the laptop to its image (Intune).
+- Show the employee a choice: a card with options, never a form.
+- Hand over (ServiceNow): a ticket with the whole story, for a person or a team.</p>
+<p><strong>Steps.</strong> The three questions: is it this laptop; if so, the lightest step back to the image; is it about data.</p>
+<p><strong>Limits.</strong>
+- <strong>Does on its own:</strong> reads anything on the laptop it was given; runs fixes marked harmless (clear a cache or temporary files, restart an app); reinstalls an app from the catalog.
+- <strong>Waits for a yes:</strong> anything the employee would notice: turning off an add-in, restarting the laptop, resetting it to the image. For a reset it also asks when.
+- <strong>Acts only when the data points to one cause.</strong> Two possible causes: one question to the employee. No clear cause: a person.
+- <strong>Gives up in time:</strong> two fixes that did not work, or two questions without an answer, and a person takes over.
+- <strong>Never:</strong> installs software outside the catalog, runs a fix that is not in the library, touches another laptop, or changes an account.</p>
+<p><strong>Hands over with the whole story:</strong> what the employee said, what the laptop showed, what was tried and what happened. Nobody asks again.</p>
+<p><strong>Independence, step by step.</strong> First supervised: the agent proposes each action and an engineer approves it. Then it acts on its own for harmless fixes. Then within its full limits. The same switch exists for ServiceNow's specialists, so a team can watch the agent before trusting it.</p>
+<p><strong>Measured by:</strong> how many cases it was allowed to take, how many it solved, how many came back, and why it handed over.</p>
 <h3>3. Everything else: a ticket to the right team, and that team's agent</h3>
 <p>When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.</p>
 <p>What a team solves goes back down. Its agent turns the solution into knowledge or a new fix for the first line, an engineer approves it, and next time the same case never becomes a ticket.</p>
