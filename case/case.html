@@ -25,37 +25,28 @@ code{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:4px}
 @media (max-width:700px){.grid{grid-template-columns:1fr}}
 small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 </style></head><body><main><h1>Digital Hub, 2026</h1>
-<p>Working draft of the portfolio case study. The full system is in the technical document.</p>
-<hr />
-<h2>Header</h2>
-<p><strong>Title:</strong> Digital Hub, 2026</p>
-<p><strong>Subtitle:</strong> In 2019 I designed IT support for EY that fixes problems before people notice them. In 2026 I rebuilt it with AI agents, on my own.</p>
+<p><strong>IT support for EY, rebuilt with AI agents. The first decision was where not to use them.</strong></p>
 <p><strong>Role:</strong> UX, product and service designer. Service design, agent architecture, prototype.</p>
-<p><strong>Timeline:</strong> 2019–2020 proposal for EY at Wipro; 2026 rebuild.</p>
-<p><strong>Links:</strong> live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), 2019 case study, technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).</p>
+<p><strong>Year:</strong> 2026, my own project.</p>
+<p><strong>Links:</strong> live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).</p>
 <hr />
-<h2>TL;DR</h2>
-<p><strong>Problem.</strong> One IT issue at EY meant three or more support channels, cases lost between teams and the same questions again and again. My 2019 Digital Hub fixed the experience, but its bot could only handle what someone had written in advance.</p>
-<p><strong>What I did.</strong> Looked at the ten most common requests again and saw that only five need a decision. Simple actions became fixed flows; problems went to small agents, one per domain, each with its own tools, knowledge and limits. Then I designed what the employee sees and built a live demo.</p>
+<h2>Twenty minutes before a client call</h2>
+<p>Visio will not install. The consultant opens Teams, writes what is wrong in her own words, and does not want to explain it twice, fill in a form or wait for a ticket. That is the bar.</p>
 <hr />
-<h2>Where it started</h2>
-<p>In 2019, on Wipro's proposal for EY, I designed Digital Hub: one place for every IT issue, live status on every request, and support that acts before people notice a problem. The client called it the strongest part of the bid. Its limit was the bot: anything nobody had scripted became a ticket. That limit is where 2026 starts.</p>
-<hr />
-<h2>Five need a decision, five do not</h2>
-<p>I started from the same ten requests and asked one question: does solving it need a decision?</p>
-<p>Ordering a monitor does not. The steps are always the same, and the only choices are the employee's. A failed Visio install does: the next step depends on what the agent finds on the laptop.</p>
+<h2>Half of IT support needs no AI</h2>
+<p>In 2019 I designed Digital Hub around ten journeys, the ten most common IT requests. Now I rebuilt it for today, and started with one question for each: does solving it need a decision?</p>
 <ul>
-<li><strong>No decision:</strong> ordering a device, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room.</li>
-<li><strong>Decisions needed:</strong> a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop.</li>
+<li><strong>No:</strong> a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room. Same steps every time; the only choices are the employee's.</li>
+<li><strong>Yes:</strong> a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. The next step depends on what turns up.</li>
 </ul>
-<p>That leaves five problems for agents, not ten. Everything else stays a cheap, predictable flow.</p>
+<p>So the simple half runs as fixed flows: fast, cheap, predictable. Agents get only the five problems that need judgment.</p>
 <hr />
 <h2>What I designed</h2>
 <ul>
-<li><strong>Simple actions run as fixed flows.</strong> The intake agent understands the request in the employee's words. From there no model decides anything.</li>
-<li><strong>Problems go to an agent for their domain.</strong> Security, Devices, Software, Mail, calendar and Teams, Workplace. Each has its own tools, its own library and its limits: what it does alone, what waits for a yes, when it brings in a person. One agent leads each case and brings in the others.</li>
-<li><strong>Anything else goes to the right team, and the team has an agent too.</strong> It works for the engineers. What they solve comes back to the first line as a new fix.</li>
-<li><strong>Before anyone asks.</strong> A watcher agent finds the full disk or the outdated VPN app and fixes it before the employee notices.</li>
+<li><strong>One way in.</strong> A small, cheap model reads what the employee writes and picks the path.</li>
+<li><strong>An agent for each domain.</strong> Security, Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.</li>
+<li><strong>Agents for the people behind the help desk, too.</strong> When nothing fits, the ticket goes to the right team, and that team's agent helps its engineers. What they solve becomes a fix for next time.</li>
+<li><strong>Help before anyone asks.</strong> A watcher agent finds the full disk before Visio fails.</li>
 </ul>
 <p>Visual: [D26-2] Architecture.</p><figure class="fig" id="D26-2"><figcaption><b><span class="fid">D26-2</span>Architecture</b><span>Nine layers: the intake agent sends each request to a fixed flow, a domain agent or a team; domain agents with limited rights, team agents for the second line, enterprise agents, knowledge, systems, governance and people</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1250" role="img" aria-label="Digital Hub 2026 architecture in nine layers: channels; an intake agent that sends every request to a fixed flow, a domain agent or a team; domain agents with limited access; team agents for the second line; enterprise agents; knowledge; systems through MCP; governance; people" class="case-diagram" width="1500" height="1250">
 <defs><marker id="ma26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
@@ -366,16 +357,16 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 </svg></figure>
 <hr />
 <h2>What the employee sees</h2>
-<p>The agents are a means to an end. What matters is how it feels to the person with the problem.</p>
+<p>The agents are the means. This is the point.</p>
 <ul>
-<li><strong>The flow decides, the agent speaks.</strong> Tap Later on Visio, and the agent offers one reminder in 15 minutes. Then it starts the install itself; the employee can still cancel. It never asks twice.</li>
-<li><strong>Real choices, not yes or no.</strong> A short catalog of monitors and where to deliver. Three levels of access for an assistant, from seeing the calendar to sending email.</li>
-<li><strong>Every request leaves a record</strong>, even when agents do all the work, so the employee always has a number. They never need to look at it.</li>
-<li><strong>Nobody asks again.</strong> When a person takes over, they get the whole story. A stolen laptop is wiped as soon as the employee confirms it is them.</li>
+<li><strong>Real choices.</strong> A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.</li>
+<li><strong>No nagging.</strong> Tap Later, and the agent offers one reminder in 15 minutes. Then it starts the install itself, and you can still cancel.</li>
+<li><strong>Never explain twice.</strong> When a person takes over, they already know everything that was tried.</li>
+<li><strong>A record of everything.</strong> Every request gets a number, even when agents do all the work. You never have to look at it.</li>
 </ul>
 <hr />
-<h2>The live demo</h2>
-<p>Three journeys on a phone, each showing something different: a small shop for a monitor, a choice of control for an assistant, and a failed install that a person takes over. A real intake agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.</p>
+<h2>Try it</h2>
+<p>Three journeys on a phone: a monitor, an assistant's access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.</p>
 <p>https://digital-hub-demo.alexandra-tayts.workers.dev</p>
 <hr />
 <h2>Lessons learned</h2>

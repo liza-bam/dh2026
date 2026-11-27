@@ -1,57 +1,38 @@
 # Digital Hub, 2026
 
-Working draft of the portfolio case study. The full system is in the technical document.
-
----
-
-## Header
-
-**Title:** Digital Hub, 2026
-
-**Subtitle:** In 2019 I designed IT support for EY that fixes problems before people notice them. In 2026 I rebuilt it with AI agents, on my own.
+**IT support for EY, rebuilt with AI agents. The first decision was where not to use them.**
 
 **Role:** UX, product and service designer. Service design, agent architecture, prototype.
 
-**Timeline:** 2019–2020 proposal for EY at Wipro; 2026 rebuild.
+**Year:** 2026, my own project.
 
-**Links:** live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), 2019 case study, technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).
-
----
-
-## TL;DR
-
-**Problem.** One IT issue at EY meant three or more support channels, cases lost between teams and the same questions again and again. My 2019 Digital Hub fixed the experience, but its bot could only handle what someone had written in advance.
-
-**What I did.** Looked at the ten most common requests again and saw that only five need a decision. Simple actions became fixed flows; problems went to small agents, one per domain, each with its own tools, knowledge and limits. Then I designed what the employee sees and built a live demo.
-
+**Links:** live demo (https://digital-hub-demo.alexandra-tayts.workers.dev), technical document (https://claude.ai/artifact/CS5DidDxcR4oQ1qnekNmPY).
 
 ---
 
-## Where it started
+## Twenty minutes before a client call
 
-In 2019, on Wipro's proposal for EY, I designed Digital Hub: one place for every IT issue, live status on every request, and support that acts before people notice a problem. The client called it the strongest part of the bid. Its limit was the bot: anything nobody had scripted became a ticket. That limit is where 2026 starts.
+Visio will not install. The consultant opens Teams, writes what is wrong in her own words, and does not want to explain it twice, fill in a form or wait for a ticket. That is the bar.
 
 ---
 
-## Five need a decision, five do not
+## Half of IT support needs no AI
 
-I started from the same ten requests and asked one question: does solving it need a decision?
+In 2019 I designed Digital Hub around ten journeys, the ten most common IT requests. Now I rebuilt it for today, and started with one question for each: does solving it need a decision?
 
-Ordering a monitor does not. The steps are always the same, and the only choices are the employee's. A failed Visio install does: the next step depends on what the agent finds on the laptop.
+- **No:** a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room. Same steps every time; the only choices are the employee's.
+- **Yes:** a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. The next step depends on what turns up.
 
-- **No decision:** ordering a device, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room.
-- **Decisions needed:** a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop.
-
-That leaves five problems for agents, not ten. Everything else stays a cheap, predictable flow.
+So the simple half runs as fixed flows: fast, cheap, predictable. Agents get only the five problems that need judgment.
 
 ---
 
 ## What I designed
 
-- **Simple actions run as fixed flows.** The intake agent understands the request in the employee's words. From there no model decides anything.
-- **Problems go to an agent for their domain.** Security, Devices, Software, Mail, calendar and Teams, Workplace. Each has its own tools, its own library and its limits: what it does alone, what waits for a yes, when it brings in a person. One agent leads each case and brings in the others.
-- **Anything else goes to the right team, and the team has an agent too.** It works for the engineers. What they solve comes back to the first line as a new fix.
-- **Before anyone asks.** A watcher agent finds the full disk or the outdated VPN app and fixes it before the employee notices.
+- **One way in.** A small, cheap model reads what the employee writes and picks the path.
+- **An agent for each domain.** Security, Devices, Software, Mail and calendar, Workplace. Each has its own tools, its own knowledge and clear limits: what it does alone, what waits for a yes, when it calls a person. One agent leads each case.
+- **Agents for the people behind the help desk, too.** When nothing fits, the ticket goes to the right team, and that team's agent helps its engineers. What they solve becomes a fix for next time.
+- **Help before anyone asks.** A watcher agent finds the full disk before Visio fails.
 
 Visual: [D26-2] Architecture.
 
@@ -59,18 +40,18 @@ Visual: [D26-2] Architecture.
 
 ## What the employee sees
 
-The agents are a means to an end. What matters is how it feels to the person with the problem.
+The agents are the means. This is the point.
 
-- **The flow decides, the agent speaks.** Tap Later on Visio, and the agent offers one reminder in 15 minutes. Then it starts the install itself; the employee can still cancel. It never asks twice.
-- **Real choices, not yes or no.** A short catalog of monitors and where to deliver. Three levels of access for an assistant, from seeing the calendar to sending email.
-- **Every request leaves a record**, even when agents do all the work, so the employee always has a number. They never need to look at it.
-- **Nobody asks again.** When a person takes over, they get the whole story. A stolen laptop is wiped as soon as the employee confirms it is them.
+- **Real choices.** A short catalog of monitors. Three levels of access for an assistant, from seeing the calendar to sending email.
+- **No nagging.** Tap Later, and the agent offers one reminder in 15 minutes. Then it starts the install itself, and you can still cancel.
+- **Never explain twice.** When a person takes over, they already know everything that was tried.
+- **A record of everything.** Every request gets a number, even when agents do all the work. You never have to look at it.
 
 ---
 
-## The live demo
+## Try it
 
-Three journeys on a phone, each showing something different: a small shop for a monitor, a choice of control for an assistant, and a failed install that a person takes over. A real intake agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.
+Three journeys on a phone: a monitor, an assistant's access, and a Visio install that fails until a person takes over. A real agent reads what you write; next to the phone you see which agent works, on which model, and what it costs.
 
 https://digital-hub-demo.alexandra-tayts.workers.dev
 
