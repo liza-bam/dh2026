@@ -94,6 +94,7 @@ button:disabled{opacity:.45;cursor:default}
 .details{margin-top:8px;font-size:13px}.details p{margin:4px 0}.details ol{margin:6px 0 0;padding-left:18px;color:var(--second)}
 .total{margin-top:8px;font-size:14px;font-weight:600}
 .switch{display:flex;gap:6px;margin-top:16px}
+.clock{display:flex;align-items:center;gap:8px;margin:10px 0;font-weight:600;color:var(--teal)}.clock svg{width:28px;height:28px;fill:none;stroke:var(--teal);stroke-width:1.6;stroke-linecap:round}.clock .hand{transform-origin:12px 12px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 .top-row{display:flex;justify-content:flex-end;margin:-6px -6px 6px 0}button.icon{min-height:36px;width:36px;padding:0;display:grid;place-items:center}button.icon .ic svg{stroke:var(--teal)}
 .examples{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.examples button{text-align:left;min-height:44px;font-size:15px;border-color:var(--frame);color:var(--frame)}
 </style>
@@ -250,10 +251,13 @@ const tickets = {
     if (it) it.textContent = it.textContent.replace(/, [^,]*$/, `, ${status.toLowerCase()}`);
   },
 };
+// Time passes in the demo: a clock runs for a few seconds, then the agent comes back by itself
 function later(label) {
-  const box = el('div', 'switch'), b = el('button', '', label);
-  box.append(b); $('now').after(box);
-  return new Promise(r => { b.onclick = () => { box.remove(); r(); }; });
+  const box = el('div', 'clock');
+  box.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path class="hand" d="M12 12V6"/></svg>';
+  box.append(el('span', '', label + '…'));
+  $('now').after(box);
+  return wait(3000).then(() => box.remove());
 }
 function unwait(key) {
   const box = document.getElementById('waits');
@@ -367,13 +371,18 @@ const m = {
       await say(`OK. Your request is ${num}. I will remind you in 15 minutes.`);
       now('The employee goes back to work. Nobody needs to look at the ticket: the agent comes back by itself.');
       await later('15 minutes later');
-      step('Fix agent', 'Comes back once, as the journey says');
-      if (await card('Install software', `Ready to install ${app}?`, ['About 5 minutes'], ['Install now', 'Not now']) === 'Not now') {
-        step('Fix agent', 'No more reminders. The request stays open');
-        await say(`OK. Request ${num} stays open: install it any time from My requests.`);
+      // The agent does not ask again: it starts the install, and the employee can still cancel
+      step('Fix agent', 'Comes back once and starts the install. The employee can cancel');
+      const r = await Promise.race([card('Install software', `Installing ${app} now`, ['About 5 minutes'], ['Cancel']), wait(6000)]);
+      if (r === 'Cancel') {
+        step('Fix agent', 'Cancelled: no more reminders. The request stays open for the service desk');
+        await say(`OK, I won't bother you again. Your request ${num} stays open in My requests.`);
         return false;
       }
+      [...chat.querySelectorAll('.card')].pop().querySelectorAll('button').forEach(b => b.disabled = true);
       tickets.set(num, 'Installing');
+      step('Intune', `Starts the ${app} install`, 'system');
+      return num;
     }
     step('Intune', `Starts the ${app} install`, 'system');
     await say(`Installing ${app}. I will tell you when it is ready.`);
