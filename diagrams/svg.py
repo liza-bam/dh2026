@@ -112,4 +112,17 @@ class Diagram:
                 f'aria-label="{escape(self.label)}" class="case-diagram">\n'
                 f'<defs><marker id="m{self.uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" '
                 f'markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="{LINE}"/></marker></defs>\n')
-        return head + '\n'.join(self.el) + '\n</svg>'
+        return head + square('\n'.join(self.el)) + '\n</svg>'
+
+
+def square(body):
+    """Portfolio style: cards and frames have square corners; only pills (rx at least half the height) stay round."""
+    import re as _re
+
+    def fix(m):
+        tag = m.group(0)
+        rx, h = _re.search(r' rx="([\d.]+)"', tag), _re.search(r' height="([\d.]+)"', tag)
+        if rx and h and float(rx.group(1)) < float(h.group(1)) / 2:
+            tag = tag.replace(rx.group(0), ' rx="0"')
+        return tag
+    return _re.sub(r'<rect\b[^>]*>', fix, body)

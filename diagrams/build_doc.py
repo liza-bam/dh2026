@@ -59,7 +59,7 @@ def main():
 .pano{overflow-x:auto;overscroll-behavior-x:contain}.pano .case-diagram{width:auto;max-width:none;height:auto}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.grid .case-diagram{width:100%;height:auto}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
-.figure-caption .fid{display:inline-block;font:600 14px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:6px;padding:6px 8px;margin:0 8px 0 0;vertical-align:4px}
+.figure-caption .fid{display:inline-block;font:600 14px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:0;padding:6px 8px;margin:0 8px 0 0;vertical-align:4px}
 h2{font:600 34px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56px 0 24px}
 .toc{columns:2}
 .flowlink{margin:6px 0 0;font-size:15px}.flowlink a{color:#2c6e7e;font-weight:600}.flowlink.muted{color:#5f7480}'''

@@ -2,7 +2,7 @@
 import base64
 import pathlib
 from html import escape
-from svg import wrap, INK, LINE, SECOND
+from svg import wrap, INK, LINE, SECOND, square
 
 A = pathlib.Path(__file__).parent / 'assets'
 _cache = {}
@@ -113,4 +113,4 @@ class Rich:
                 f'aria-label="{escape(self.label)}" class="{cls}" width="{self.W}" height="{self.H}">\n'
                 f'<defs><marker id="m{self.uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" '
                 f'orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="{LINE}"/></marker></defs>\n'
-                + '\n'.join(self.el) + '\n</svg>')
+                + square('\n'.join(self.el)) + '\n</svg>')

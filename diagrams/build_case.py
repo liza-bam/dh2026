@@ -50,11 +50,11 @@ h2{{font:600 30px/1.15 'Inter Tight',sans-serif;letter-spacing:-.025em;margin:56
 h3{{font:600 21px/1.3 'Inter Tight',sans-serif;margin:32px 0 8px}}
 p,li{{max-width:70ch}}ul{{padding-left:22px}}li{{margin:4px 0}}
 strong{{font-weight:600}}hr{{border:0;border-top:1px solid var(--rule);margin:32px 0}}
-code{{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:4px}}
+code{{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:0}}
 /* Diagrams sit wider than the text column, on white in both themes */
-.fig{{width:min(1120px,calc(100vw - 32px));position:relative;left:50%;transform:translateX(-50%);margin:24px 0 40px;padding:16px;background:#fff;border:1px solid var(--rule);border-radius:8px;color:#223640}}
+.fig{{width:min(1120px,calc(100vw - 32px));position:relative;left:50%;transform:translateX(-50%);margin:24px 0 40px;padding:16px;background:#fff;border:1px solid var(--rule);border-radius:0;color:#223640}}
 .fig figcaption{{margin:0 0 12px}}.fig figcaption b{{display:block;font:600 20px/1.3 'Inter Tight',sans-serif}}.fig figcaption span{{display:block;font-size:15px;color:#3f5f6b}}
-.fig .fid{{display:inline-block;font:600 13px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:6px;padding:5px 7px;margin:0 8px 0 0;vertical-align:3px}}
+.fig .fid{{display:inline-block;font:600 13px/1 Inter,sans-serif;color:#fff;background:#2c6e7e;border-radius:0;padding:5px 7px;margin:0 8px 0 0;vertical-align:3px}}
 .fig svg{{display:block;width:100%;height:auto}}
 .grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
 @media (max-width:700px){{.grid{{grid-template-columns:1fr}}}}
