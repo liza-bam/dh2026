@@ -174,6 +174,7 @@ function send(text) {
   me(text);
   chipsEl.replaceChildren();
   input.value = '';
+  if (withPerson) personHistory.push({ role: 'user', content: text });
   const r = onSend; onSend = null; r(text);
 }
 // The frame shows the device the conversation is on: phone, or laptop when the screen is wide enough
@@ -193,6 +194,29 @@ function widget(id, key, title, status) {
   it.querySelector('span').textContent = status;
 }
 const request = (title, status) => widget('reqs', title, title, status);
+// Tracy: in the demo a larger model plays her, and it sees only the handoff card
+let withPerson = false;
+const personHistory = [];
+const handoffCard = () => [`Request: ${topic}`, ...[...document.querySelectorAll('.agent ol li')].map(li => li.textContent)].join('\n');
+async function tracy(cue, fallback) {
+  if (!live) { personHistory.push({ role: 'assistant', content: fallback }); return say(fallback, 'Tracy', true); }
+  const t = add(el('div', 'typing', 'Tracy is typing…'));
+  try {
+    const res = await fetch('/api/person', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ handoff: handoffCard(), history: personHistory, cue }) });
+    const r = await res.json();
+    if (!res.ok || !r.reply) throw new Error(r.error);
+    t.remove();
+    personHistory.push({ role: 'assistant', content: r.reply });
+    spend('Tracy from IT', r.usage.cost);
+    const msg = el('div', 'msg live'); msg.append(el('span', 'who', 'Tracy'), r.reply); add(msg);
+  } catch (e) { t.remove(); personHistory.push({ role: 'assistant', content: fallback }); await say(fallback, 'Tracy', true); }
+}
+async function talkToTracy(text) {
+  me(text); input.value = '';
+  personHistory.push({ role: 'user', content: text });
+  await tracy('', 'Got it, I am on it.');
+}
+
 // Tickets stay in this browser, so a later conversation can ask about them ("how is my Visio?")
 const tickets = {
   all() { try { return JSON.parse(localStorage.getItem('dh-tickets')) || []; } catch { return []; } },
@@ -214,7 +238,7 @@ const AG = {
   'Message in Digital Hub': { ab: 'IN', role: 'Trigger: the employee writes or taps', kind: 'trigger', does: 'Starts the run with the employee’s message and channel' },
   'Fixed journey?': { ab: '?', role: 'Switch', kind: 'switch', does: 'Known request: the fixed journey runs. Unknown: a ticket for people, with a label' },
   'ServiceNow ticket': { ab: 'SN', role: 'Ticket for people, filled by the intake agent', kind: 'system', does: 'Carries the summary, team, urgency and a label for new journeys' },
-  'Intake agent': { ab: 'IA', role: 'AI agent: reads every request first', model: 'Small model', memory: 'This conversation + employee context', real: true,
+  'Intake agent': { ab: 'IA', role: 'AI agent: reads every request first', model: 'Small model', memory: 'This conversation + employee context', real: true, price: '$0.10 in, $0.50 out per million tokens',
     does: 'Picks a fixed journey, or fills a ServiceNow ticket and labels it', never: 'Changes nothing in any system', uses: 'Workday, Nexthink, ServiceNow' },
   'Fix agent': { memory: 'This case', ab: 'FX', role: 'Fixes devices and software', model: 'Small model',
     does: 'Runs approved fixes; the large model drafts new ones', never: 'Runs a new fix before an engineer approves', uses: 'Nexthink, Intune' },
@@ -228,7 +252,8 @@ const AG = {
     does: 'Rebooks rooms, files facilities requests', never: 'Sees meeting content', uses: 'Office 365, ServiceNow' },
   'Microsoft Defender': { ab: 'MD', role: 'Enterprise agent for security', model: 'Its own model', kind: 'enterprise',
     does: 'Decides whether a reported email is a threat and removes it', never: 'Is rebuilt by us: we only ask it', uses: 'Defender for Office 365' },
-  'Tracy from IT': { ab: 'TR', role: 'Live support', kind: 'person', does: 'Takes over with the whole story' },
+  'Tracy from IT': { ab: 'TR', role: 'Live support. In the demo, played by a larger model', kind: 'person', model: 'Large model', memory: 'The handoff card only', uses: 'Remote session',
+    real: true, price: '$2 in, $10 out per million tokens', does: 'Takes over with the whole story. In real life she is a support person', never: 'Asks the employee to repeat anything' },
   'Tracy': { alias: 'Tracy from IT' },
   'The security team': { ab: 'SE', role: 'Security incidents', kind: 'person', does: 'Handles real attacks and client data at risk' },
   'Facilities': { ab: 'FA', role: 'Building and rooms', kind: 'person', does: 'Repairs rooms and equipment' },
@@ -279,7 +304,7 @@ function spend(name, dollars) {
   const c = agentCard(name);
   c.dataset.cost = +c.dataset.cost + dollars;
   total += dollars;
-  c.querySelector('.cost').textContent = `This conversation: $${(+c.dataset.cost).toFixed(5)}. Price: $0.10 in, $0.50 out per million tokens`;
+  c.querySelector('.cost').textContent = `This conversation: $${(+c.dataset.cost).toFixed(5)}. Price: ${AG[c.dataset.n].price}`;
   $('total').textContent = `Model cost of this conversation: $${total.toFixed(5)}`;
 }
 
@@ -324,7 +349,7 @@ const m = {
     await say('Is it urgent?');
     if (/^(y|да)/i.test(await ask(['Yes', 'No']))) {
       await m.handOver('Tracy from IT', ['She already knows what happened'], null);
-      await say('Hi, I can see the whole conversation. Let us sort it out together.', 'Tracy', true);
+      await tracy('Greet the employee, show you know what happened, and say how you will help now.', 'Hi, I can see the whole conversation. Let us sort it out together.');
       return;
     }
     await say('Shall I file a ticket?');
@@ -354,6 +379,7 @@ const m = {
     request('Case with ' + who, 'In progress');
     await wait(800);
     note(`${who} joined the chat`);
+    withPerson = who.startsWith('Tracy');
     return card('Hand over to a person', `${who} joined`, lines, button ? [button] : [], { live: true });
   },
   async status(title, lines) {
@@ -363,6 +389,7 @@ const m = {
   async feedback() {
     const a = await card('Feedback', 'How did we do?', [], ['Great', 'OK', 'Not good']);
     step('ServiceNow', `Case closed. Rating: ${a}`, 'system');
+    withPerson = false;
     document.querySelectorAll('#reqs .item span').forEach(x => { if (['Installing', 'In progress'].includes(x.textContent)) x.textContent = 'Solved'; });
     await say('Thank you. The case is closed.');
   },
@@ -404,12 +431,12 @@ const scenarios = [
       await say('The problem is on the network side. I am bringing in a person.');
       await m.handOver('Tracy from IT', ['She already knows: you are at a hotel, the VPN app is updated, it still does not connect'], 'Allow remote session');
       step('Tracy', 'Reads the handoff: hotel network, VPN app updated, still no connection');
-      await say('I see the whole story. Many hotel networks block the usual VPN connection. I am switching your VPN to the mode that works through hotel Wi-Fi.', 'Tracy', true);
+      await tracy('Explain that many hotel networks block the usual VPN connection and that you are switching their VPN to the mode that works through hotel Wi-Fi.', 'I see the whole story. Many hotel networks block the usual VPN connection. I am switching your VPN to the mode that works through hotel Wi-Fi.');
       step('Tracy', 'Switches the VPN to the hotel-friendly mode in the remote session');
       await wait(1500);
-      await say('Done. Try to connect now.', 'Tracy', true);
+      await tracy('The switch is done. Ask them to try to connect now.', 'Done. Try to connect now.');
       await ask(['Connected, thank you']);
-      await say('Great. The VPN will now pick this mode on its own in any hotel.', 'Tracy', true);
+      await tracy('It works. Tell them the VPN will now pick this mode on its own in any hotel.', 'Great. The VPN will now pick this mode on its own in any hotel.');
       step('Fix agent', 'Drafts a new fix: switch to the hotel-friendly mode when the usual one fails');
       step('Engineer', 'Approves the new fix. Next time the fix agent does it without a person');
     }
@@ -525,13 +552,13 @@ const scenarios = [
     await say('I am bringing in a person from IT. You will not need to explain anything.');
     await m.handOver('Tracy from IT', ['She already knows what happened'], 'Allow remote session');
     step('Tracy', 'Remote session allowed. Fixing it.', 'live');
-    await say('I am in. Give me two minutes.', 'Tracy', true);
+    await tracy('You are now in their laptop through the remote session. Tell them it will take about two minutes.', 'I am in. Give me two minutes.');
     await ask(['I have to run to the train']);
-    await say('Go. Keep this chat open on your phone, I will finish here.', 'Tracy', true);
+    await tracy('They have to leave for a train. Tell them to go and keep this chat open on their phone; you will finish on the laptop.', 'Go. Keep this chat open on your phone, I will finish here.');
     await m.continueElsewhere('Digital Hub in Teams, on the phone');
     await wait(1500);
     step('Tracy', 'Fixed in the remote session: the installer cache was broken', 'live');
-    await say('Visio is installed on your laptop. Good luck with the call.', 'Tracy', true);
+    await tracy('You fixed the broken installer cache and Visio is now installed on their laptop. Tell them, and wish them luck with the client call.', 'Visio is installed on your laptop. Good luck with the call.');
     step('Fix agent', 'Drafts a new fix: check the disk and clear the installer cache before installing');
     step('Engineer', 'Approves the new fix. Next time it runs automatically.', 'done');
     await m.feedback();
@@ -614,7 +641,14 @@ async function intake(text, offline) {
   step('ServiceNow ticket', `Label "${t.label}": when many tickets share a label, it becomes a new journey`);
   busy = false;
 }
-form.onsubmit = e => { e.preventDefault(); if (onSend) send(input.value); else if (!busy && input.value.trim()) intake(input.value.trim()); else input.value = ''; };
+form.onsubmit = e => {
+  e.preventDefault();
+  const v = input.value.trim();
+  if (onSend) send(input.value);
+  else if (v && withPerson) talkToTracy(v);
+  else if (v && !busy) intake(v);
+  else input.value = '';
+};
 $('restart').onclick = () => location.reload();
 $('tophone').onclick = () => { place = 'phone'; $('compose').classList.contains('hidden') ? home() : device($('device').textContent.replace('laptop', 'phone')); };
 $('tolaptop').onclick = () => { place = 'laptop'; $('compose').classList.contains('hidden') ? home() : device($('device').textContent.replace('phone', 'laptop')); };
