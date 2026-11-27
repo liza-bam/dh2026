@@ -12,7 +12,7 @@ In 2019 I designed how EY's IT support would stop a bad software update before i
 
 ## Where it started
 
-In 2019 I designed Digital Hub for EY (https://sandy.tayts.com/dh.html). Its support paths already used AI: monitoring, self-healing scripts, and a check on every manual fix: can it be automated?
+Digital Hub was the IT support service I designed for EY (https://sandy.tayts.com/dh.html). Its support paths already used AI: monitoring, self-healing scripts, and a check on every manual fix: can it be automated?
 
 Visual: [D19-11] Support paths, 2019.
 
