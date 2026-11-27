@@ -18,7 +18,7 @@ Visio will not install. The consultant opens Teams, writes what is wrong in her 
 
 ## Half of IT support needs no AI
 
-In 2019 I designed Digital Hub around ten journeys, the ten most common IT requests. Now I rebuilt it for today, and started with one question for each: does solving it need a decision?
+Research named the ten most common IT requests at EY. I asked one question of each: does solving it need a decision?
 
 - **No:** a new monitor, an assistant's access to Outlook, a Teams channel, a password reset, a meeting room. Same steps every time; the only choices are the employee's.
 - **Yes:** a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. The next step depends on what turns up.

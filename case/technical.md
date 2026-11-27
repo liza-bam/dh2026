@@ -66,7 +66,7 @@ Visual: [D26-6] Stack scorecard.
 
 ## The logic: does it need a decision?
 
-The starting point is the same as in 2019: the ten most common requests from EY's discovery. What is new is the question I sort them by: does solving it need a decision?
+The starting point is research: the ten most common IT requests at EY. I sort them by one question: does solving it need a decision?
 
 Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
 
