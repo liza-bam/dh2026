@@ -91,6 +91,10 @@ What Peter sees, in order: "Visio crashed. Here is a way to keep working." "It's
 
 ### What I design
 
+The first rule: people do as little as possible. Peter does nothing between the workaround and the fix; he only reads messages and keeps working. The engineer only decides: she confirms the cause and approves two changes, the pause and the fix. Everyone else does nothing at all. In 2019 the engineer searched Nexthink and wrote the fix by hand; in 2026 the analysis and the steps come to her ready.
+
+What that takes:
+
 - Who owns the case at each stage, so nothing is lost between teams.
 - What goes into the record at each step, so nobody asks Peter twice.
 - Where a rule decides, where an agent decides and where an engineer decides.

@@ -58,7 +58,9 @@ Peter sees the same thing as in 2019. Behind the scenes, the platforms now do wh
 
 ## What I designed
 
-The platforms are the parts. The journey is the design:
+The platforms are the parts. The journey is the design, and its first rule is that people do as little as possible. Peter only reads messages and keeps working. The engineer only says yes or no.
+
+What that takes:
 
 - who owns the case at each stage, so nothing is lost between teams;
 - what goes into the record at each step, so nobody asks Peter twice;
