@@ -10,12 +10,6 @@
 
 ---
 
-## Twenty minutes before a client call
-
-Visio will not install. The consultant opens Teams, writes what is wrong in her own words, and does not want to explain it twice, fill in a form or wait for a ticket. That is the bar.
-
----
-
 ## Half of IT support needs no AI
 
 Research named the ten most common IT requests at EY. I asked one question of each: does solving it need a decision?
