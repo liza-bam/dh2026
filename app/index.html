@@ -310,23 +310,21 @@ const m = {
     return false;
   },
   async declined(what) {
-    await say('No problem. Is it urgent?');
-    const urgent = await ask(['Yes, it is urgent', 'No']);
-    if (/^(y|urgent|да)/i.test(urgent)) {
-      await say('Then let me bring in a person. You will not need to explain anything.');
+    await say('Is it urgent?');
+    if (/^(y|да)/i.test(await ask(['Yes', 'No']))) {
       await m.handOver('Tracy from IT', ['She already knows what happened'], null);
       await say('Hi, I can see the whole conversation. Let us sort it out together.', 'Tracy', true);
-    } else {
-      await say('Shall I file a ticket so someone picks it up, or leave it for now?');
-      if (/ticket|file|да/i.test(await ask(['File a ticket', 'Leave it for now']))) {
-        step('ServiceNow ticket', `Filed: ${what}, not urgent`);
-        await m.status('Ticket filed', ['Not urgent: someone will pick it up today', 'Reply here any time']);
-      } else {
-        await say('OK, nothing changes. Write here any time.');
-        return;
-      }
+      return;
     }
-    await m.feedback();
+    await say('Shall I file a ticket?');
+    if (/^(y|да)/i.test(await ask(['Yes', 'Never mind']))) {
+      const num = 'INC' + Math.floor(1000000 + Math.random() * 9000000);
+      step('ServiceNow ticket', `Filed ${num}: ${what}, not urgent`);
+      request(num, 'Open');
+      await say(`Done. Your ticket is ${num}.`);
+    } else {
+      await say('OK, cancelled.');
+    }
   },
   async runFix(agent, n, what) {
     step(agent, `Fix ${n}: ${what}`);
