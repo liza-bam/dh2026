@@ -129,6 +129,19 @@ Every step the employee takes has a channel: they write in Teams, tap a button o
 
 Visual: [D26-5] Module map.
 
+## The journey decides, the agent speaks
+
+Digital Hub combines fixed journeys with an AI agent, and each does what it is good at. The journey decides what happens and when: which system acts, which record is filed, when to come back. The agent decides how to say it and finds the right moment within those rules.
+
+Take Visio. The employee taps Later. The journey files a request in ServiceNow and sets one reminder. The agent sees the client call at 3 pm in the calendar and comes back before it: ready to install now? If the answer is still no, there are no more reminders, and the request stays open.
+
+Two rules follow from this.
+
+- **Every request leaves a record**, even when agents do all the work. The employee always has a number in My requests, but never has to look at it: the agent comes back. The records are also the data that Stage 2 grows new journeys from.
+- **An agent comes back once.** More than that is nagging.
+
+If the agent decided on its own whether to come back, the same request could go differently each time, and nobody could test it before release.
+
 ## Handoff to people
 
 Three rules decide when a person steps in.
