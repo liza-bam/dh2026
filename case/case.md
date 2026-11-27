@@ -30,17 +30,16 @@ Visual: [D26-2] Architecture.
 
 ## How an agent works
 
-Every laptop starts from a standard image for its group: auditors, consultants, designers. Software comes from an approved catalog. So the agent knows what each laptop should look like, and asks three questions:
+A fence, and freedom inside it.
 
-1. **Is the problem on the employee's laptop?** Or is it the service, the license, the account, the network? If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.
-2. **If it is, what is the lightest step back to the standard?** A known fix, then reinstalling the app, then resetting the laptop to its image. Files stay in OneDrive.
-3. **Is it about data?** Most "where is my file" cases are a restore from OneDrive. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent works on it with a person.
+Every laptop starts from a standard image for its group, and software comes from an approved list. That gives the Software agent its fence:
+- If a program fails for many people, it files a ticket for the Nexthink agent and tells the employee.
+- If the license is missing, it renews it, or sends the manager a ready request.
+- On the laptop it uses only approved fixes. Anything the employee would notice waits for a yes. After two fixes that did not work, a person from IT takes over with the whole story.
 
-Like ServiceNow's first-line AI specialist, each agent has a role, the kinds of problems it takes, its tools, clear limits and a rule for when to hand over: two fixes that did not work, and a person takes over with the whole story.
+Inside the fence, it decides for itself, from the laptop's data and the person's situation. A script does what was asked. The agent solves the real problem.
 
-Software outside the catalog is never the small agent's call. A larger model checks the request and offers an approved alternative; a person decides.
-
-Visual: [D26-8] How the Software agent decides.
+Visual: [D26-8] A script and an agent.
 
 ## What the employee sees
 

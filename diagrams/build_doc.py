@@ -34,7 +34,7 @@ D19 = [
 D26 = [
     ('D26-1', 'What changes', 'The same service, journeys and data; agents take the work that had to be written in advance', lambda: t26.what_changes()),
     ('D26-2', 'Architecture', 'One way in, three paths, and the systems the agents work with', arch26.build),
-    ('D26-8', 'How the Software agent works', 'Many people affected: a ticket. No license: renew or ask the manager. Otherwise the laptop back to standard, smallest fix first', agent26.build),
+    ('D26-8', 'A script and an agent', 'The same case: the script does what was asked, the agent solves the real problem, inside a fence', agent26.build),
     ('D26-7', 'Delivery plan', 'Ten fixed journeys first, more journeys every week from what people ask, then the orchestrator takes what has no journey', delivery26.build),
     ('D26-6', 'Stack scorecard', 'Every platform from 2019 checked against the six questions: eight stay, two go', scorecard26.build),
     ('D26-5', 'Module map', 'Shared modules, designed once: every scenario is built from the same parts, so the same task always looks the same', modules26.build),

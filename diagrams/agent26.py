@@ -1,59 +1,57 @@
-"""D26-8. How the Software agent works: many people affected, a license, then the laptop back to standard."""
+"""D26-8. How an agent works: the same Visio case, a 2019 script against a 2026 agent that acts freely inside a fence."""
 from rich import Rich
 from svg import SECOND
 from transition import TEAL, TINT
 
-
-def tag(d, x, y, text):
-    w = len(text) * 7 + 18
-    d.rect(x, y, w, 22, TINT, TEAL, rx=11, sw=1)
-    d.t(x + w / 2, y + 15, text, 12, 600, 'middle', fill=TEAL)
-    return x + w + 6
+GREY = '#9aa5aa'
 
 
-def box(d, x, y, w, h, title, text, tags=(), dark=False):
-    d.rect(x, y, w, h, TINT if dark else '#fff', TEAL if dark else '#dce4e7', rx=12, sw=1.5)
-    d.t(x + 14, y + 26, title, 15, 600)
-    yy = d.lines(x + 14, y + 48, text, w - 28, 13, 400, SECOND, lh=17) if text else y + 40
-    tx = x + 14
-    for t in tags:
-        tx = tag(d, tx, y + h - 32, t)
+def step(d, x, y, w, n, text, color):
+    d.el.append(f'<circle cx="{x + 14}" cy="{y + 12}" r="12" fill="{color}"/>')
+    d.t(x + 14, y + 17, str(n), 12, 700, 'middle', fill='#fff')
+    return d.lines(x + 38, y + 17, text, w - 40, 14, 400, lh=19) + 14
 
 
 def build():
-    d = Rich('ag26', 1200, 616, 'How the Software agent works: if the program fails for many people, a ticket for the Nexthink agent; '
-             'if the license is missing, renew it or ask the manager; otherwise bring the laptop back to standard, smallest fix first, then a person')
+    d = Rich('ag26', 1200, 640, 'The same case, a script and an agent: a consultant cannot install Visio 20 minutes before a client call. '
+             'The 2019 script runs the same steps and opens a ticket; the 2026 agent reads the laptop, sees the call, gives the diagram in the browser now '
+             'and fixes the laptop after the call, inside a fence of what it may do')
 
-    box(d, 20, 20, 300, 72, 'A program does not work', 'The employee writes to Digital Hub. The Software agent takes it.')
-    d.arrow((170, 92), (170, 120), color=TEAL)
+    # the situation
+    d.rect(20, 20, 1160, 70, '#f7fafb', '#dce4e7', rx=12)
+    d.t(40, 48, 'The situation', 15, 600)
+    d.t(40, 72, 'A consultant writes in Teams: “Visio will not install, and I have a client call in 20 minutes. I need my diagram.”', 14, 400, fill=SECOND)
 
-    # 1. many people?
-    box(d, 20, 120, 300, 110, '1. Does it fail for many people?', 'The agent checks the service status itself.', dark=True)
-    d.arrow((320, 175), (380, 175), color=TEAL, label='Yes', at=(336, 167))
-    box(d, 380, 120, 790, 110, 'A ticket for the Nexthink agent',
-        'Nothing to fix on this laptop. The Software agent files a ticket and gives the employee the number. The Nexthink agent takes it: updates, network, system fixes.', ['Outlook'])
-    d.arrow((170, 230), (170, 260), color=TEAL, label='No', at=(178, 250))
+    # the script, 2019
+    d.rect(20, 110, 560, 440, '#fff', '#dce4e7', rx=14)
+    d.t(44, 146, 'A script, 2019', 18, 600)
+    d.t(44, 168, 'The same steps for everyone', 13, 400, fill=SECOND)
+    y = 190
+    for n, t in enumerate(['“Restart your laptop.” Five minutes gone.',
+                           '“Try installing again.” It fails.',
+                           'Cleans up the disk. It fails again.',
+                           '“Describe the error”: a form.',
+                           'A ticket in the queue. An engineer calls back hours later and asks the same questions.'], 1):
+        y = step(d, 44, y, 512, n, t, GREY)
+    d.rect(44, 480, 512, 48, '#f4f6f7', '#f4f6f7', rx=8)
+    d.t(60, 509, 'The call happens without the diagram.', 14, 600)
 
-    # 2. license?
-    box(d, 20, 260, 300, 112, '2. Does the employee have a license?', 'If yes, go to step 3.', dark=True)
-    d.arrow((320, 316), (380, 316), color=TEAL, label='No', at=(326, 336))
-    d.arrow((350, 316), (350, 250), (1020, 250), (1020, 260), color=TEAL)
-    box(d, 380, 260, 470, 112, 'Entitled: the agent renews it', 'Then step 3, if the program still does not work.', ['Acrobat'])
-    box(d, 870, 260, 300, 112, 'Not entitled', 'The agent fills in the request and sends it to the manager. Once approved, it renews.')
-    d.arrow((170, 372), (170, 402), color=TEAL, label='Yes', at=(178, 392))
+    # the agent, 2026, inside its fence
+    d.rect(620, 110, 560, 440, TINT, TEAL, rx=14, sw=1.5)
+    d.el.append(f'<rect x="632" y="122" width="536" height="416" rx="10" fill="none" stroke="{TEAL}" stroke-width="1.5" stroke-dasharray="7 5"/>')
+    d.t(648, 152, 'An agent, 2026', 18, 600)
+    d.t(648, 174, 'Decides from the laptop’s data and the person’s situation', 13, 400, fill=SECOND)
+    y = 196
+    for n, t in enumerate(['Reads the laptop: the install failed twice because the installer cache is broken. The disk is fine, so no restart and no clean-up.',
+                           'Sees the call in 20 minutes. Fixing takes longer, so it solves the real problem first: “Visio in the browser works now. Here is your diagram. I will fix the laptop after the call.”',
+                           'After the call it repairs the cache and installs Visio. If that fails, a person from IT takes over and already knows everything.'], 1):
+        y = step(d, 648, y, 504, n, t, TEAL)
+    d.rect(648, 436, 504, 48, '#fff', '#fff', rx=8)
+    d.t(664, 465, 'The diagram is on the call. The laptop is fixed after it.', 14, 600, fill=TEAL)
+    d.lines(648, 506, 'The dashed line is the fence: what the agent may do on its own, what waits for a yes, when it calls a person.', 500, 12, 400, SECOND, lh=15)
 
-    # 3. back to standard
-    box(d, 20, 402, 300, 180, '3. Bring the laptop back to standard', 'Every laptop is set up from a standard image. The smallest fix first; the next only if the program still does not work.', dark=True)
-    steps = [('A known fix', 'Clear a cache, switch the headset, turn off an add-in (it asks first).', ['Excel', 'Teams sound']),
-             ('Reinstall the program', 'Harmless, so the agent does not ask.', ['Visio']),
-             ('Reset the laptop', 'About an hour, so it asks: now or tonight? Files are safe in OneDrive.', []),
-             ('A person from IT', 'Takes over and already knows everything that was tried.', ['Visio'])]
-    d.arrow((320, 492), (380, 492), color=TEAL)
-    for k, (t, tx, tg) in enumerate(steps):
-        x = 380 + k * 198
-        box(d, x, 402, 186, 180, t, tx, tg)
-        if k < 3:
-            d.arrow((x + 186, 492), (x + 198, 492), color=TEAL)
-    d.t(380, 604, 'Between steps: still not working.', 12, 400, fill=SECOND)
-    d.H = 616
+    # the point
+    d.t(20, 584, 'The script does what was asked: install Visio.', 15, 600)
+    d.t(20, 610, 'The agent solves the real problem: the diagram on the call. Inside the fence, it is free to choose how.', 15, 600, fill=TEAL)
+    d.H = 640
     return d

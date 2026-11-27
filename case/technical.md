@@ -88,13 +88,17 @@ A meeting room that does not work, a failed install, VPN at a hotel, client file
 - Files live in OneDrive, not on the laptop.
 - Agents have no open internet. Vendor knowledge (Microsoft, Adobe) goes into their libraries in advance, checked and kept up to date. An agent that searches forums can find a wrong fix or a page with hidden instructions, and nobody can test it in advance.
 
-So the agent knows what each laptop should look like. A diagnosis is the difference between the laptop and its image, and fixing it means bringing the laptop back to the image. The agent asks three questions:
+So the agent knows what each laptop should look like. A diagnosis is the difference between the laptop and its image, and fixing it means bringing the laptop back to the image.
 
-1. **Is the problem on the employee's laptop, or somewhere else?** Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, check the account, or bring in the network team.
-2. **If it is, what is the lightest step back to the image?** A known fix (clear a cache, turn off an add-in, switch the headset); then repair or reinstall the app; then reset the laptop to its image, with files and apps coming back by themselves; then a person. Harmless steps need no question. A reset takes time, so the agent picks the moment with the employee: "It takes an hour. Now or tonight?"
-3. **Is it about data?** Most "where is my file" cases are simple: the OneDrive recycle bin or an earlier version, run as a fixed flow. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent on a large model works on it with a person, because the stakes are high and every case is different.
+Those rules make the fence. For the Software agent it has three steps:
 
-**Software outside the catalog** is never the small agent's call. A larger model checks the request: is there an approved alternative, is it safe, what does the license cost. It offers the alternative first; if the employee still needs the app, a person decides.
+1. **Does the program fail for many people?** The agent checks the service status itself. If yes, there is nothing to fix on this laptop, but the employee is never left stuck: the agent files a ticket, gives the number, and the Nexthink agent takes it (updates, network, system fixes). Nexthink brings its own agent, like Microsoft Defender does; we decide what to give it, not rebuild it.
+2. **Does the employee have a license?** If not but they are entitled, the agent renews it. If they are not entitled, it fills in the request and sends it to the manager; once approved, it renews.
+3. **Bring the laptop back to standard.** The smallest fix first: a known fix (clear a cache, switch the headset, turn off an add-in after a yes); then reinstall the program; then reset the laptop, which takes about an hour, so the agent asks when; then a person from IT with the whole story.
+
+**Inside the fence the agent decides for itself.** The steps are its limits, not a script. It reads the laptop's data and skips what will not help. It weighs the person's situation. Take Visio twenty minutes before a client call: the data shows a broken installer cache and a fine disk, so no restart and no clean-up; fixing takes longer than twenty minutes, so the agent first solves the real problem ("Visio in the browser works now, here is your diagram"), and fixes the laptop after the call. A script does what was asked. The agent solves the problem.
+
+**Other starts, other paths.** A lost or damaged file is not a software problem: most come back from the OneDrive recycle bin or an earlier version as a fixed flow, and the hard ones (client data, a deleted shared folder, two versions that clash) go to a stronger agent with a person. A program that is not on the approved list is never the small agent's call: a larger model checks the request and offers an approved alternative; if none fits, a person decides.
 
 The agent does not need to understand everything. Anything outside its library goes to the second-line team.
 
@@ -112,11 +116,11 @@ Many problems cross domains. A VPN that will not connect can be the app, the acc
 One rule for all of them: every agent has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes, and a new fix runs only after an engineer approves it.
 
 **The Software agent: five cases, one ladder** (diagram [D26-8])
-- **Visio will not install.** A full disk: the agent clears temporary files itself. A broken installer cache: after two tries, a person takes over in a remote session.
+- **Visio will not install, with a client call in 20 minutes.** The data shows a broken installer cache, so no restart or clean-up. The call comes first: Visio in the browser now, the laptop fixed after the call. If the repair fails, a person takes over in a remote session.
 - **Excel crashes on the client model.** The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
-- **Outlook will not connect.** First the agent checks whether Microsoft 365 is down for everyone. If it is, it fixes nothing, files no ticket and says when it will be back. If it is only this employee, it clears the cached sign-in and the Outlook profile.
+- **Outlook will not connect.** First the agent checks whether Microsoft 365 is down for everyone. If it is, there is nothing to fix on the laptop: it files a ticket for the Nexthink agent and gives the employee the number. If it is only this employee, it clears the cached sign-in and the Outlook profile.
 - **No sound in a Teams call that starts in 10 minutes.** The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
-- **Acrobat says the license has expired.** Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.
+- **Acrobat says the license has expired.** Entitled: the agent reactivates it. Not entitled: it fills in the request and sends it to the manager; once approved, it renews.
 
 #### The Software agent in full
 
@@ -128,7 +132,9 @@ Defined the way ServiceNow defines its first-line AI specialist: a role, the kin
 
 **Tools.** Each one reaches a single system, within the agent's own rights.
 - Read the laptop (Nexthink): disk, crashes, app versions, recent errors.
-- Check the service (Microsoft 365 status, the vendor's status): is it down for everyone?
+- Check the service (Microsoft 365 status, the vendor's status): does it fail for many people?
+- File a ticket for the Nexthink agent (ServiceNow).
+- Send the manager a request (Teams), filled in by the agent.
 - Check the license (ServiceNow): is the employee entitled?
 - Read the image and the catalog: what should be on the employee's laptop.
 - Run a known fix (Intune): only fixes from the approved library.
@@ -137,7 +143,7 @@ Defined the way ServiceNow defines its first-line AI specialist: a role, the kin
 - Show the employee a choice: a card with options, never a form.
 - Hand over (ServiceNow): a ticket with the whole story, for a person or a team.
 
-**Steps.** The three questions: is the problem on the employee's laptop; if so, the lightest step back to the image; is it about data.
+**Steps.** The fence: does it fail for many people; does the employee have a license; bring the laptop back to standard. Inside it, the agent chooses from the data and the person's situation.
 
 **Limits.**
 - **Does on its own:** reads anything on the laptop it was given; runs fixes marked harmless (clear a cache or temporary files, restart an app); reinstalls an app from the catalog.
