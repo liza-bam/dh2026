@@ -71,6 +71,8 @@ The starting point is the same as in 2019: the ten most common requests from EY'
 
 Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
 
+Of the ten, five need no decision: ordering a device, an assistant's access, a Teams channel, a password reset, a meeting room. Five do: a failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. That leaves five problems for agents to think about, not ten.
+
 So every request takes one of three paths.
 
 ### 1. Simple actions: fixed flows

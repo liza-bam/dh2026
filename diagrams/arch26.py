@@ -1,4 +1,4 @@
-"""D26-2. Architecture 2026: eight layers, scoped agents, enterprise agents, knowledge, systems, governance, people."""
+"""D26-2. Architecture 2026: nine layers. Intake sorts every request into a fixed flow, a domain agent or a team ticket; team agents work for the second line."""
 from rich import Rich, Z
 from svg import SECOND
 from transition import TEAL, TINT
@@ -34,18 +34,19 @@ def band(d, y, h, n, title, sub, fill='#f7fafb', stroke='#dce4e7'):
 
 
 AGENTS = [
-    ('Identity agent', 'lock', 'Resets passwords, unlocks accounts', 'Never reads mail or files', 'Small model', [('azure', 'Entra ID')]),
-    ('Workplace agent', 'room', 'Rebooks rooms, files facilities requests', 'Never sees meeting content', 'Small model', [('office', 'Office 365')]),
-    ('Access agent', 'approve', 'Asks owners, grants access once they say yes', 'Never approves its own request', 'Small model', [('azure', 'Entra ID'), ('workday', 'Workday')]),
-    ('Devices agent', 'hardware', 'Locks, orders, starts the data transfer', 'Wipes only once the employee is verified', 'Small model', [(None, 'Intune'), ('ariba', 'SAP Ariba')]),
-    ('Fix agent', 'tools', 'Runs fixes; the large model drafts new ones', 'Never runs a new fix before an engineer approves', 'Small model', [('nexthink', 'Nexthink'), (None, 'Intune')]),
-    ('Watcher agent', 'software', 'Reads telemetry, opens cases itself', 'Never changes a device', 'Small model', [('nexthink', 'Nexthink'), ('now', 'ServiceNow')]),
+    ('Security agent', 'lock', 'Stolen devices, scams, locked accounts', 'Wipes only once the employee is verified', 'Small model', [('azure', 'Entra ID'), (None, 'Intune')]),
+    ('Devices agent', 'hardware', 'Orders and replaces devices, hardware faults', 'Never wipes a device', 'Small model', [('ariba', 'SAP Ariba'), (None, 'Intune')]),
+    ('Software agent', 'tools', 'Installs and repairs apps, VPN, tries fixes', 'Never runs a new fix before an engineer approves', 'Small model', [('nexthink', 'Nexthink'), (None, 'Intune')]),
+    ('Mail, calendar and Teams', 'outlook', 'Delegation, mailboxes, channels', 'Never reads the content of mail', 'Small model', [('office', 'Office 365'), ('azure', 'Entra ID')]),
+    ('Workplace agent', 'room', 'Rooms, desks, facilities requests', 'Never sees meeting content', 'Small model', [('office', 'Office 365'), ('now', 'ServiceNow')]),
+    ('Watcher agent', 'software', 'Reads telemetry, opens cases before people notice', 'Never changes a device', 'Small model', [('nexthink', 'Nexthink'), ('now', 'ServiceNow')]),
 ]
 
 
 def build():
-    d = Rich('a26', 1500, 1290, 'Digital Hub 2026 architecture in eight layers: channels, intake agent and orchestrator, specialized agents with limited access, '
-             'enterprise agents, knowledge, systems through MCP, governance, people')
+    d = Rich('a26', 1500, 1440, 'Digital Hub 2026 architecture in nine layers: channels; an intake agent that sends every request to a fixed flow, a domain agent or a team; '
+             'domain agents with limited access; team agents for the second line; enterprise agents; knowledge; systems through MCP; governance; people')
+    S = 150  # the team agents band pushes the lower layers down
 
     # 1 channels ---------------------------------------------------------------------------
     band(d, 20, 120, 1, 'Channels', 'The employee asks anywhere; it is one conversation')
@@ -61,22 +62,23 @@ def build():
         d.t(x + 56, 96, name, 14, 600)
         x += 208
 
-    # 2 intake agent and orchestrator ---------------------------------------------------------
-    band(d, 160, 130, 2, 'Intake agent and orchestrator', 'One way in. Neither changes anything in a system itself', TINT, TEAL)
-    for x, w, name, chips, text in [
-            (40, 545, 'Intake agent', [('Small model', '#fff', TEAL), ('Read only', '#fff', TEAL)],
-             'Loads the context, picks the fixed journey and its agent. No journey: fills a ServiceNow ticket, labels it, tells the employee what happens next.'),
-            (600, 530, 'Orchestrator', [('Large model', TEAL, '#fff'), ('After the switch', '#fff', TEAL)],
-             'Takes the requests that have no journey and works through the agents. What it cannot solve goes to a person with the whole story.')]:
-        d.rect(x, 202, w, 80, '#fff', TEAL, rx=12, sw=1.5)
-        d.t(x + 14, 226, name, 15, 600)
-        cx = x + w - 14 - sum(len(t) * 12 * 0.58 + 24 for t, _, _ in chips) + 6
-        for t, f, c in chips:
-            cx = chip(d, cx, 210, t, f, TEAL, c)
-        d.lines(x + 14, 250, text, w - 28, 13, 400, SECOND, lh=17)
+    # 2 intake agent and the three paths -------------------------------------------------------
+    band(d, 160, 130, 2, 'Intake agent', 'One way in. Sorts every request; changes nothing in a system itself', TINT, TEAL)
+    d.rect(40, 202, 400, 80, '#fff', TEAL, rx=12, sw=1.5)
+    d.t(54, 226, 'Intake agent', 15, 600)
+    cx = 440 - 14 - sum(len(t) * 12 * 0.58 + 24 for t in ('Small model', 'Read only')) + 6
+    for t in ('Small model', 'Read only'):
+        cx = chip(d, cx, 210, t, '#fff', TEAL, TEAL)
+    d.lines(54, 250, 'Understands the request in the employee’s own words and loads the context.', 372, 13, 400, SECOND, lh=17)
+    for k, (t, sub) in enumerate([('Fixed flow', 'A simple action: no decisions'), ('Domain agent', 'A problem: decisions needed'), ('Team ticket', 'Nothing fits: a team and its agent')]):
+        x = 474 + k * 224
+        d.rect(x, 202, 210, 80, '#fff', TEAL, rx=12, sw=1.5)
+        d.t(x + 14, 230, t, 15, 600)
+        d.lines(x + 14, 254, sub, 186, 13, 400, SECOND, lh=17)
+    d.arrow((440, 242), (474, 242), color=TEAL)
 
     # 3 specialized agents ----------------------------------------------------------------------
-    band(d, 310, 300, 3, 'Specialized agents', 'Each has its own identity and only the rights its role needs', TINT, TEAL)
+    band(d, 310, 300, 3, 'Domain agents', 'Simple actions run as fixed flows; problems the agent solves within its limits', TINT, TEAL)
     for i, (name, icon, can, cannot, model, tools) in enumerate(AGENTS):
         x = 40 + (i % 3) * 368
         y = 356 + (i // 3) * 124
@@ -97,39 +99,49 @@ def build():
             d.t(tx, y + 105, n, 11, 600, fill=SECOND)
             tx += len(n) * 6.4 + 14
 
+    # 4 team agents ------------------------------------------------------------------------------
+    band(d, 630, 130, 4, 'Team agents', 'The second line: one agent for each team, working for its engineers', TINT, TEAL)
+    d.rect(40, 672, 1090, 78, '#fff', TEAL, rx=12, sw=1.5)
+    d.lines(54, 696, 'Reads the ticket and the history, suggests what to do from the team’s experience and prepares the actions. An engineer decides. '
+            'What the team solves goes back to the first line as knowledge or a new fix.', 700, 13, 400, SECOND, lh=17)
+    chip(d, 1130 - 14 - (len('Large model') * 12 * 0.58 + 18), 680, 'Large model', TEAL, TEAL, '#fff')
+    cx = 780
+    for t in ('Network', 'Messaging', 'End-user computing'):
+        cx = chip(d, cx, 716, t, '#fff', '#c9d1d4', None, 11)
+
     # 4 enterprise agents ------------------------------------------------------------------------
-    band(d, 630, 140, 4, 'Enterprise agents', 'Run inside their own platforms, with their own data and audit; connected through A2A')
+    band(d, 630 + S, 140, 5, 'Enterprise agents', 'Run inside their own platforms, with their own data and audit; connected through A2A')
     ents = [(None, 'Microsoft Defender', 'Phishing triage: decides whether a reported email is a threat'),
             ('now', 'ServiceNow', 'Ticket workflows, approvals, service levels'),
             ('genesys', 'Genesys', 'Routes a case to the right live agent with the whole story')]
     for i, (k, n, s) in enumerate(ents):
         x = 40 + i * 368
-        d.rect(x, 676, 352, 80, '#fff', '#c9d1d4', rx=12)
+        d.rect(x, 676 + S, 352, 80, '#fff', '#c9d1d4', rx=12)
         if k == 'genesys':
-            d.wordmark('genesys', x + 12, 682, 130, 36)
+            d.wordmark('genesys', x + 12, 682 + S, 130, 36)
         elif k:
-            d.logo(k, x + 12, 684, 30)
-            d.t(x + 52, 704, n, 14, 600)
+            d.logo(k, x + 12, 684 + S, 30)
+            d.t(x + 52, 704 + S, n, 14, 600)
         else:
-            system(d, x + 12, 685, None, n)
-        d.lines(x + 12, 734, s, 330, 13, 400, SECOND)
+            system(d, x + 12, 685 + S, None, n)
+        d.lines(x + 12, 734 + S, s, 330, 13, 400, SECOND)
 
     # 5 knowledge -----------------------------------------------------------------------------
-    band(d, 790, 120, 5, 'Knowledge', 'Agents answer only from approved EY sources, with a link to the source')
+    band(d, 790 + S, 120, 6, 'Knowledge', 'A library for each domain and each team; answers only from approved EY sources')
     x = 70
     for k, n in [('now', 'ServiceNow Knowledge'), ('sharepoint', 'Policies in SharePoint'), (None, 'How-to videos'), (None, 'Client data rules')]:
-        d.rect(x, 836, 252, 52, '#fff', '#dce4e7', rx=10)
-        system(d, x + 12, 848, k, n)
+        d.rect(x, 836 + S, 252, 52, '#fff', '#dce4e7', rx=10)
+        system(d, x + 12, 848 + S, k, n)
         x += 268
-    d.t(70, 902, 'Each agent searches only its own topics.', 12, 400, fill=SECOND)
+    d.t(70, 902 + S, 'Each agent searches only its own library.', 12, 400, fill=SECOND)
 
     # 6 systems -------------------------------------------------------------------------------
-    band(d, 930, 150, 6, 'Systems', 'Reached through their MCP servers, within the rights of the agent and the employee')
+    band(d, 930 + S, 150, 7, 'Systems', 'Reached through their MCP servers, within the rights of the agent and the employee')
     sysl = [('now', 'ServiceNow'), ('workday', 'Workday'), ('azure', 'Entra ID'), (None, 'Intune'), ('nexthink', 'Nexthink'),
             ('office', 'Office 365'), ('ariba', 'SAP Ariba'), ('genesys', 'Genesys')]
     for i, (k, n) in enumerate(sysl):
         x = 70 + (i % 4) * 268
-        y = 976 + (i // 4) * 50
+        y = 976 + S + (i // 4) * 50
         d.rect(x, y, 252, 42, '#fff', '#dce4e7', rx=10)
         if k == 'genesys':
             d.wordmark('genesys', x + 12, y + 4, 110, 34)
@@ -137,41 +149,42 @@ def build():
             system(d, x + 12, y + 7, k, n)
 
     # arrows between layers
-    for y1, y2 in [(140, 160), (290, 310), (610, 630), (770, 790), (910, 930)]:
+    for y1, y2 in [(140, 160), (290, 310), (610, 630), (760, 780), (770 + S, 790 + S), (910 + S, 930 + S)]:
         d.arrow((585, y1), (585, y2), color=TEAL)
 
     # 7 governance ------------------------------------------------------------------------------
-    d.rect(1170, 20, 310, 560, '#fff', '#223640', rx=14, sw=1.5)
+    d.rect(1170, 20, 310, 640, '#fff', '#223640', rx=14, sw=1.5)
     d.el.append(f'<circle cx="1196" cy="50" r="14" fill="{TEAL}"/>')
-    d.t(1196, 55, '7', 13, 700, 'middle', fill='#fff')
+    d.t(1196, 55, '8', 13, 700, 'middle', fill='#fff')
     d.t(1220, 56, 'Governance', 17, 600)
     gov = [('Agent identities', 'Every agent has its own account in Entra ID, like a new employee'),
            ('Agent registry', 'One list of all agents, their owners and their rights'),
            ('Audit', 'Every action of every agent is logged'),
            ('Checks before release', 'Each agent is tested on real scenarios before it goes live'),
            ('Spend limits', 'Each agent has a budget; cost is measured per solved case'),
+           ('Independence, one action at a time', 'An agent first proposes, then acts alone; each action moves up after it works on real cases'),
            ('Models in EY’s cloud', 'Client data never leaves EY')]
     y = 80
     for t, s in gov:
         d.t(1190, y + 18, t, 14, 600)
         y = d.lines(1190, y + 38, s, 270, 13, 400, SECOND) + 14
     # 8 people ---------------------------------------------------------------------------------
-    d.rect(1170, 600, 310, 480, Z['agent'][0], Z['agent'][1], dashed=True, rx=14)
-    d.el.append(f'<circle cx="1196" cy="630" r="14" fill="{TEAL}"/>')
-    d.t(1196, 635, '8', 13, 700, 'middle', fill='#fff')
-    d.t(1220, 636, 'People', 17, 600)
-    d.t(1220, 656, 'About 10% of cases', 13, 400, fill=SECOND)
-    y = 680
+    P = 80
+    d.rect(1170, 600 + P, 310, 550, Z['agent'][0], Z['agent'][1], dashed=True, rx=14)
+    d.el.append(f'<circle cx="1196" cy="{630 + P}" r="14" fill="{TEAL}"/>')
+    d.t(1196, 635 + P, '9', 13, 700, 'middle', fill='#fff')
+    d.t(1220, 636 + P, 'People', 17, 600)
+    d.t(1220, 656 + P, 'At every level', 12, 400, fill=SECOND)
+    y = 690 + P
     for av, t, s in [('agent1', 'Live agent and experts', 'Take over with the whole story; no escalation'),
                      ('agent2', 'Approvers', 'Managers and owners decide in Teams'),
                      ('agent3', 'Security team', 'Client data at risk, real phishing'),
-                     ('agent4', 'Engineers', 'Approve every new fix before it joins the library')]:
+                     ('agent4', 'Engineers', 'Second line, with their team agent; approve every new fix')]:
         d.image(av, 1186, y, 44, round_=True, ring=Z['agent'][1])
         d.t(1242, y + 18, t, 14, 600)
         d.lines(1242, y + 38, s, 220, 12, 400, SECOND)
-        y += 96
+        y += 110
     d.arrow((1150, 470), (1170, 470), color=G)
-    d.arrow((1150, 700), (1170, 700), color=Z['agent'][1])
-    d.t(1100, 1120 + 40, '', 12)
-    d.H = 1100
+    d.arrow((1150, 715), (1170, 715), color=Z['agent'][1])
+    d.H = 1250
     return d
