@@ -42,6 +42,7 @@ body{margin:0;background:#eef3f4;color:var(--ink);font:400 15px/1.5 Inter,sans-s
 .card b{display:block}
 .card p{margin:2px 0;color:var(--second);font-size:14px}
 .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.btns.stack{flex-direction:column;align-items:stretch}.btns.stack button{text-align:left;padding:8px 10px}.btns.stack button span{display:block;font-weight:400;font-size:13px;color:var(--second)}
 button{font:600 14px Inter,sans-serif;min-height:40px;padding:0 14px;border-radius:8px;border:1.5px solid var(--teal);background:#fff;color:var(--teal);cursor:pointer}
 button.main{background:var(--teal);color:#fff}
 button:disabled{opacity:.45;cursor:default}
@@ -124,10 +125,10 @@ button:disabled{opacity:.45;cursor:default}
   </section>
   <aside class="guide">
     <p class="now" id="now"></p>
-    <h2>Version 1: ten fixed journeys</h2>
-    <p>A small, cheap model sends each request to one of ten journeys, or files a ticket.</p>
+    <h2>Version 1: fixed journeys</h2>
+    <p>A small, cheap model sends each request to a fixed journey, or files a ticket.</p>
     <div class="examples" id="examples"></div>
-    <p>You can describe the same ten problems in your own words. The agent understands them too.</p>
+    <p>You can describe these problems in your own words. The agent understands them too.</p>
     <h2>How it runs</h2>
     <div class="flow" id="agents"><p class="empty">Nothing yet</p></div>
     <p class="total" id="total"></p>
@@ -162,17 +163,22 @@ async function say(text, who = 'Digital Hub', live = false) {
 function card(module, title, lines, buttons = [], opt = {}) {
   return new Promise(resolve => {
     const c = el('div', 'card' + (opt.live ? ' live' : ''));
-    c.append(el('b', '', title), ...lines.map(l => el('p', '', l)));
-    const b = el('div', 'btns');
+    const h = el('b', '', title);
+    if (opt.face) h.prepend(face());
+    c.append(h, ...lines.map(l => el('p', '', l)));
+    const b = el('div', opt.stack ? 'btns stack' : 'btns');
     buttons.forEach((label, i) => {
-      const x = el('button', i ? '' : 'main', label);
-      x.onclick = () => { b.querySelectorAll('button').forEach(y => y.disabled = true); if (opt.echo !== false) me(label); resolve(label); };
+      const x = el('button', i || opt.stack ? '' : 'main', label);
+      const [name, about] = label.split('\n'); // a stacked option: name on the first line, one line about it below
+      if (about) { x.textContent = name; x.append(el('span', '', about)); }
+      x.onclick = () => { b.querySelectorAll('button').forEach(y => y.disabled = true); if (opt.echo !== false) me(name); resolve(name); };
       b.append(x);
     });
     if (buttons.length) c.append(b);
     if (module) c.append(el('span', 'mod', module));
-    add(c);
-    if (!buttons.length) resolve(null);
+    // A short pause before every card, so messages arrive one at a time
+    const t = add(el('div', 'typing', 'Digital Hub is typing…'));
+    wait(900).then(() => { t.remove(); add(c); if (!buttons.length) resolve(null); });
   });
 }
 // The employee writes: suggestion chips plus free text. Resolves with what was sent.
@@ -235,7 +241,7 @@ const tickets = {
   add(what, team, kind = 'INC', status = 'Open') {
     const t = { num: kind + Math.floor(1000000 + Math.random() * 9000000), what, team, status, at: new Date().toISOString() };
     try { localStorage.setItem('dh-tickets', JSON.stringify([...tickets.all(), t])); } catch { /* storage off: the ticket still shows in this conversation */ }
-    request(t.num, `${what}. ${team}, ${status.toLowerCase()}`);
+    request(t.num, `${what.replace(/\.$/, '')}. ${team}, ${status.toLowerCase()}`);
     return t.num;
   },
   set(num, status) {
@@ -417,9 +423,7 @@ const m = {
     await wait(800);
     note(`${who} joined the chat`);
     withPerson = who.startsWith('Tracy');
-    const c = card('Hand over to a person', `${who} joined`, lines, button ? [button] : [], { live: true });
-    if (who.startsWith('Tracy')) chat.querySelector('.card:last-of-type b').prepend(face());
-    return c;
+    return card('Hand over to a person', `${who} joined`, lines, button ? [button] : [], { live: true, face: who.startsWith('Tracy') });
   },
   async status(title, lines) {
     request(title, lines[0]);
@@ -534,19 +538,41 @@ const scenarios = [
   { title: 'Outlook access for an assistant', where: 'Digital Hub in Teams, on the laptop', async run() {
     await ask(['My new assistant needs access to my calendar and inbox']);
     context(); front('Delegation: routes to the access agent');
-    step('Access agent', 'Finds his new assistant in Workday');
-    if (!await m.confirmRisky('Give your new assistant access?', ['Calendar: can edit', 'Inbox: can read and send for you'], 'Give access')) return;
-    await m.grantAccess('Access agent', 'Office 365', 'your calendar and inbox for your assistant', 'Done');
+    step('Access agent', 'Finds a new assistant on his team in Workday');
+    let who = 'Anna Lee';
+    if (await card('Grant access', 'Is it Anna Lee?', ['Executive assistant, joined your team on Monday'], ['Yes', 'Someone else']) === 'Someone else') {
+      await say('Who is it? Write their name.');
+      who = (await ask([])).trim();
+      step('Access agent', `Finds ${who} in Workday`);
+    }
+    const LEVELS = { 'See your calendar': 'see your calendar', 'Manage your calendar': 'manage your calendar', 'Calendar and email': 'manage your calendar and email' };
+    const level = await card('Grant access', `What can ${who} do?`, ['Private meetings and emails stay hidden. You can change this any time.'],
+      ['See your calendar\nSees when you are busy', 'Manage your calendar\nAccepts, sends and moves meetings for you', 'Calendar and email\nAlso reads your email and sends it for you'], { stack: true });
+    step('Access agent', `Gives ${who} this level in Office 365: ${level}`);
+    const num = tickets.add(`${who}: ${level.toLowerCase()}`, 'Access', 'REQ', 'Active');
+    step('ServiceNow ticket', `Request ${num}: access for ${who}`);
+    step('Access agent', `Tells ${who} in Teams`);
+    await say(`Done. ${who} can now ${LEVELS[level]}. I told them in Teams. To change or remove it, open ${num} in My requests.`);
     await m.feedback();
   } },
   { title: 'Ordering a peripheral', where: 'Digital Hub in Teams, on the laptop', async run() {
     await ask(['I need a second monitor']);
     context(); front('Hardware request: routes to the devices agent');
-    step('Devices agent', 'Checks what works with his laptop and what is in stock in SAP Ariba');
-    if (await m.orderDevice('27-inch monitor', ['Works with your laptop', 'In stock: locker at your office, tomorrow'])) {
-      step('Devices agent', 'Standard bundle: approved automatically, no manager needed');
-      await m.status('Your monitor', ['Ready tomorrow in locker 12', 'The code comes to your phone']);
-    }
+    step('Devices agent', 'Finds monitors that work with his laptop and are in stock in SAP Ariba');
+    const pick = await card('Order a device', 'Monitors for your role', ['Free for your role. All of them work with your laptop.'],
+      ['24-inch monitor\nFits a small desk', '27-inch monitor\nMore room for spreadsheets', '27-inch USB-C monitor\nOne cable for the picture and charging'], { stack: true });
+    const where = await card('Order a device', 'Where should it go?', [], ['Office locker, tomorrow', 'Home, in 3 days']);
+    step('Devices agent', 'Standard item: approved automatically, no manager needed');
+    step('SAP Ariba', `Order placed: ${pick}`, 'system');
+    const num = tickets.add(pick, 'Devices', 'REQ', 'Ordered');
+    step('ServiceNow ticket', `Request ${num}: ${pick}, ordered`);
+    await say(`Ordered. Your request is ${num}. I will tell you when it arrives.`);
+    now('The employee goes back to work. The agent comes back when the monitor arrives.');
+    const office = where.startsWith('Office');
+    await later(office ? 'Next morning' : 'Three days later');
+    step('Devices agent', office ? 'Comes back by itself: the monitor is in the locker' : 'Comes back by itself: the monitor was delivered');
+    tickets.set(num, office ? 'Ready' : 'Delivered');
+    await card('Status and updates', office ? 'Your monitor is here' : 'Your monitor was delivered', office ? ['Locker 12, next to reception', 'Code: 4821'] : ['Left at your door today']);
     await m.feedback();
   } },
   { title: 'Email scam', where: 'Outlook on the laptop', async run() {
@@ -583,8 +609,7 @@ const scenarios = [
     await wait(1500);
     step('Nexthink', 'The install failed: the disk is almost full', 'system');
     await say('The install stopped: your disk is almost full.');
-    if (!await m.confirmRisky('Free up space first?', ['Removes temporary files only', 'Your files stay'], 'Free up space')) return;
-    await m.runFix('Fix agent', 1, 'clearing temporary files and installing again');
+    await m.runFix('Fix agent', 1, 'clearing temporary files (your own files stay) and installing again');
     step('Intune', 'Fails again', 'system');
     await say('It failed again. I am trying another fix.');
     const reply = await ask(['My call is in 20 minutes, can someone help?', 'OK, keep trying']);
@@ -593,6 +618,7 @@ const scenarios = [
     } else {
       await m.runFix('Fix agent', 2, 'repairing the installer and installing again');
       step('Intune', 'Still fails', 'system');
+      await say('That did not work either.');
       front('Two fixes failed: a person takes over');
     }
     await say('I am bringing in a person from IT. You will not need to explain anything.');
@@ -621,12 +647,14 @@ const EXAMPLES = [
   ['Channel access', 'I need access to the Atlas client channel', 'Teams channel access'],
   ['Lost laptop', 'My laptop was stolen at the airport', 'Lost laptop'],
   ['Client files', 'Canvas will not open the Atlas client files', 'Client files in Canvas'],
-  ["Assistant's Outlook", 'My new assistant needs access to my calendar and inbox', 'Outlook access for an assistant'],
   ['New device', 'I need a second monitor', 'Ordering a peripheral'],
+  ["Assistant's Outlook", 'My new assistant needs access to my calendar and inbox', 'Outlook access for an assistant'],
   ['Scam email', 'I clicked a link in a strange email and typed my password', 'Email scam'],
   ['Software install', 'I need Visio for a client call today', 'Failed software install'],
   ['Something else', 'The printer on floor 3 keeps jamming', null],
 ];
+// Switched on in this demo. The other journeys stay in the code: add a title here to switch one back on
+const ON = ['Ordering a peripheral', 'Outlook access for an assistant', 'Failed software install'];
 let place = 'phone';
 function home() {
   device(`Teams, on the ${place}`);
@@ -653,7 +681,7 @@ async function openHub() {
 }
 $('tabhub').onclick = openHub;
 $('railhub').onclick = openHub;
-$('examples').append(...EXAMPLES.map(([label, text, j]) => {
+$('examples').append(...EXAMPLES.filter(([, , j]) => !j || ON.includes(j)).map(([label, text, j]) => {
   const b = el('button', '', label);
   b.onclick = async () => {
     if (busy) return;
@@ -688,7 +716,8 @@ async function intake(text, offline) {
     step('Intake agent', 'Offline preview: routed without the model');
     r = { journey: offline || 'none', ticket: offline ? null : { category: 'Printing', urgency: 'normal', group: 'Workplace', summary: 'The printer on floor 3 keeps jamming.', label: 'printer jams' } };
   } else { await say('Free text works in the hosted demo. Here, use the buttons on the right.'); busy = false; return; }
-  const s = scenarios.find(x => x.title === r.journey);
+  const s = scenarios.find(x => x.title === r.journey && ON.includes(x.title));
+  if (!s && !r.ticket) r.ticket = { category: r.journey, urgency: 'normal', group: 'Service desk', summary: text, label: r.journey.toLowerCase() };
   step('Fixed journey?', s ? `Yes: ${s.title}` : 'No journey yet');
   document.querySelectorAll('.branches span')[s ? 0 : 1].classList.add('taken');
   if (s) {
