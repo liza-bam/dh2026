@@ -1,81 +1,103 @@
-"""D19-11. Support paths as designed for EY Digital Hub in 2019, redrawn in the portfolio style."""
+"""D19-11. Support paths as designed for EY Digital Hub in 2019: a flowchart with its choices, the platforms and what the employee sees."""
 from rich import Rich
 from svg import SECOND, INK
 from transition import TEAL, TINT
-from paths26 import glyph, eyebrow, HAIR, PANEL
+from cards26 import icon
+from paths26 import glyph, HAIR, PANEL
 
-W, X0, GAP, TW, TH = 1180, 45, 30, 250, 190
-ROW_A, ROW_M = 58, 330
-LINE = '#8fa3ab'
-
-
-def col(i):
-    return X0 + i * (TW + GAP)
+W, H = 1180, 1080
+CX = 330          # centre of the flow
+BW, BH = 360, 76  # step boxes
+EX = 740          # employee column
 
 
-def tile(d, i, y, who, title, text, sees=None, kind='auto'):
-    x = col(i)
-    fill, stroke = (TINT, TINT) if kind == 'auto' else ('#fff', HAIR)
-    d.rect(x, y, TW, TH, fill, stroke, rx=0, sw=1)
-    logo, name = who
-    if logo in ('nexthink', 'now'):
-        d.logo(logo, x + 16, y + 13, 20)
-    else:
-        glyph(d, logo, x + 17, y + 15, 17)
-    eyebrow(d, x + 44, y + 28, name)
-    yy = d.lines(x + 16, y + 62, title, TW - 32, 16, 600, INK, lh=21)
-    d.lines(x + 16, yy + 6, text, TW - 32, 13, 400, SECOND, lh=18)
-    if sees:
-        sy = y + TH - 36
-        d.rect(x, sy, TW, 36, '#fff' if kind == 'auto' else PANEL, 'none', rx=0, sw=0)
-        glyph(d, 'notifications', x + 16, sy + 10, 16)
-        d.t(x + 40, sy + 23, sees, 12.5, 600, fill=TEAL)
+def zone(d, y, h, label, fill):
+    d.rect(20, y, 640, h, fill, fill, rx=0, sw=0)
+    d.el.append(f'<text x="40" y="{y + 30}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="600" '
+                f'letter-spacing="1.2" fill="{INK}">{label.upper()}</text>')
 
 
-def chevron(d, x, y, left=False):
-    s = -1 if left else 1
-    d.el.append(f'<path d="M{x - 3 * s:.0f} {y - 6:.0f}l{7 * s} 6l{-7 * s} 6" fill="none" stroke="{TEAL}" stroke-width="1.6" '
-                f'stroke-linecap="round" stroke-linejoin="round"/>')
+def step(d, y, ic, title, sub, logos=()):
+    x = CX - BW / 2
+    d.rect(x, y, BW, BH, '#fff', HAIR, rx=0, sw=1)
+    icon(d, ic, x + 38, y + BH / 2, 22)
+    d.t(x + 74, y + 33, title, 15, 600)
+    d.t(x + 74, y + 54, sub, 13, 400, fill=SECOND)
+    for k, lg in enumerate(logos):
+        d.logo(lg, x + BW - 30 - k * 26, y + 8, 20)
 
 
-def band(d, y, s):
-    d.el.append(f'<text x="{X0}" y="{y}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="600" '
-                f'letter-spacing="1.2" fill="{INK}">{s.upper()}</text>')
+def diamond(d, cy, lines, w=250, h=120):
+    d.el.append(f'<polygon points="{CX},{cy - h / 2} {CX + w / 2},{cy} {CX},{cy + h / 2} {CX - w / 2},{cy}" '
+                f'fill="#fff" stroke="{TEAL}" stroke-width="1.8"/>')
+    y0 = cy - (len(lines) - 1) * 9 + 5
+    for i, ln in enumerate(lines):
+        d.t(CX, y0 + i * 18, ln, 14, 600, anchor='middle')
+
+
+def tag(d, x, y, s, anchor='start'):
+    d.t(x, y, s, 13, 700, anchor=anchor, fill=TEAL)
+
+
+def sees(d, y_from, x_from, msg):
+    """A dashed line to what the employee sees: a laptop with the message on its screen."""
+    x = EX
+    d.el.append(f'<path d="M{x_from} {y_from}H{x - 8}" fill="none" stroke="{TEAL}" stroke-width="1.4" stroke-dasharray="4 4"/>')
+    sy = y_from - 34
+    d.rect(x, sy, 300, 62, '#fff', '#9fb3ba', rx=0, sw=1.2)               # screen
+    d.rect(x + 12, sy + 12, 276, 38, TINT, TINT, rx=0, sw=0)              # notification
+    glyph(d, 'chat_bubble', x + 22, sy + 22, 18)
+    d.t(x + 50, sy + 36, msg, 13, 600)
+    d.el.append(f'<path d="M{x - 14} {sy + 62}h328l-14 10h-300z" fill="#dce4e7"/>')   # laptop base
 
 
 def build():
-    d = Rich('su19', W, 620, 'Support paths, 2019: monitoring and AI scripts fix problems first; when they fail, a person works a ticket, and every manual fix is checked for automation')
-    band(d, ROW_A - 16, 'Automated preventive support')
-    tile(d, 0, ROW_A, ('nexthink', 'Nexthink'), 'Monitors', 'Laptops and servers: system, software, hardware. Finds anomalies.')
-    tile(d, 1, ROW_A, ('help', 'Check'), 'A failure, or a risk of one?', 'No: keep monitoring. Yes: fix it.')
-    tile(d, 2, ROW_A, ('smart_toy', 'AI scripts'), 'Fix it on their own', 'Self-healing scripts run on the laptop.', 'Employee sees: a possible failure')
-    tile(d, 3, ROW_A, ('nexthink', 'Nexthink'), 'Fixed?', 'Checks the status of the issue.', 'Employee sees: problem fixed')
-    for i in range(3):
-        chevron(d, col(i) + TW + GAP / 2, ROW_A + TH / 2)
+    d = Rich('su19', W, H, 'Support paths, 2019: monitoring and AI scripts fix problems first; when they fail, a person works a ticket, and a manual fix that can be automated becomes a new script')
+    zone(d, 20, 600, 'Automated preventive support', TINT)
+    zone(d, 640, 420, 'Manual preventive support', PANEL)
 
-    band(d, ROW_M - 16, 'Manual preventive support')
-    tile(d, 3, ROW_M, ('now', 'ServiceNow'), 'A person analyses', 'A ticket opens, with the Nexthink data.', 'Employee sees: work in progress', kind='manual')
-    tile(d, 2, ROW_M, ('now', 'ServiceNow'), 'Ticket resolved', 'The status updates along the way.', 'Employee sees: problem fixed', kind='manual')
-    tile(d, 1, ROW_M, ('now', 'ServiceNow'), 'Can the fix be automated?', 'Yes: it goes into the database as a new script.', kind='manual')
-    for i in (2, 3):
-        chevron(d, col(i) - GAP / 2, ROW_M + TH / 2, left=True)
+    d.el.append(f'<text x="{EX}" y="50" font-family="\'Inter\', sans-serif" font-size="12" font-weight="600" '
+                f'letter-spacing="1.2" fill="{INK}">WHAT THE EMPLOYEE SEES</text>')
 
-    # Not fixed: down to a person
-    x = col(3) + TW / 2
-    d.el.append(f'<line x1="{x}" y1="{ROW_A + TH}" x2="{x}" y2="{ROW_M - 4}" stroke="{LINE}" stroke-width="1.5"/>')
-    d.el.append(f'<path d="M{x - 6} {ROW_M - 11}l6 7l6 -7" fill="none" stroke="{LINE}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>')
-    d.t(x + 10, ROW_A + TH + 34, 'Not fixed', 13, 600, fill=SECOND)
-    # A new script: back up to the AI scripts
-    x1, x2, ym = col(1) + TW / 2, col(2) + TW / 2, ROW_A + TH + 40
-    d.el.append(f'<path d="M{x1} {ROW_M}V{ym}H{x2}V{ROW_A + TH + 8}" fill="none" stroke="{TEAL}" stroke-width="1.5" stroke-linejoin="round"/>')
-    d.el.append(f'<path d="M{x2 - 6} {ROW_A + TH + 15}l6 -7l6 7" fill="none" stroke="{TEAL}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>')
-    d.t((x1 + x2) / 2, ym - 8, 'A new script', 13, 600, anchor='middle', fill=TEAL)
+    # Automated
+    step(d, 64, 'monitor_heart', 'Monitor laptops and servers', 'System, software, hardware', ('nexthink',))
+    d.arrow((CX, 140), (CX, 168))
+    diamond(d, 228, ['A failure,', 'or a risk of one?'])
+    d.arrow((CX - 125, 228), (70, 228), (70, 102), (CX - BW / 2 - 4, 102))
+    tag(d, 82, 220, 'No: keep watching')
+    d.arrow((CX, 288), (CX, 316))
+    tag(d, CX + 10, 308, 'Yes')
+    step(d, 318, 'smart_toy', 'AI scripts fix it', 'Self-healing, on the laptop')
+    sees(d, 356, CX + BW / 2, 'A problem found. We are fixing it.')
+    d.arrow((CX, 394), (CX, 422))
+    step(d, 424, 'manage_search', 'Check the status', 'Did the fix work?', ('nexthink',))
+    d.arrow((CX, 500), (CX, 518))
+    diamond(d, 572, ['Fixed?'], w=180, h=100)
+    d.el.append(f'<path d="M{CX + 90} 572H{CX + BW / 2}" fill="none" stroke="{TEAL}" stroke-width="1.4" stroke-dasharray="4 4"/>')
+    sees(d, 572, CX + BW / 2, 'Fixed. You can carry on.')
+    tag(d, CX + 100, 564, 'Yes')
+    d.arrow((CX, 622), (CX, 686))
+    tag(d, CX + 10, 666, 'No')
 
-    y = ROW_M + TH + 30
-    d.el.append(f'<line x1="{X0}" y1="{y}" x2="{W - X0}" y2="{y}" stroke="{HAIR}" stroke-width="1"/>')
-    d.logo('nexthink', X0, y + 18, 22)
-    d.logo('avaamo', X0 + 28, y + 18, 22)
-    d.lines(X0 + 64, y + 34, 'Notifications reach the desktop and the phone. Some fixes ask the employee first: a new version, a disk clean-up.',
-            W - 2 * X0 - 64, 15, 400, INK, lh=21)
-    d.H = 620
+    # Manual
+    step(d, 688, 'confirmation_number', 'A person analyses', 'A ticket opens, with the laptop data', ('now', 'nexthink'))
+    sees(d, 726, CX + BW / 2, 'We are on it. Ticket INC12334.')
+    d.arrow((CX, 764), (CX, 792))
+    step(d, 794, 'check_circle', 'Ticket resolved', 'Status updates along the way', ('now',))
+    sees(d, 832, CX + BW / 2, 'Fixed. Thanks for waiting.')
+    d.arrow((CX, 870), (CX, 898))
+    diamond(d, 960, ['Can the fix', 'be automated?'])
+    d.arrow((CX - 125, 960), (45, 960), (45, 356), (CX - BW / 2 - 4, 356))
+    tag(d, 56, 952, 'Yes: a new script')
+    d.arrow((CX + 125, 960), (560, 960))
+    tag(d, CX + 135, 952, 'No')
+    d.rect(564, 944, 86, 32, '#fff', HAIR, rx=0, sw=1)
+    d.t(607, 965, 'Manual', 13, 600, anchor='middle', fill=SECOND)
+
+    # How messages reach people
+    y = 900
+    d.logo('nexthink', EX, y, 26)
+    d.logo('avaamo', EX + 32, y, 26)
+    d.lines(EX, y + 52, 'Messages reach the desktop and the phone. Some fixes ask first: a new version, a disk clean-up.', 400, 14, 400, INK, lh=20)
+    d.H = H
     return d
