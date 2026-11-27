@@ -23,7 +23,9 @@ def with_figures(html):
     """After every paragraph that names diagrams like [D26-7], show those diagrams."""
     def add(m):
         ids = [i for i in re.findall(r'\[(D\d\d-\d+)\]', m.group(0)) if i in FIGS]
-        return m.group(0) + ''.join(figure(i) for i in ids)
+        figs = ''.join(figure(i) for i in ids)
+        # A line that only names diagrams ("Visual: [D26-2] ...") is replaced by the diagrams themselves
+        return figs if ids and m.group(0).startswith(('<p>Visual:', '<p>Visuals:')) else m.group(0) + figs
     return re.sub(r'<p>.*?</p>', add, html, flags=re.S)
 
 
