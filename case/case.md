@@ -133,7 +133,7 @@ Visual: [D26-5] Module map.
 
 Digital Hub combines fixed journeys with an AI agent, and each does what it is good at. The journey decides what happens and when: which system acts, which record is filed, when to come back. The agent decides how to say it and finds the right moment within those rules.
 
-Take Visio. The employee taps Later. The journey files a request in ServiceNow and sets one reminder. The agent sees the client call at 3 pm in the calendar and comes back before it: ready to install now? If the answer is still no, there are no more reminders, and the request stays open.
+Take Visio. The employee taps Later. The journey files a request in ServiceNow, and the agent offers one reminder in 15 minutes. Then it comes back by itself: ready to install now? If the answer is still no, there are no more reminders, and the request stays open.
 
 Two rules follow from this.
 
