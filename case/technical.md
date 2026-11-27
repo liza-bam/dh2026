@@ -90,7 +90,7 @@ A meeting room that does not work, a failed install, VPN at a hotel, client file
 
 So the agent knows what each laptop should look like. A diagnosis is the difference between the laptop and its image, and fixing it means bringing the laptop back to the image. The agent asks three questions:
 
-1. **Is it this laptop?** Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, check the account, or bring in the network team.
+1. **Is the problem on the employee's laptop, or somewhere else?** Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, check the account, or bring in the network team.
 2. **If it is, what is the lightest step back to the image?** A known fix (clear a cache, turn off an add-in, switch the headset); then repair or reinstall the app; then reset the laptop to its image, with files and apps coming back by themselves; then a person. Harmless steps need no question. A reset takes time, so the agent picks the moment with the employee: "It takes an hour. Now or tonight?"
 3. **Is it about data?** Most "where is my file" cases are simple: the OneDrive recycle bin or an earlier version, run as a fixed flow. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent on a large model works on it with a person, because the stakes are high and every case is different.
 
@@ -130,14 +130,14 @@ Defined the way ServiceNow defines its first-line AI specialist: a role, the kin
 - Read the laptop (Nexthink): disk, crashes, app versions, recent errors.
 - Check the service (Microsoft 365 status, the vendor's status): is it down for everyone?
 - Check the license (ServiceNow): is the employee entitled?
-- Read the image and the catalog: what should be on this laptop.
+- Read the image and the catalog: what should be on the employee's laptop.
 - Run a known fix (Intune): only fixes from the approved library.
 - Reinstall an app (Intune): only apps from the catalog.
 - Reset the laptop to its image (Intune).
 - Show the employee a choice: a card with options, never a form.
 - Hand over (ServiceNow): a ticket with the whole story, for a person or a team.
 
-**Steps.** The three questions: is it this laptop; if so, the lightest step back to the image; is it about data.
+**Steps.** The three questions: is the problem on the employee's laptop; if so, the lightest step back to the image; is it about data.
 
 **Limits.**
 - **Does on its own:** reads anything on the laptop it was given; runs fixes marked harmless (clear a cache or temporary files, restart an app); reinstalls an app from the catalog.

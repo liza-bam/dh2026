@@ -157,22 +157,22 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 <h2>How an agent works</h2>
 <p>Every laptop starts from a standard image for its group: auditors, consultants, designers. Software comes from an approved catalog. So the agent knows what each laptop should look like, and asks three questions:</p>
 <ol>
-<li><strong>Is it this laptop?</strong> If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.</li>
+<li><strong>Is the problem on the employee's laptop?</strong> Or is it the service, the license, the account, the network? If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.</li>
 <li><strong>If it is, what is the lightest step back to the standard?</strong> A known fix, then reinstalling the app, then resetting the laptop to its image. Files stay in OneDrive.</li>
 <li><strong>Is it about data?</strong> Most "where is my file" cases are a restore from OneDrive. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent works on it with a person.</li>
 </ol>
 <p>Like ServiceNow's first-line AI specialist, each agent has a role, the kinds of problems it takes, its tools, clear limits and a rule for when to hand over: two fixes that did not work, and a person takes over with the whole story.</p>
 <p>Software outside the catalog is never the small agent's call. A larger model checks the request and offers an approved alternative; a person decides.</p>
-<p>Visual: [D26-8] How the Software agent decides.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent decides</b><span>Is it this laptop? If so, the lightest step back to the standard image. Files are a separate path</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="How the Software agent decides: is it this laptop; if so, the lightest step back to the standard image; files are a separate path; software outside the catalog goes to a larger model and a person" class="case-diagram" width="1200" height="640">
+<p>Visual: [D26-8] How the Software agent decides.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent decides</b><span>Is the problem on the employee’s laptop? If so, the lightest step back to the standard image. Files are a separate path</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="How the Software agent decides: is the problem on the employee’s laptop; if so, the lightest step back to the standard image; files are a separate path; software outside the catalog goes to a larger model and a person" class="case-diagram" width="1200" height="640">
 <defs><marker id="mag26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
 <rect x="20" y="20" width="270" height="64" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="34" y="46" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A software problem</text>
 <text x="34" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">From the employee or the watcher</text>
 <path d="M155 84 L155 110" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
 <rect x="20" y="110" width="270" height="110" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
-<text x="34" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Is it this laptop?</text>
-<text x="34" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Reinstalling helps only if the</text>
-<text x="34" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">problem is on this laptop.</text>
+<text x="34" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Is it the laptop?</text>
+<text x="34" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Or the service, the license, the</text>
+<text x="34" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">account, the network?</text>
 <path d="M290 165 L320 165" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
 <text x="293" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">No</text>
 <rect x="320" y="110" width="276" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>

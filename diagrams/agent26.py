@@ -21,14 +21,14 @@ def box(d, x, y, w, h, title, text, tags=(), dark=False):
 
 
 def build():
-    d = Rich('ag26', 1200, 640, 'How the Software agent decides: is it this laptop; if so, the lightest step back to the standard image; '
+    d = Rich('ag26', 1200, 640, 'How the Software agent decides: is the problem on the employee\u2019s laptop; if so, the lightest step back to the standard image; '
              'files are a separate path; software outside the catalog goes to a larger model and a person')
 
     box(d, 20, 20, 270, 64, 'A software problem', 'From the employee or the watcher')
     d.arrow((155, 84), (155, 110), color=TEAL)
 
     # 1. is it this laptop?
-    box(d, 20, 110, 270, 110, '1. Is it this laptop?', 'Reinstalling helps only if the problem is on this laptop.', dark=True)
+    box(d, 20, 110, 270, 110, '1. Is it the laptop?', 'Or the service, the license, the account, the network?', dark=True)
     d.arrow((290, 165), (320, 165), color=TEAL, label='No', at=(293, 158))
     box(d, 320, 110, 276, 110, 'Down for everyone', 'Fix nothing. Say when it is back.', ['Outlook'])
     box(d, 612, 110, 276, 110, 'No license', 'Hand it to the approval flow.', ['Acrobat'])

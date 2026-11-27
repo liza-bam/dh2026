@@ -861,7 +861,7 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 - Agents have no open internet. Vendor knowledge (Microsoft, Adobe) goes into their libraries in advance, checked and kept up to date. An agent that searches forums can find a wrong fix or a page with hidden instructions, and nobody can test it in advance.</p>
 <p>So the agent knows what each laptop should look like. A diagnosis is the difference between the laptop and its image, and fixing it means bringing the laptop back to the image. The agent asks three questions:</p>
 <ol>
-<li><strong>Is it this laptop?</strong> Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, check the account, or bring in the network team.</li>
+<li><strong>Is the problem on the employee's laptop, or somewhere else?</strong> Reinstalling helps nobody if the service is down for everyone, a license has run out, or the account or the network is the problem. Then the case goes another way: say when the service is back, hand it to the approval flow, check the account, or bring in the network team.</li>
 <li><strong>If it is, what is the lightest step back to the image?</strong> A known fix (clear a cache, turn off an add-in, switch the headset); then repair or reinstall the app; then reset the laptop to its image, with files and apps coming back by themselves; then a person. Harmless steps need no question. A reset takes time, so the agent picks the moment with the employee: "It takes an hour. Now or tonight?"</li>
 <li><strong>Is it about data?</strong> Most "where is my file" cases are simple: the OneDrive recycle bin or an earlier version, run as a fixed flow. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent on a large model works on it with a person, because the stakes are high and every case is different.</li>
 </ol>
@@ -881,16 +881,16 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 - <strong>Excel crashes on the client model.</strong> The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
 - <strong>Outlook will not connect.</strong> First the agent checks whether Microsoft 365 is down for everyone. If it is, it fixes nothing, files no ticket and says when it will be back. If it is only this employee, it clears the cached sign-in and the Outlook profile.
 - <strong>No sound in a Teams call that starts in 10 minutes.</strong> The device: switch the headset, update the driver. The network: say so, and suggest joining from the phone. The fastest fix first; the cause after the call.
-- <strong>Acrobat says the license has expired.</strong> Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent decides</b><span>Is it this laptop? If so, the lightest step back to the standard image. Files are a separate path</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="How the Software agent decides: is it this laptop; if so, the lightest step back to the standard image; files are a separate path; software outside the catalog goes to a larger model and a person" class="case-diagram" width="1200" height="640">
+- <strong>Acrobat says the license has expired.</strong> Entitled: the agent reactivates it. Not entitled: it hands the case to the manager-approval flow. An agent and a flow working together.</p><figure class="fig" id="D26-8"><figcaption><b><span class="fid">D26-8</span>How the Software agent decides</b><span>Is the problem on the employee’s laptop? If so, the lightest step back to the standard image. Files are a separate path</span></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="How the Software agent decides: is the problem on the employee’s laptop; if so, the lightest step back to the standard image; files are a separate path; software outside the catalog goes to a larger model and a person" class="case-diagram" width="1200" height="640">
 <defs><marker id="mag26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5d6b72"/></marker></defs>
 <rect x="20" y="20" width="270" height="64" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
 <text x="34" y="46" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">A software problem</text>
 <text x="34" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">From the employee or the watcher</text>
 <path d="M155 84 L155 110" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
 <rect x="20" y="110" width="270" height="110" rx="12" fill="#e3eef1" stroke="#2c6e7e" stroke-width="1.5"/>
-<text x="34" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Is it this laptop?</text>
-<text x="34" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Reinstalling helps only if the</text>
-<text x="34" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">problem is on this laptop.</text>
+<text x="34" y="136" font-family="'Inter', sans-serif" font-size="15" font-weight="600" fill="#223640" text-anchor="start">1. Is it the laptop?</text>
+<text x="34" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">Or the service, the license, the</text>
+<text x="34" y="175" font-family="'Inter', sans-serif" font-size="13" font-weight="400" fill="#3f5f6b" text-anchor="start">account, the network?</text>
 <path d="M290 165 L320 165" fill="none" stroke="#2c6e7e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mag26)"/>
 <text x="293" y="158" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#3f5f6b" text-anchor="start">No</text>
 <rect x="320" y="110" width="276" height="110" rx="12" fill="#fff" stroke="#dce4e7" stroke-width="1.5"/>
@@ -967,13 +967,13 @@ small{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}
 - Read the laptop (Nexthink): disk, crashes, app versions, recent errors.
 - Check the service (Microsoft 365 status, the vendor's status): is it down for everyone?
 - Check the license (ServiceNow): is the employee entitled?
-- Read the image and the catalog: what should be on this laptop.
+- Read the image and the catalog: what should be on the employee's laptop.
 - Run a known fix (Intune): only fixes from the approved library.
 - Reinstall an app (Intune): only apps from the catalog.
 - Reset the laptop to its image (Intune).
 - Show the employee a choice: a card with options, never a form.
 - Hand over (ServiceNow): a ticket with the whole story, for a person or a team.</p>
-<p><strong>Steps.</strong> The three questions: is it this laptop; if so, the lightest step back to the image; is it about data.</p>
+<p><strong>Steps.</strong> The three questions: is the problem on the employee's laptop; if so, the lightest step back to the image; is it about data.</p>
 <p><strong>Limits.</strong>
 - <strong>Does on its own:</strong> reads anything on the laptop it was given; runs fixes marked harmless (clear a cache or temporary files, restart an app); reinstalls an app from the catalog.
 - <strong>Waits for a yes:</strong> anything the employee would notice: turning off an add-in, restarting the laptop, resetting it to the image. For a reset it also asks when.

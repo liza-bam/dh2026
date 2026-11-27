@@ -32,7 +32,7 @@ Visual: [D26-2] Architecture.
 
 Every laptop starts from a standard image for its group: auditors, consultants, designers. Software comes from an approved catalog. So the agent knows what each laptop should look like, and asks three questions:
 
-1. **Is it this laptop?** If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.
+1. **Is the problem on the employee's laptop?** Or is it the service, the license, the account, the network? If Microsoft 365 is down for everyone or a license has run out, reinstalling helps nobody. The case goes another way.
 2. **If it is, what is the lightest step back to the standard?** A known fix, then reinstalling the app, then resetting the laptop to its image. Files stay in OneDrive.
 3. **Is it about data?** Most "where is my file" cases are a restore from OneDrive. Client data, a deleted shared folder or a sync conflict is hard: a stronger agent works on it with a person.
 
