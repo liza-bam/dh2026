@@ -2,6 +2,12 @@
 
 Everything we agreed on, so nothing gets lost. Newest decisions win. Last update: 26 November 2026.
 
+## Two documents
+
+- **The case study** (case/case.md) is short: the story and Sandy's decisions, for hiring managers. 2019 gets two or three sentences and a link to the 2019 case study.
+- **The technical document** (case/technical.md) holds the full system: rules, stack, architecture, agents, scenarios, modules, handoff, rollout. One link to it from the case.
+- Every change goes into both at once: short in the case, in full in the technical document.
+
 ## The logic
 
 - The starting point is still the ten most common requests from EY's discovery in 2019.

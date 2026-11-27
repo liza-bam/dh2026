@@ -1,4 +1,4 @@
-"""Renders case/case.md as a readable page: case/case.html."""
+"""Renders the case study (case/case.md) and the technical document (case/technical.md) as readable pages."""
 import pathlib
 import re
 from html import escape
@@ -28,11 +28,12 @@ def with_figures(html):
 
 
 ROOT = pathlib.Path(__file__).parent.parent
-md = (ROOT / 'case' / 'case.md').read_text()
-body = with_figures(markdown.markdown(md, extensions=['extra', 'sane_lists']))
-html = f'''<!DOCTYPE html>
+for name, title in [('case', 'Digital Hub 2026: case draft'), ('technical', 'Digital Hub 2026: technical document')]:
+  md = (ROOT / 'case' / f'{name}.md').read_text()
+  body = with_figures(markdown.markdown(md, extensions=['extra', 'sane_lists']))
+  html = f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Digital Hub 2026: case draft</title>
+<title>{title}</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600&amp;family=Inter:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet"/>
 <style>
 /* VOICE calm working draft; IDEA the case page itself; PICTURE none, text only;
@@ -55,6 +56,7 @@ code{{font-size:15px;background:var(--panel);padding:2px 6px;border-radius:4px}}
 .fig svg{{display:block;width:100%;height:auto}}
 .grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}
 @media (max-width:700px){{.grid{{grid-template-columns:1fr}}}}
+small{{font-size:13px;color:light-dark(#3f5f6b,#a9bcc3)}}
 </style></head><body><main>{body}</main></body></html>'''
-(ROOT / 'case' / 'case.html').write_text(html)
+  (ROOT / 'case' / f'{name}.html').write_text(html)
 print('ok')
