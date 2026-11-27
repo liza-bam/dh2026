@@ -45,12 +45,13 @@ async function intake(request, env) {
   const usage = { in: out.usage.input_tokens, out: out.usage.output_tokens };
   usage.cost = (usage.in * PRICE.in + usage.out * PRICE.out) / 1e6;
   let answer = { journey: 'none', ticket: null };
-  try { answer = JSON.parse(out.content[0].text.match(/\{[\s\S]*\}/)[0]); } catch { /* keep the safe default */ }
+  const said = (out.content.find(b => b.type === 'text') || {}).text || '';
+  try { answer = JSON.parse(said.slice(said.indexOf('{'), said.lastIndexOf('}') + 1)); } catch { /* keep the safe default */ }
   if (!(answer.journey in JOURNEYS)) answer.journey = 'none';
   if (answer.journey === 'none' && !answer.ticket) {
     answer.ticket = { category: 'Other', urgency: 'normal', group: 'Service desk', summary: text, label: 'unsorted' };
   }
-  return json({ journey: answer.journey, ticket: answer.journey === 'none' ? answer.ticket : null, model: MODEL, usage });
+  return json({ journey: answer.journey, ticket: answer.journey === 'none' ? answer.ticket : null, model: MODEL, usage, said: said.slice(0, 400) });
 }
 
 export default {

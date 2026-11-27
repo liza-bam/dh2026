@@ -102,7 +102,7 @@ const form = document.getElementById('form'), input = document.getElementById('i
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
 const add = e => { chat.append(e); chat.scrollTop = chat.scrollHeight; return e; };
-let onSend = null, pending = null, busy = false;
+let onSend = null, pending = null, busy = false, autostart = false;
 
 // What the employee sees ---------------------------------------------------------------
 const me = text => add(el('div', 'msg me', text));
@@ -130,11 +130,13 @@ function card(module, title, lines, buttons = [], opt = {}) {
     if (module) c.append(el('span', 'mod', module));
     add(c);
     if (!buttons.length) resolve(null);
+    else if (autostart) { autostart = false; b.querySelector('button').click(); } // picked from the list: take its first step
   });
 }
 // The employee writes: suggestion chips plus free text. Resolves with what was sent.
 function ask(suggestions) {
   if (pending) { const t = pending; pending = null; return Promise.resolve(t); } // already written to the intake agent
+  if (autostart) { autostart = false; me(suggestions[0]); return Promise.resolve(suggestions[0]); } // picked from the list: send its first message
   chipsEl.replaceChildren(...suggestions.map(s => { const b = el('button', '', s); b.onclick = () => send(s); return b; }));
   return new Promise(resolve => { onSend = resolve; });
 }
@@ -412,6 +414,7 @@ async function start() {
   const s = scenarios.find(x => x.title === t);
   chat.replaceChildren();
   device(s.where);
+  autostart = true;
   await s.run();
 }
 
