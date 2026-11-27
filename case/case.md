@@ -45,7 +45,7 @@ Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive suppor
 ## Three rules before any agent
 
 ### 1. It costs less than the help desk it replaces
-Every solved case has a price: model calls, licences, the engineer who approves a new fix. Fixed journeys run on small, cheap models. The large model only gets requests that have no journey, and only after the switch. Cost is measured per solved case, against the cost of the same case at the help desk.
+Every solved case has a price: model calls, licences, the engineer who approves a new fix. Fixed flows and domain agents run on small, cheap models. The large model works only where cases are few and hard. Cost is measured per solved case, against the cost of the same case at the help desk.
 
 ### 2. Agents get access the way people do
 Each agent has its own identity, its own role and only the rights that role needs. The password agent resets passwords and nothing else. Risky actions wait for a person.
@@ -65,53 +65,58 @@ Visual: [D26-6] Stack scorecard.
 
 ---
 
-## The logic: how Digital Hub grows
+## The logic: does it need a decision?
 
-An orchestrator that talks to every employee from day one makes the best demo and the worst plan. EY is a very large company, and every conversation on a large model costs money. So Digital Hub starts cheap and earns the right to use the large model.
+The starting point is the same as in 2019: the ten most common requests from EY's discovery. What is new is the question I sort them by: does solving it need a decision?
 
-The plan grows out of 2019: start with one set of journeys, reuse modules for the next ones, roll out in waves. What changes is where new journeys come from. In 2019 each one cost about two sprints of design and build. In 2026 the requests themselves show which journey to build next.
+Ordering a monitor does not. The steps are always the same, and the only choices are the employee's: which monitor, where to deliver it. A failed Visio install does. The next step depends on what the agent finds on the laptop, and the plan changes as it goes.
 
-### Stage 1. Ten fixed journeys from day one
-The ten most common requests from 2019 become fixed journeys: the same steps every time, built from shared modules. An intake agent on a small model reads every request and picks the journey.
+So every request takes one of three paths.
 
-When a request has no journey, the intake agent does not stop. It opens a ServiceNow ticket and fills it in: category, urgency, the right support group, a summary of the conversation, the employee's device. It labels the ticket and tells the employee what happens next. People solve these cases, and nobody asks the employee anything again.
+### 1. Simple actions: fixed flows
+Ordering a device, giving an assistant access, joining a Teams channel, resetting a password, rebooking a room. The intake agent understands the request in the employee's own words and starts the flow. From there no model decides anything: the employee chooses, the systems act, and the same request goes the same way every time. Cheap, predictable, easy to audit.
 
-Requests never reach the large model at this stage. Tickets drop from the first day. The large model works only off to the side: when people solve a new kind of problem, it drafts a fix from the case, and an engineer approves it before it runs anywhere.
+### 2. Problems: an agent for each domain
+A failed install, VPN at a hotel, client files that will not open, a scam email, a stolen laptop. Each domain has its own agent: Security; Devices; Software; Mail, calendar and Teams; Workplace. An agent gets a goal, its own tools, its own library of how things work in its domain, and its limits:
+- what it does on its own, like clearing temporary files;
+- what waits for the employee's yes;
+- how many tries it gets before it brings in a person;
+- what it never does: the Software agent never wipes a device.
 
-### Stage 2. More journeys every week
-Every ticket without a journey carries a label. Once a week the intake agent groups them: what people ask most, and how often. The most frequent requests become new fixed journeys. People design and approve each one, the same way an engineer approves a new fix. The library grows, and the share that reaches the help desk falls.
+Within those limits the agent leads the case itself: it checks, tries, changes the plan and tells the employee what is happening. Simple actions in its domain still run as fixed flows: the Devices agent does not improvise an order.
 
-### Stage 3. The switch
-When fixed journeys cover most requests, what is left is small enough to give to the large model. It starts in shadow mode: for every ticket without a journey, the orchestrator drafts an answer, and the help desk marks each draft as good or not. Nothing reaches the employee. Then one office, then everyone.
+### 3. Everything else: a ticket to the right team, and that team's agent
+When nothing fits, the intake agent fills a ServiceNow ticket and sends it to the right team: category, urgency, a summary, the device, a label. The ticket is not where agents stop. Every second-line team has its own agent, working for its engineers. It reads the ticket and the history, suggests what to do from the team's experience and prepares the actions. An engineer decides.
 
-We switch when three things are true:
-- Fixed journeys cover most requests.
-- The help desk accepts most of the orchestrator's drafts.
-- The orchestrator costs less than people on the same requests.
+What a team solves goes back down. Its agent turns the solution into knowledge or a new fix for the first line, an engineer approves it, and next time the same case never becomes a ticket.
 
-The switch changes the default path. Before: no journey means a ticket for people. After: no journey means the orchestrator tries first, and people get what it cannot solve. When the orchestrator solves something often enough, it becomes a new fixed journey.
+### How it grows
+- **New flows and new skills.** Ticket labels show what people ask most. A frequent simple request becomes a new fixed flow. A frequent problem becomes a new skill for its domain agent.
+- **More independence, one action at a time.** An agent starts by proposing while a person decides. Then it acts on its own in simple cases, then within its full limits. Each action moves up only after it has worked on real cases.
+- **The rollout of 2019 stays.** The same waves, the same reuse of modules: the first ten requests, then whatever the labels show next.
 
-### Why this order
-Cheap work runs on fixed journeys and a small model, so the first rule holds from day one. The large model gets only what is left, and only after the help desk has seen it work. Each stage pays for the next one.
+### Why this works
+Most requests are simple, and simple requests run on flows and small models, so the first rule holds from day one. The large model works where cases are few and hard: for the teams' agents and for drafting new fixes. People are at every level, and the higher the level, the more people decide.
 
-Visual: [D26-7] Delivery plan.
+Visual: [D26-7] Delivery plan (to redraw).
 
 ---
 
 ## Architecture
 
-Eight layers, each with one job.
+Nine layers, each with one job.
 
 1. **Channels.** Teams, the Digital Hub website, email and voice. It is one conversation, wherever it starts.
-2. **Intake agent and orchestrator.** The intake agent reads every request, picks the journey or fills a ticket. After the switch, the orchestrator takes what has no journey. Neither changes anything in a system itself.
-3. **Specialized agents.** Identity, workplace, access, devices, fix and watcher. Each has its own identity, only the rights its role needs, and a list of what it never does. All run on small models.
-4. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
-5. **Knowledge.** Agents answer only from approved EY sources, with a link to the source.
-6. **Systems.** ServiceNow, Workday, Entra ID, Intune, Nexthink, Office 365 and SAP Ariba, reached through their MCP servers and only within the rights of the agent and the employee.
-7. **Governance.** Every agent is registered, tested on real scenarios before release, has a budget, and every action is logged.
-8. **People.** Live agents, approvers, the security team and engineers: the cases that need judgment.
+2. **Intake agent.** Reads every request and sends it down one of the three paths: a fixed flow, a domain agent or a team. Small model. Changes nothing in any system itself.
+3. **Domain agents.** Security; Devices; Software; Mail, calendar and Teams; Workplace. Each runs the fixed flows of its domain and solves its problems within its limits. A watcher agent reads device telemetry and opens cases before people notice. All run on small models, each with its own identity and only the rights its domain needs.
+4. **Team agents.** One for each second-line team, working for the engineers, not the employees. Large model: few cases, hard ones.
+5. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
+6. **Knowledge.** A library for each domain and each team. Agents answer only from approved EY sources, with a link to the source.
+7. **Systems.** ServiceNow, Workday, Entra ID, Intune, Nexthink, Office 365 and SAP Ariba, reached through their MCP servers and only within the rights of the agent and the employee.
+8. **Governance.** Every agent is registered, tested on real scenarios before release, has a budget and a level of independence for each action, and every action is logged.
+9. **People.** Employees who approve, live support, engineers and the security team: the cases that need judgment.
 
-Visuals: [D26-1] What changes, [D26-2] Architecture.
+Visuals: [D26-1] What changes, [D26-2] Architecture (both to redraw).
 
 ## Ten scenarios
 
