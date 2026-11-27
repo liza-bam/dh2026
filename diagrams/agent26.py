@@ -21,42 +21,46 @@ def box(d, x, y, w, h, title, text, tags=(), dark=False):
 
 
 def build():
-    d = Rich('ag26', 1200, 640, 'How the Software agent decides: is the problem on the employee\u2019s laptop; if so, the lightest step back to the standard image; '
-             'files are a separate path; software outside the catalog goes to a larger model and a person')
+    d = Rich('ag26', 1200, 716, 'How the Software agent decides: is the problem on the employee\u2019s laptop; if so, the smallest fix that brings it '
+             'back to standard; a lost file is a different problem; an app that is not on the approved list goes to a larger model and a person')
 
-    box(d, 20, 20, 270, 64, 'A software problem', 'From the employee or the watcher')
-    d.arrow((155, 84), (155, 110), color=TEAL)
+    box(d, 20, 20, 270, 72, 'An app does not work', 'The employee writes in, or the watcher spots it.')
+    d.arrow((155, 92), (155, 116), color=TEAL)
+    d.arrow((20, 56), (8, 56), (8, 513), (20, 513), color=TEAL)
 
-    # 1. is it this laptop?
-    box(d, 20, 110, 270, 110, '1. Is it the laptop?', 'Or the service, the license, the account, the network?', dark=True)
-    d.arrow((290, 165), (320, 165), color=TEAL, label='No', at=(293, 158))
-    box(d, 320, 110, 276, 110, 'Down for everyone', 'Fix nothing. Say when it is back.', ['Outlook'])
-    box(d, 612, 110, 276, 110, 'No license', 'Hand it to the approval flow.', ['Acrobat'])
-    box(d, 904, 110, 276, 110, 'Account or network', 'Check the account, or bring in the network team.')
+    # 1. is the problem on the laptop?
+    box(d, 20, 116, 270, 136, '1. Is it the laptop?', 'Or is the problem elsewhere: the service, the license, the account, the network?', dark=True)
+    d.arrow((290, 175), (320, 175), color=TEAL, label='No', at=(292, 196))
+    d.arrow((305, 175), (305, 104), (750, 104), (750, 116), color=TEAL)
+    d.arrow((750, 104), (1042, 104), (1042, 116), color=TEAL)
+    box(d, 320, 116, 276, 136, 'The service is down', 'It is down for everyone. Nothing to fix on the laptop: the agent says when it will work again.', ['Outlook'])
+    box(d, 612, 116, 276, 136, 'The license has run out', 'If the employee is entitled, the agent renews it. If not, the manager approves.', ['Acrobat'])
+    box(d, 904, 116, 276, 136, 'The account or the network', 'The agent checks the account. A network problem goes to the network team.')
 
-    # 2. the lightest step back to the image
-    d.arrow((155, 220), (155, 250), color=TEAL, label='Yes', at=(162, 240))
-    box(d, 20, 250, 270, 130, '2. Back to the image', 'The lightest step first; the next only if it did not work.', dark=True)
+    # 2. back to standard
+    d.arrow((155, 252), (155, 282), color=TEAL, label='Yes', at=(162, 272))
+    box(d, 20, 282, 270, 150, '2. Bring it back to standard', 'Every laptop is set up from a standard image. The agent tries the smallest fix first, and the next only if it did not help.', dark=True)
     steps = [('A known fix', 'Clear a cache, turn off an add-in, switch the headset.', ['Excel', 'Teams sound']),
-             ('Reinstall the app', 'Harmless, so no question.', ['Visio']),
-             ('Reset to the image', 'Takes an hour: now or tonight? Files stay in OneDrive.', []),
-             ('A person', 'Takes over with the whole story.', ['Visio'])]
-    d.arrow((290, 315), (320, 315), color=TEAL)
-    for k, (t, s, tg) in enumerate(steps):
+             ('Reinstall the app', 'Remove it and install it again. Harmless, so the agent does not ask.', ['Visio']),
+             ('Reset the laptop', 'Back to standard. Takes about an hour, so it asks: now or tonight? Files are safe in OneDrive.', []),
+             ('A person from IT', 'Takes over and already knows everything that was tried.', ['Visio'])]
+    d.arrow((290, 357), (320, 357), color=TEAL)
+    for k, (t, tx, tg) in enumerate(steps):
         x = 320 + k * 220
-        box(d, x, 250, 200, 130, t, s, tg)
+        box(d, x, 282, 200, 150, t, tx, tg)
         if k < 3:
-            d.arrow((x + 200, 315), (x + 220, 315), color=TEAL)
+            d.arrow((x + 200, 357), (x + 220, 357), color=TEAL)
 
-    # 3. is it about data?
-    box(d, 20, 410, 270, 110, '3. Is it about data?', 'Lost or broken files are a separate path.', dark=True)
-    d.arrow((290, 465), (320, 465), color=TEAL)
-    box(d, 320, 410, 420, 110, 'Simple: a restore from OneDrive', 'The recycle bin or an earlier version. A fixed flow.')
-    box(d, 760, 410, 420, 110, 'Hard: client data, a shared folder, a sync conflict', 'A stronger agent on a large model works on it with a person.')
+    # 3. a file
+    box(d, 20, 462, 270, 110, '3. Is it about a file?', 'A lost or damaged file is a different problem.', dark=True)
+    d.arrow((290, 513), (320, 513), color=TEAL)
+    d.arrow((305, 513), (305, 450), (970, 450), (970, 462), color=TEAL)
+    box(d, 320, 462, 420, 110, 'Usually simple', 'The file comes back from the OneDrive recycle bin or an earlier version.')
+    box(d, 760, 462, 420, 110, 'Sometimes hard', 'Client data, a deleted shared folder, two versions that clash: a stronger agent works on it together with a person.')
 
-    # outside the catalog
-    d.rect(20, 548, 1160, 72, '#f7fafb', '#dce4e7', rx=12)
-    d.t(40, 578, 'Software outside the catalog', 15, 600)
-    d.t(40, 602, 'Never the small agent’s call. A larger model checks the request and offers an approved alternative; a person decides.', 13, 400, fill=SECOND)
-    d.H = 640
+    # not on the approved list
+    d.rect(20, 602, 1160, 80, '#f7fafb', '#dce4e7', rx=12)
+    d.t(40, 632, 'An app that is not on the approved list', 15, 600)
+    d.lines(40, 658, 'The agent does not install it. A larger model checks the request and suggests an approved app that does the same; if none fits, a person decides.', 1120, 13, 400, SECOND, lh=17)
+    d.H = 716
     return d
