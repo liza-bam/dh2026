@@ -94,6 +94,7 @@ button:disabled{opacity:.45;cursor:default}
 .details{margin-top:8px;font-size:13px}.details p{margin:4px 0}.details ol{margin:6px 0 0;padding-left:18px;color:var(--second)}
 .total{margin-top:8px;font-size:14px;font-weight:600}
 .switch{display:flex;gap:6px;margin-top:16px}
+.top-row{display:flex;justify-content:flex-end;margin:-6px -6px 6px 0}button.icon{min-height:36px;width:36px;padding:0;display:grid;place-items:center}button.icon .ic svg{stroke:var(--teal)}
 .examples{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.examples button{text-align:left;min-height:44px;font-size:15px;border-color:var(--frame);color:var(--frame)}
 </style>
 </head>
@@ -124,6 +125,7 @@ button:disabled{opacity:.45;cursor:default}
     <nav class="tabs"><button class="tab"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a5 5 0 0 0-5 5v3.5L5.5 15h13L17 12.5V9a5 5 0 0 0-5-5z"/><path d="M10 18a2 2 0 0 0 4 0"/></svg></span>Activity</button><button class="tab on" id="tabchat"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v9H10l-4 3v-3H5z"/></svg></span>Chat</button><button class="tab"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="13" rx="2"/><path d="M4.5 10h15M9 4v4M15 4v4"/></svg></span>Calendar</button><button class="tab"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5h3l1.5 4-2 1.3a9 9 0 0 0 4.7 4.7l1.3-2 4 1.5v3a2 2 0 0 1-2 2A14 14 0 0 1 5 6.5a2 2 0 0 1 2-2z"/></svg></span>Calls</button><button class="tab hub" id="tabhub"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 13v-1a6 6 0 0 1 12 0v1"/><rect x="4.5" y="13" width="3.5" height="5" rx="1.2"/><rect x="16" y="13" width="3.5" height="5" rx="1.2"/></svg></span>Digital Hub</button></nav>
   </section>
   <aside class="guide">
+    <div class="top-row"><button id="restart" class="icon" aria-label="Start again" title="Start again"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M17 3.5v4h-4"/></svg></span></button></div>
     <p class="now" id="now"></p>
     <h2>Version 1: fixed journeys</h2>
     <p>A small, cheap model sends each request to a fixed journey, or files a ticket.</p>
@@ -132,7 +134,6 @@ button:disabled{opacity:.45;cursor:default}
     <h2>How it runs</h2>
     <div class="flow" id="agents"><p class="empty">Nothing yet</p></div>
     <p class="total" id="total"></p>
-    <div class="switch"><button id="tophone">On the phone</button><button id="tolaptop">On the laptop</button><button id="restart">Start again</button></div>
   </aside>
 </div>
 <script>
@@ -195,11 +196,9 @@ function send(text) {
   if (withPerson) personHistory.push({ role: 'user', content: text });
   const r = onSend; onSend = null; r(text);
 }
-// The frame shows the device the conversation is on: phone, or laptop when the screen is wide enough
+// The demo runs on the phone only
 function device(text) {
   $('device').textContent = text;
-  const desk = text.includes('laptop') && window.innerWidth >= 1100;
-  $('frame').className = 'device ' + (desk ? 'desktop' : 'phone');
 }
 const onDevice = () => $('device').textContent.includes('laptop') ? 'laptop' : 'phone';
 // Desktop widgets: open requests and what waits for someone else
@@ -655,7 +654,7 @@ const EXAMPLES = [
 ];
 // Switched on in this demo. The other journeys stay in the code: add a title here to switch one back on
 const ON = ['Ordering a peripheral', 'Outlook access for an assistant', 'Failed software install'];
-let place = 'phone';
+const place = 'phone';
 function home() {
   device(`Teams, on the ${place}`);
   tickets.all().forEach(t => request(t.num, `${t.what}. ${t.team}, ${t.status.toLowerCase()}`));
@@ -664,9 +663,7 @@ function home() {
     const r = el('div', 'home-row'), x = el('div');
     x.append(el('b', '', n), el('span', '', t)); r.append(el('i'), x); chat.append(r);
   });
-  now(place === 'phone'
-    ? 'Something is not working. Teams is already open on your phone. Digital Hub is pinned at the bottom: tap it.'
-    : 'Something is not working. Teams is already open on your laptop. Digital Hub is pinned on the left, in yellow: click it.');
+  now('Something is not working. Teams is already open on your phone. Digital Hub is pinned at the bottom: tap it.');
 }
 async function openHub() {
   if ($('compose').classList.contains('hidden') === false) return;
@@ -743,8 +740,6 @@ form.onsubmit = e => {
   else input.value = '';
 };
 $('restart').onclick = () => location.reload();
-$('tophone').onclick = () => { place = 'phone'; $('compose').classList.contains('hidden') ? home() : device($('device').textContent.replace('laptop', 'phone')); };
-$('tolaptop').onclick = () => { place = 'laptop'; $('compose').classList.contains('hidden') ? home() : device($('device').textContent.replace('phone', 'laptop')); };
 home();
 }
 </script>
