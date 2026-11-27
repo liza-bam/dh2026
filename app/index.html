@@ -289,7 +289,7 @@ const m = {
   async installSoftware(app) {
     step('Fix agent', `Checks in ServiceNow that ${app} is approved for this role`);
     const a = await card('Install software', `${app} is approved for you`, ['About 5 minutes'], ['Install now', 'Later']);
-    if (a === 'Later') { await say('OK. I will remind you in an hour.'); return false; }
+    if (a === 'Later') { await m.declined(`${app} install`); return false; }
     step('Intune', `Starts the ${app} install`, 'system');
     request(app, 'Installing');
     await say(`Installing ${app}. I will tell you when it is ready.`);
@@ -303,12 +303,30 @@ const m = {
     step(who, 'Approves in Teams', 'system');
     unwait(who);
   },
+  // Returns true when the employee says yes. A no is a choice, not a dead end: one question at a time decides what happens next
   async confirmRisky(title, lines, action) {
-    for (;;) {
-      const a = await card('Confirm a risky action', title, lines, [action, 'Not now']);
-      if (a === action) return;
-      await say('OK, I will not do anything yet. Tell me when you are ready.');
+    if (await card('Confirm a risky action', title, lines, [action, 'Not now']) === action) return true;
+    await m.declined(title);
+    return false;
+  },
+  async declined(what) {
+    await say('No problem. Is it urgent?');
+    const urgent = await ask(['Yes, it is urgent', 'No']);
+    if (/^(y|urgent|да)/i.test(urgent)) {
+      await say('Then let me bring in a person. You will not need to explain anything.');
+      await m.handOver('Tracy from IT', ['She already knows what happened'], null);
+      await say('Hi, I can see the whole conversation. Let us sort it out together.', 'Tracy', true);
+    } else {
+      await say('Shall I file a ticket so someone picks it up, or leave it for now?');
+      if (/ticket|file|да/i.test(await ask(['File a ticket', 'Leave it for now']))) {
+        step('ServiceNow ticket', `Filed: ${what}, not urgent`);
+        await m.status('Ticket filed', ['Not urgent: someone will pick it up today', 'Reply here any time']);
+      } else {
+        await say('OK, nothing changes. Write here any time.');
+        return;
+      }
     }
+    await m.feedback();
   },
   async runFix(agent, n, what) {
     step(agent, `Fix ${n}: ${what}`);
@@ -368,7 +386,7 @@ const scenarios = [
     context(); front('Connection problem: routes to the fix agent');
     step('Nexthink', 'The VPN client on his laptop is out of date', 'system');
     await say('Your VPN app is out of date. That is why it fails.');
-    await m.confirmRisky('Update the VPN app?', ['About 2 minutes', 'You will be offline for a moment'], 'Update');
+    if (!await m.confirmRisky('Update the VPN app?', ['About 2 minutes', 'You will be offline for a moment'], 'Update')) return;
     await m.runFix('Fix agent', 1, 'updating the VPN app');
     step('Intune', 'VPN app updated', 'system');
     await say('Updated. Try to connect now.');
@@ -404,7 +422,7 @@ const scenarios = [
   { title: 'Lost laptop', where: 'Digital Hub in Teams, on the phone', async run() {
     await ask(['My laptop was stolen at the airport']);
     front('Lost device: routes to the devices agent');
-    await m.confirmRisky('Lock and wipe your laptop?', ['Nobody can open it', 'Your files are safe in OneDrive'], 'Lock and wipe');
+    if (!await m.confirmRisky('Lock and wipe your laptop?', ['Nobody can open it', 'Your files are safe in OneDrive'], 'Lock and wipe')) return;
     step('Intune', 'Laptop locked and wiped', 'system');
     step('Identity agent', 'Signs him out everywhere and asks for a new password');
     await m.verifyIdentity('Approve the request in Authenticator, then set a new password');
@@ -434,7 +452,7 @@ const scenarios = [
     await ask(['My new assistant needs access to my calendar and inbox']);
     context(); front('Delegation: routes to the access agent');
     step('Access agent', 'Finds his new assistant in Workday');
-    await m.confirmRisky('Give your new assistant access?', ['Calendar: can edit', 'Inbox: can read and send for you'], 'Give access');
+    if (!await m.confirmRisky('Give your new assistant access?', ['Calendar: can edit', 'Inbox: can read and send for you'], 'Give access')) return;
     await m.grantAccess('Access agent', 'Office 365', 'your calendar and inbox for your assistant', 'Done');
     await m.feedback();
   } },
@@ -460,7 +478,7 @@ const scenarios = [
     const r = await ask(['I typed my password', 'I did not click anything']);
     if (r === 'I typed my password') {
       front('Password entered on a scam page: routes to the identity agent');
-      await m.confirmRisky('Change your password now?', ['You will be signed out on all devices'], 'Change password');
+      if (!await m.confirmRisky('Change your password now?', ['You will be signed out on all devices'], 'Change password')) return;
       await m.verifyIdentity('Approve the request in Authenticator, then set a new password');
       step('Identity agent', 'Password reset, all sessions signed out');
       front('A real attack: the security team joins');
@@ -476,7 +494,7 @@ const scenarios = [
     await wait(1500);
     step('Nexthink', 'The install failed: the disk is almost full', 'system');
     await say('The install stopped: your disk is almost full.');
-    await m.confirmRisky('Free up space first?', ['Removes temporary files only', 'Your files stay'], 'Free up space');
+    if (!await m.confirmRisky('Free up space first?', ['Removes temporary files only', 'Your files stay'], 'Free up space')) return;
     await m.runFix('Fix agent', 1, 'clearing temporary files and installing again');
     step('Intune', 'Fails again', 'system');
     await say('It failed again. I am trying another fix.');
@@ -568,6 +586,7 @@ async function intake(text, offline) {
     fromChat = true;
     pending = text;
     await s.run();
+    busy = false;
     return;
   }
   const t = r.ticket;
