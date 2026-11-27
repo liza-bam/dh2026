@@ -75,22 +75,22 @@ def build():
         d.arrow((600, 208), (cx, 236), color=TEAL)
 
     # three paths
-    column(d, 20, 240, 370, 400, 'Fixed flows', None, 'Simple actions. No model decides anything: the employee chooses, the systems act.',
+    column(d, 20, 240, 370, 400, 'Fixed flows', None, 'Simple actions. No model decides anything: rules and the employee decide, the systems act. Flows also run every fix an engineer approves.',
            ['A new device', 'Proxy access', 'A Teams channel', 'A password reset', 'A stolen laptop', 'A scam email'])
     column(d, 415, 240, 370, 400, 'Domain agents', 'Small models', 'Problems that need a decision. One agent leads each case.',
            ['Devices', 'Software', 'Mail and calendar', 'Workplace'],
-           'When it gets stuck, a person takes over with the whole story. A watcher agent finds problems before anyone asks.', dark=True)
-    column(d, 810, 240, 370, 400, 'Team agents', 'Large model', 'Nothing fits: a ticket goes to the right team, and its agent helps the engineers.',
+           'When it gets stuck, a person takes over with the whole story. Nexthink finds problems before anyone asks, and the case comes here.', dark=True)
+    column(d, 810, 240, 370, 400, 'Team agents', 'Large model', 'Nothing fits, or many people hit the same problem: the right team takes it, and its agent prepares the work.',
            ['Network', 'Messaging', 'End-user computing'],
-           'What the engineers solve comes back to the domain agents as a new fix.')
+           'An engineer decides. What the team solves comes back to the domain agents as a new fix.')
 
     # systems: what the agents work with
     d.rect(20, 660, 1160, 176, '#f7fafb', '#dce4e7', rx=14)
     d.t(40, 692, 'Systems the agents work with', 16, 600)
     SYS = [('now', 'ServiceNow', 'Tickets and requests'), ('workday', 'Workday', 'Who the employee is: role, team'),
            ('azure', 'Entra ID', 'Accounts, passwords, access'), (None, 'Intune', 'Laptops: installs, locks, wipes'),
-           ('nexthink', 'Nexthink', 'How each laptop is doing'), ('office', 'Office 365', 'Mail, calendar, Teams'),
-           ('ariba', 'SAP Ariba', 'Ordering devices')]
+           ('nexthink', 'Nexthink', 'How each laptop is doing'), ('office', 'Microsoft 365', 'Mail, calendar, Teams, app updates'),
+           ('ariba', 'SAP Ariba', 'Buying devices not in stock')]
     for k, (key, name, what) in enumerate(SYS):
         x = 40 + (k % 4) * 284
         y = 708 + (k // 4) * 62

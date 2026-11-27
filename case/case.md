@@ -16,7 +16,7 @@ Digital Hub was the IT support service I designed for EY (https://sandy.tayts.co
 
 Visual: [D19-11] Support paths, 2019.
 
-One scenario showed these paths at work.
+A bad Visio update takes both halves of this diagram. Monitoring catches the crash, but no script can fix a bad update, so it goes to a person. Her fix becomes a script that runs for everyone else, before they hit the bug.
 
 ## A bad update, 2019
 

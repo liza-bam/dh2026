@@ -228,7 +228,7 @@ def handoff():
     d.t(20, 30, 'What the live agent sees', 17, 600)
     d.rect(20, 46, 460, 360, '#fff', Z['agent'][1], rx=14, sw=2)
     d.image('cust7', 40, 66, 56, round_=True, ring='#b7c1c5')
-    d.t(110, 88, 'Peter, senior auditor, Manchester', 15, 600)
+    d.t(110, 88, 'Senior auditor, Manchester', 15, 600)
     d.t(110, 108, 'Visio install failed twice · frustrated', 13, 400, SECOND)
     y = 140
     for lg, t in [('nexthink', 'Device: the disk is almost full'), ('nexthink', 'Tried: disk clean-up and a reinstall, through Nexthink and Intune'),

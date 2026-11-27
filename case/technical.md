@@ -36,6 +36,8 @@ What changed by 2026: the platforms ship their own agents (ServiceNow, Nexthink,
 
 Visual: [D19-11] Support paths, 2019.
 
+A bad Visio update takes both halves of this diagram. Monitoring catches the crash, but no script can fix a bad update, so it goes to a person. Her fix becomes a script that runs for everyone else, before they hit the bug. The use case below follows it through 2019 and 2026.
+
 Visuals: [D19-1] First contact, [D19-2] Solving issues, [D19-5] Proactive support.
 
 ## The use case: a bad update, 2019 and 2026
@@ -185,7 +187,7 @@ Many problems cross domains. A VPN that will not connect can be the app, the acc
 
 One rule for all of them: every agent has its own identity, touches only its own systems, answers only from approved knowledge, and every action is logged. Risky actions wait for a yes, and a new fix runs only after an engineer approves it.
 
-**The Software agent: five cases, one ladder** (diagram [D26-8])
+**The Software agent: five cases, one ladder**
 - **Visio will not install, with a client call in 20 minutes.** The data shows a broken installer cache, so no restart or clean-up. The call comes first: Visio in the browser now, the laptop fixed after the call. If the repair fails, a person takes over in a remote session.
 - **Excel crashes on the client model.** The crash log points to an add-in: the agent offers to turn it off, and waits for a yes. A very large file: it opens in safe mode and recovers the autosave. Office itself is broken: the agent repairs it.
 - **Outlook will not connect.** First the agent checks whether Microsoft 365 is down for everyone. If it is, there is nothing to fix on the laptop: it files a ticket for the team and gives the employee the number. If it is only this employee, it clears the cached sign-in and the Outlook profile.
@@ -284,7 +286,7 @@ Nine layers, each with one job.
 4. **Team agents.** One for each second-line team, working for the engineers, not the employees. Large model: few cases, hard ones.
 5. **Enterprise agents.** Microsoft Defender, ServiceNow and Genesys bring their own agents, data and audit. Ours ask them; we do not rebuild them.
 6. **Knowledge.** A library for each domain and each team. Agents answer only from approved EY sources, with a link to the source.
-7. **Systems.** ServiceNow, Workday, Entra ID, Intune, Nexthink, Office 365 and SAP Ariba, reached through their MCP servers and only within the rights of the agent and the employee.
+7. **Systems.** ServiceNow, Workday, Entra ID, Intune, Nexthink, Microsoft 365 and SAP Ariba, reached through their MCP servers and only within the rights of the agent and the employee.
 8. **Governance.** Every agent is registered, tested on real scenarios before release, has a budget and a level of independence for each action, and every action is logged.
 9. **People.** Employees who approve, live support, engineers and the security team: the cases that need judgment.
 

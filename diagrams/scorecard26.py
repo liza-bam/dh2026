@@ -17,7 +17,7 @@ ROWS = [
     ('Genesys', 'genesys', 'ypyyy', 'Licence', 'Keep: live support, talks to ServiceNow agent to agent'),
     ('SAP Ariba', 'ariba', 'ppynp', 'Joule Base', 'Keep through its APIs; check again for MCP'),
     ('Avaamo', 'avaamo', 'nnnnn', 'Expensive in 2019', 'Drop: the intake agent does its job'),
-    ('Wipro Holmes', None, 'pnnnn', 'Services contract', 'Drop: fixes run through Nexthink and Intune'),
+    ('AI scripts (2019)', None, 'pnnnn', 'Services contract', 'Drop: fixes run through Nexthink and Intune'),
 ]
 
 
