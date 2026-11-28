@@ -155,8 +155,8 @@ def legend(d, label, agents):
     items = [('peter', 'Peter, whose Visio crashed'), ('engineer', 'The support engineer'),
              ('everyone', 'Everyone else due the update')] + ([] if agents else [('alert', 'Something went wrong')]) + [
              ('message', 'A message to Peter'), ('done', 'Fixed'),
-             ('hub', 'Digital Hub'),
-             ('now', 'ServiceNow: the case record'), ('nexthink', 'Nexthink: watches every laptop')]
+             ('hub', 'Digital Hub and its AI agent' if agents else 'Digital Hub'),
+             ('now', 'ServiceNow and its AI agent' if agents else 'ServiceNow: the case record'), ('nexthink', 'Nexthink: watches every laptop')]
     if agents:
         items += [('cloud', 'Microsoft 365 Cloud Update'), ('intune', 'Microsoft Intune')]
     items += [('arrow', 'Words on an arrow: the data that moves')]
@@ -280,21 +280,22 @@ def build19():
 
 
 STEPS26 = [
-    ('Crash', 'Peter\u2019s Visio crashes. Within a minute, Digital Hub\u2019s agent tells him how to keep working.', '2019: steps 1\u20132'),
-    ('Fix', 'ServiceNow\u2019s agent finds the cause and writes the fix by itself. The engineer says yes, once.', '2019: steps 3\u20135'),
-    ('Done', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed. Everyone else gets the update and notices nothing.', '2019: steps 6\u20137'),
+    ('Crash', 'Peter\u2019s Visio crashes. Within a minute he is told how to keep working.', '2019: steps 1\u20132'),
+    ('Fix', 'ServiceNow\u2019s AI agent finds the cause and writes the fix. The engineer says yes, once.', '2019: steps 3\u20135'),
+    ('Done', 'Peter hears it\u2019s fixed. Everyone else gets the update and notices nothing.', '2019: steps 6\u20137'),
 ]
-# the systems, in the order they act: (logo, x, row, what it does); row 0 is upper, 1 is lower
+# the systems, in the order they act: (logo, x, row, what happens); row 0 is upper, 1 is lower.
+# The logo and the legend say which system it is, so the caption says only what happens.
 NODES26 = [
-    ('nexthink', 125, 0, 'Nexthink sees the crash'),
-    ('now', 220, 1, 'ServiceNow opens a ticket'),
-    ('hub', 315, 0, 'Digital Hub\u2019s agent writes to Peter'),
-    ('now', 425, 0, 'ServiceNow\u2019s agent finds the cause, writes the fix'),
-    ('cloud', 520, 1, 'Cloud Update pauses the update'),
-    ('intune', 615, 0, 'Intune changes the settings'),
-    ('hub', 725, 0, 'Digital Hub\u2019s agent tells Peter'),
-    ('cloud', 820, 0, 'Cloud Update updates everyone else'),
-    ('now', 915, 1, 'ServiceNow closes the ticket'),
+    ('nexthink', 125, 0, 'Sees the crash'),
+    ('now', 220, 1, 'Opens a ticket'),
+    ('hub', 315, 0, 'Writes to Peter'),
+    ('now', 425, 0, 'Finds the cause, writes the fix'),
+    ('cloud', 520, 1, 'Pauses the update'),
+    ('intune', 615, 0, 'Changes the settings'),
+    ('hub', 725, 0, 'Tells Peter'),
+    ('cloud', 820, 0, 'Updates everyone else'),
+    ('now', 915, 1, 'Closes the ticket'),
 ]
 
 
@@ -315,7 +316,7 @@ def build26():
     each person is joined to the system that talks to them."""
     global W, X0, COL, PY, R, BOT, END, H
     keep = W, X0, COL, PY, R, BOT, END, H
-    W, X0, COL, PY, R, BOT = 1000, 220, 300, 284, 48, 580
+    W, X0, COL, PY, R, BOT = 1000, 220, 300, 284, 48, 625
     y1, y2 = BOT + 75, BOT + 190
     END = y2 + 175
     H = END + 240
@@ -343,15 +344,15 @@ def build26():
     # step 1: Peter. His laptop reports the crash to Nexthink; Digital Hub's agent writes to him
     person(d, 0, 'peter', 'message', x=220)
     arrow(d, (208, top), (208, y1 - 52), (125, y1 - 52), (125, end))
-    label(d, 198, ly, 'His laptop reports the crash', 120, 'end')
+    label(d, 198, ly - 60, 'His laptop reports the crash', 120, 'end')
     arrow(d, (315, end), (315, y1 - 40), (232, y1 - 40), (232, top))
-    label(d, 242, ly, '\u201cWe created a ticket. Use Visio in the browser.\u201d', 112, 'start')
+    label(d, 242, ly - 60, '\u201cWe created a ticket. Use Visio in the browser.\u201d', 112, 'start')
     # step 2: the engineer and ServiceNow's agent
     person(d, 1, 'engineer', x=425)
-    arrow(d, (437, end), (437, top))
-    label(d, 447, ly, '\u201cThe new update crashes Visio. Pause it and change the settings?\u201d', 132, 'start')
-    arrow(d, (413, top), (413, end))
-    label(d, 403, ly + 80, 'She says yes', 60, 'end')
+    arrow(d, (413, end), (413, top))
+    label(d, 403, ly + 50, '\u201cThe new Visio update is causing the crashes. OK to pause it and change the settings?\u201d', 150, 'end')
+    arrow(d, (437, top), (437, end))
+    label(d, 447, ly + 50, 'Yes', 60, 'start')
     # step 3: Peter hears back; everyone else just gets the update
     person(d, 2, 'peter', 'done', x=725)
     arrow(d, (713, end), (713, top))
