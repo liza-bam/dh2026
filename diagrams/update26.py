@@ -320,9 +320,9 @@ def build26():
     person(d, 0, 'peter', 'message')
     pair(d, cx(0), 'Ticket + Visio\nin the browser', 'Crash', ly=408, bottom=top - 6)
     person(d, 1, 'engineer')
-    pair(d, cx(1), 'Analysis,\nready', 'Yes', ly=408, bottom=top - 6)
+    pair(d, cx(1), 'It\u2019s the update.\nPause it?', 'Yes', ly=408, bottom=top - 6)
     person(d, 2, 'engineer')
-    pair(d, cx(2), 'Steps,\nready', 'Yes', ly=408, bottom=top - 6)
+    pair(d, cx(2), 'Change the\nsettings?', 'Yes', ly=408, bottom=top - 6)
     px, ex = cx(3) - 70, cx(3) + 70
     person(d, 3, 'peter', 'done', x=px)
     pair(d, px, FIXED, 'Rating', ly=408, bottom=top - 6)
