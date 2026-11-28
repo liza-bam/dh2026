@@ -38,7 +38,7 @@ PY, R = 250, 44               # people circles
 SY1, SYB, SY3, SR = 556, 690, 830, 34   # actors, the ServiceNow record, integrations
 SY2 = SYB
 END = 930                     # bottom of the systems band
-H = 1130
+H = 1160
 GREY = '#f4f7f8'
 LINE = '#5d6b72'
 RED = '#c0392b'
@@ -58,16 +58,16 @@ def person(d, i, kind, badge=None, x=None):
     x = cx(i) if x is None else x
     if kind == 'peter':
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="{TINT}"/>')
-        glyph(d, 'laptop_outline', x, PY, 50)
+        glyph(d, 'laptop_outline', x, PY, R * 1.14)
     elif kind == 'everyone':
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="{TINT}"/>')
-        glyph(d, 'groups', x, PY, 50)
+        glyph(d, 'groups', x, PY, R * 1.14)
     else:
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="#fff" stroke="{TEAL}" stroke-width="2"/>')
-        glyph(d, 'support_agent', x, PY, 50)
+        glyph(d, 'support_agent', x, PY, R * 1.14)
     d.t(x, PY + R + 22, {'peter': 'Peter', 'engineer': 'Engineer', 'everyone': 'Everyone else'}[kind], 15, 700, 'middle', fill=INK)
     if badge:
-        bx, by = x + 32, PY - 32
+        bx, by = x + R * 0.73, PY - R * 0.73
         col = RED if badge == 'alert' else TEAL
         d.el.append(f'<circle cx="{bx}" cy="{by}" r="15" fill="{col}" stroke="#fff" stroke-width="2"/>')
         glyph(d, {'alert': 'notifications', 'message': 'chat_bubble', 'done': 'check_circle'}[badge], bx, by, 18, '#fff')
@@ -161,7 +161,7 @@ def legend(d, label, agents):
         items += [('cloud', 'Microsoft 365 Cloud Update'), ('intune', 'Microsoft Intune')]
     items += [('arrow', 'Words on an arrow: the data that moves')]
     items += [] if agents else [('both', 'Reads and writes the record')]
-    cw, rh = (W - 84) / 5, 50
+    cw, rh = (W - 84) / 5, 60
     for k, (key, text) in enumerate(items):
         x, y = 64 + (k % 5) * cw, END + 70 + (k // 5) * rh
         ix = x + 18
@@ -281,20 +281,20 @@ def build19():
 
 STEPS26 = [
     ('Crash', 'Peter\u2019s Visio crashes. Within a minute, Digital Hub\u2019s agent tells him how to keep working.', '2019: steps 1\u20132'),
-    ('Fix', 'ServiceNow\u2019s agent finds the cause and writes the fix by itself. The engineer only says yes, once.', '2019: steps 3\u20135'),
+    ('Fix', 'ServiceNow\u2019s agent finds the cause and writes the fix by itself. The engineer says yes, once.', '2019: steps 3\u20135'),
     ('Done', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed. Everyone else gets the update and notices nothing.', '2019: steps 6\u20137'),
 ]
-# the systems, in the order they act: (logo, x, what it does)
+# the systems, in the order they act: (logo, x, row, what it does); row 0 is upper, 1 is lower
 NODES26 = [
-    ('nexthink', 140, 'Nexthink sees the crash'),
-    ('now', 270, 'ServiceNow opens a ticket'),
-    ('hub', 400, 'Digital Hub\u2019s agent messages Peter'),
-    ('now', 620, 'ServiceNow\u2019s agent finds the cause and writes the fix'),
-    ('cloud', 760, 'Cloud Update pauses the update'),
-    ('intune', 890, 'Intune changes the settings'),
-    ('hub', 1010, 'Digital Hub\u2019s agent tells Peter'),
-    ('cloud', 1160, 'Cloud Update gives everyone else the update'),
-    ('now', 1290, 'ServiceNow closes the ticket'),
+    ('nexthink', 125, 0, 'Nexthink sees the crash'),
+    ('now', 220, 1, 'ServiceNow opens a ticket'),
+    ('hub', 315, 0, 'Digital Hub\u2019s agent writes to Peter'),
+    ('now', 425, 0, 'ServiceNow\u2019s agent finds the cause, writes the fix'),
+    ('cloud', 520, 1, 'Cloud Update pauses the update'),
+    ('intune', 615, 0, 'Intune changes the settings'),
+    ('hub', 725, 0, 'Digital Hub\u2019s agent tells Peter'),
+    ('cloud', 820, 0, 'Cloud Update updates everyone else'),
+    ('now', 915, 1, 'ServiceNow closes the ticket'),
 ]
 
 
@@ -305,49 +305,61 @@ def label(d, x, y, text, w, anchor):
         d.t(x, y0 + k * 20, t, 15, 600, anchor, fill=TEAL)
 
 
-def arrow(d, *pts):
+def arrow(d, *pts, col=TEAL):
     p = 'M' + ' L'.join(f'{a:.0f} {b:.0f}' for a, b in pts)
-    d.el.append(f'<path d="{p}" fill="none" stroke="{TEAL}" stroke-width="2" stroke-linejoin="round" marker-end="url(#m{d.uid})"/>')
+    d.el.append(f'<path d="{p}" fill="none" stroke="{col}" stroke-width="2" stroke-linejoin="round" marker-end="url(#m{d.uid})"/>')
 
 
 def build26():
-    """2026: three steps. Every system is a node in one chain; each person is linked to the node that talks to them."""
-    global W, X0, COL, PY, BOT, END, H
-    keep = W, X0, COL, PY, BOT, END, H
-    W, X0, COL, PY, BOT, END, H = 1360, 280, 420, 300, 600, 900, 1100
+    """2026: three steps, page width. Systems sit in two staggered rows joined by arrows;
+    each person is joined to the system that talks to them."""
+    global W, X0, COL, PY, R, BOT, END, H
+    keep = W, X0, COL, PY, R, BOT, END, H
+    W, X0, COL, PY, R, BOT = 1000, 220, 300, 270, 34, 560
+    y1, y2 = BOT + 75, BOT + 190
+    END = y2 + 175
+    H = END + 240
     d = Rich('bu26', W, H, 'A bad Visio update in 2026, in three steps: Digital Hub\u2019s agent tells Peter, ServiceNow\u2019s agent finds the cause and writes the fix, the engineer says yes once, and the systems do the rest by themselves; everyone else notices nothing')
     frame(d, '2026')
     for i, (t, s_, was) in enumerate(STEPS26):
         head(d, i, i + 1, t, s_)
-        d.t(cx(i) - COL / 2 + 10, TOP + 112, was, 15, 400, 'start', fill=SECOND)
-    ny, top, ly = BOT + 120, PY + R + 32, 490
-    # the chain of systems
-    for k, (key, x, text) in enumerate(NODES26):
-        mark(d, key, x, ny, 24)
-        d.lines(x, ny + 46, text, 118, 15, 400, INK, lh=19, anchor='middle')
+        d.t(cx(i) - COL / 2 + 10, TOP + 118, was, 15, 400, 'start', fill=SECOND)
+    # systems: two staggered rows, joined in order
+    ys = (y1, y2)
+    for k, (key, x, row, text) in enumerate(NODES26):
+        y = ys[row]
+        mark(d, key, x, y, 24)
+        d.lines(x, y + 44, text, 88 if x in (725, 820) else 104, 15, 400, INK, lh=19, anchor='middle')
         if k:
-            hline(d, NODES26[k - 1][1] + 30, x - 32, ny)
-    d.t(W / 2, END - 26, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, 'middle', fill=TEAL)
+            _, px_, prow, _ = NODES26[k - 1]
+            if prow == row:
+                arrow(d, (px_ + 28, y), (x - 30, y), col=LINE)
+            elif prow == 0:
+                arrow(d, (px_ + 28, y1), (x - 8, y1), (x - 8, y2 - 30), col=LINE)
+            else:
+                arrow(d, (px_ + 8, y2 - 28), (px_ + 8, y1), (x - 30, y1), col=LINE)
+    d.t(W / 2, END - 24, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, 'middle', fill=TEAL)
+    top, ly, end = PY + R + 32, 450, y1 - 30
     # step 1: Peter. His laptop reports the crash to Nexthink; Digital Hub's agent writes to him
-    person(d, 0, 'peter', 'message', x=270)
-    arrow(d, (258, top), (258, BOT + 40), (140, BOT + 40), (140, ny - 30))
-    label(d, 248, ly, 'His laptop reports the crash', 150, 'end')
-    arrow(d, (400, ny - 30), (400, BOT + 56), (282, BOT + 56), (282, top))
-    label(d, 292, ly, 'Digital Hub\u2019s agent: \u201cWe created a ticket. Use Visio in the browser.\u201d', 160, 'start')
+    person(d, 0, 'peter', 'message', x=220)
+    arrow(d, (208, top), (208, y1 - 52), (125, y1 - 52), (125, end))
+    label(d, 198, ly, 'His laptop reports the crash', 120, 'end')
+    arrow(d, (315, end), (315, y1 - 40), (232, y1 - 40), (232, top))
+    label(d, 242, ly, 'Digital Hub\u2019s agent: \u201cWe created a ticket. Use Visio in the browser.\u201d', 112, 'start')
     # step 2: the engineer and ServiceNow's agent
-    person(d, 1, 'engineer', x=620)
-    arrow(d, (632, ny - 30), (632, top))
-    label(d, 642, ly, 'ServiceNow\u2019s agent: \u201cThe new update crashes Visio. Pause it and change the settings?\u201d', 170, 'start')
-    arrow(d, (608, top), (608, ny - 30))
-    label(d, 598, ly, 'She says yes', 80, 'end')
+    person(d, 1, 'engineer', x=425)
+    arrow(d, (437, end), (437, top))
+    label(d, 447, ly, 'ServiceNow\u2019s agent: \u201cThe new update crashes Visio. Pause it and change the settings?\u201d', 132, 'start')
+    arrow(d, (413, top), (413, end))
+    label(d, 403, ly + 80, 'She says yes', 60, 'end')
     # step 3: Peter hears back; everyone else just gets the update
-    person(d, 2, 'peter', 'done', x=1010)
-    arrow(d, (1022, ny - 30), (1022, top))
-    label(d, 1032, ly, 'Digital Hub\u2019s agent: \u201cWe fixed the problem.\u201d', 100, 'start')
-    arrow(d, (998, top), (998, ny - 30))
-    label(d, 988, ly, 'Peter rates it', 70, 'end')
-    person(d, 2, 'everyone', x=1210)
-    arrow(d, (1172, ny - 30), (1172, top + 30))
-    label(d, 1182, ly + 40, 'The update. They notice nothing', 130, 'start')
-    W, X0, COL, PY, BOT, END, H = keep
+    person(d, 2, 'peter', 'done', x=725)
+    arrow(d, (713, end), (713, top))
+    label(d, 703, ly, 'Digital Hub\u2019s agent: \u201cWe fixed the problem.\u201d', 100, 'end')
+    arrow(d, (737, top), (737, end))
+    label(d, 747, ly + 80, 'Peter rates it', 60, 'start')
+    person(d, 2, 'everyone', x=840)
+    arrow(d, (832, end), (832, top))
+    label(d, 842, ly, 'The update. They notice nothing', 110, 'start')
+    W, X0, COL, PY, R, BOT, END, H = keep
     return d
