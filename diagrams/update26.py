@@ -281,67 +281,73 @@ def build19():
 
 STEPS26 = [
     ('Crash', 'Peter\u2019s Visio crashes. Within a minute, Digital Hub\u2019s agent tells him how to keep working.', '2019: steps 1\u20132'),
-    ('Pause', 'ServiceNow\u2019s agent finds the cause by itself. The engineer only agrees to pause the update.', '2019: steps 3\u20134'),
-    ('Fix', 'ServiceNow\u2019s agent writes the fix by itself. The engineer only agrees, and Intune applies it.', '2019: step 5'),
-    ('Done', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed. Everyone else gets the update and never sees the crash.', '2019: steps 6\u20137'),
+    ('Fix', 'ServiceNow\u2019s agent finds the cause and writes the fix by itself. The engineer only says yes, once.', '2019: steps 3\u20135'),
+    ('Done', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed. Everyone else gets the update and notices nothing.', '2019: steps 6\u20137'),
 ]
-# who says what to whom, on each arrow: (to the person, from the person)
-TALK26 = [
-    ('Digital Hub\u2019s agent to Peter: \u201cWe created a ticket. Use Visio in the browser.\u201d', 'His laptop reports the crash'),
-    ('ServiceNow\u2019s agent to the engineer: \u201cThe new update crashes Visio. Pause it?\u201d', 'She says yes'),
-    ('ServiceNow\u2019s agent to the engineer: \u201cFix: change these settings. Apply it?\u201d', 'She says yes'),
-    ('Digital Hub\u2019s agent to Peter: \u201cWe fixed the problem with your Visio update.\u201d', 'Peter rates it'),
-]
-# what each system does by itself, in order
-AUTO26 = [
-    [('nexthink', 'Nexthink sees Visio crash on Peter\u2019s laptop'), ('now', 'ServiceNow opens a ticket for Peter'), ('hub', 'Digital Hub\u2019s agent messages Peter')],
-    [('now', 'ServiceNow\u2019s agent compares the crashes in Nexthink and finds the cause: the new update'), ('cloud', 'Cloud Update pauses the update for everyone')],
-    [('now', 'ServiceNow\u2019s agent writes the fix: new settings'), ('intune', 'Intune changes the settings on every laptop')],
-    [('hub', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed'), ('cloud', 'Cloud Update gives everyone else the update, in waves'), ('now', 'ServiceNow closes the ticket')],
+# the systems, in the order they act: (logo, x, what it does)
+NODES26 = [
+    ('nexthink', 140, 'Nexthink sees the crash'),
+    ('now', 270, 'ServiceNow opens a ticket'),
+    ('hub', 400, 'Digital Hub\u2019s agent messages Peter'),
+    ('now', 620, 'ServiceNow\u2019s agent finds the cause and writes the fix'),
+    ('cloud', 760, 'Cloud Update pauses the update'),
+    ('intune', 890, 'Intune changes the settings'),
+    ('hub', 1010, 'Digital Hub\u2019s agent tells Peter'),
+    ('cloud', 1160, 'Cloud Update gives everyone else the update'),
+    ('now', 1290, 'ServiceNow closes the ticket'),
 ]
 
 
-def talk(d, x, up, down, ly, bottom, upw=150, downw=100):
-    """Two arrows beside a person: the up arrow brings a message, the down arrow takes the answer."""
-    xu, xd = x + 20, x + 44
-    d.el.append(f'<path d="M{xu:.0f} {bottom:.0f}V{PY + R + 32:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
-    d.el.append(f'<path d="M{xd:.0f} {PY + R + 32:.0f}V{bottom:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
-    for text, tx, w, anchor in [(up, xu - 10, upw, 'end'), (down, xd + 10, downw, 'start')]:
-        ls = wrap(text, w, 16)
-        y0 = ly - (len(ls) - 1) * 10 + 5
-        for k, t in enumerate(ls):
-            d.t(tx, y0 + k * 20, t, 15, 600, anchor, fill=TEAL)
+def label(d, x, y, text, w, anchor):
+    ls = wrap(text, w, 16)
+    y0 = y - (len(ls) - 1) * 10 + 5
+    for k, t in enumerate(ls):
+        d.t(x, y0 + k * 20, t, 15, 600, anchor, fill=TEAL)
+
+
+def arrow(d, *pts):
+    p = 'M' + ' L'.join(f'{a:.0f} {b:.0f}' for a, b in pts)
+    d.el.append(f'<path d="{p}" fill="none" stroke="{TEAL}" stroke-width="2" stroke-linejoin="round" marker-end="url(#m{d.uid})"/>')
 
 
 def build26():
-    """2026: four steps; people only read a message and say yes; everything else runs by itself."""
+    """2026: three steps. Every system is a node in one chain; each person is linked to the node that talks to them."""
     global W, X0, COL, PY, BOT, END, H
     keep = W, X0, COL, PY, BOT, END, H
-    W, X0, COL, PY, BOT, END, H = 1300, 212, 305, 300, 590, 880, 1080
-    d = Rich('bu26', W, H, 'A bad Visio update in 2026, in four steps: Digital Hub tells Peter twice, ServiceNow asks the engineer twice and she says yes, and the systems do everything else by themselves; everyone else never sees the crash')
+    W, X0, COL, PY, BOT, END, H = 1360, 280, 420, 300, 600, 900, 1100
+    d = Rich('bu26', W, H, 'A bad Visio update in 2026, in three steps: Digital Hub\u2019s agent tells Peter, ServiceNow\u2019s agent finds the cause and writes the fix, the engineer says yes once, and the systems do the rest by themselves; everyone else notices nothing')
     frame(d, '2026')
     for i, (t, s_, was) in enumerate(STEPS26):
         head(d, i, i + 1, t, s_)
         d.t(cx(i) - COL / 2 + 10, TOP + 112, was, 15, 400, 'start', fill=SECOND)
-    # people: what they are told and what they answer
-    bottom = BOT + 18
-    for i, (up, down) in enumerate(TALK26[:3]):
-        person(d, i, 'peter' if i == 0 else 'engineer', 'message' if i == 0 else None)
-        talk(d, cx(i), up, down, 470, bottom, upw=180)
-    px, ex = cx(3) - 50, cx(3) + 88
-    person(d, 3, 'peter', 'done', x=px)
-    talk(d, px, TALK26[3][0], TALK26[3][1], 470, bottom, upw=125, downw=70)
-    person(d, 3, 'everyone', x=ex)
-    d.t(ex, PY + R + 44, 'Sees nothing:', 15, 600, 'middle', fill=SECOND)
-    d.t(ex, PY + R + 64, 'Visio just works', 15, 600, 'middle', fill=SECOND)
-    # systems: one heading, then what each system does, in order
-    d.t(110, BOT + 62, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, fill=TEAL)
-    for i, rows in enumerate(AUTO26):
-        lx = cx(i) - COL / 2 + 28
-        for k, (key, text) in enumerate(rows):
-            y = BOT + 112 + k * 64
-            mark(d, key, lx, y, 18)
-            n = len(wrap(text, COL - 70, 15))
-            d.lines(lx + 28, y + 5 - (n - 1) * 9.5, text, COL - 70, 15, 400, INK, lh=19)
+    ny, top, ly = BOT + 120, PY + R + 32, 490
+    # the chain of systems
+    for k, (key, x, text) in enumerate(NODES26):
+        mark(d, key, x, ny, 24)
+        d.lines(x, ny + 46, text, 118, 15, 400, INK, lh=19, anchor='middle')
+        if k:
+            hline(d, NODES26[k - 1][1] + 30, x - 32, ny)
+    d.t(W / 2, END - 26, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, 'middle', fill=TEAL)
+    # step 1: Peter. His laptop reports the crash to Nexthink; Digital Hub's agent writes to him
+    person(d, 0, 'peter', 'message', x=270)
+    arrow(d, (258, top), (258, BOT + 40), (140, BOT + 40), (140, ny - 30))
+    label(d, 248, ly, 'His laptop reports the crash', 150, 'end')
+    arrow(d, (400, ny - 30), (400, BOT + 56), (282, BOT + 56), (282, top))
+    label(d, 292, ly, 'Digital Hub\u2019s agent: \u201cWe created a ticket. Use Visio in the browser.\u201d', 160, 'start')
+    # step 2: the engineer and ServiceNow's agent
+    person(d, 1, 'engineer', x=620)
+    arrow(d, (632, ny - 30), (632, top))
+    label(d, 642, ly, 'ServiceNow\u2019s agent: \u201cThe new update crashes Visio. Pause it and change the settings?\u201d', 170, 'start')
+    arrow(d, (608, top), (608, ny - 30))
+    label(d, 598, ly, 'She says yes', 80, 'end')
+    # step 3: Peter hears back; everyone else just gets the update
+    person(d, 2, 'peter', 'done', x=1010)
+    arrow(d, (1022, ny - 30), (1022, top))
+    label(d, 1032, ly, 'Digital Hub\u2019s agent: \u201cWe fixed the problem.\u201d', 100, 'start')
+    arrow(d, (998, top), (998, ny - 30))
+    label(d, 988, ly, 'Peter rates it', 70, 'end')
+    person(d, 2, 'everyone', x=1210)
+    arrow(d, (1172, ny - 30), (1172, top + 30))
+    label(d, 1182, ly + 40, 'The update. They notice nothing', 130, 'start')
     W, X0, COL, PY, BOT, END, H = keep
     return d

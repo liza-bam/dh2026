@@ -83,17 +83,17 @@ In the blueprint the first customer files the ticket; in the video Digital Hub f
 
 Peter gets the same two messages as in 2019, with Visio in the browser in place of the virtual machine. Behind the scenes, each step that once needed a script and a hand-written integration is now a platform feature.
 
-Seven steps become four. The gaps between the 2019 steps were people's work: someone searching, someone writing a fix, someone sending an update. In 2026 those gaps run by themselves. Peter reads two messages, the engineer says yes twice, and nobody else does anything.
+Seven steps become three. The gaps between the 2019 steps were people's work: someone searching, someone writing a fix, someone sending an update. In 2026 those gaps run by themselves. ServiceNow's agent finds the cause and writes the fix in one go, so the engineer gets one question and says yes once. Peter reads two messages, and nobody else does anything.
 
 Visual: [D26-17] A bad update, 2026.
 
 | Stage | Who acts | Data, and where it comes from | Written to | Through |
 |---|---|---|---|---|
 | Submit | Nexthink records the crash, and its monitor raises an alert. A webhook files an incident. The Software agent sends Peter one message: the ticket is open, and here is a workaround, Visio in the browser | Crash, device, app version: Nexthink. Workaround: the knowledge base | Incident: the crash data and the workaround | Nexthink webhook to ServiceNow; Teams |
-| Confirm | Nexthink flags the version that crashes more than others. ServiceNow finds similar incidents. The Software agent links them to one problem. ServiceNow's Problems investigation agent prepares the analysis. An engineer confirms the cause and approves a change. A flow pauses the update | Nexthink: crashes by version. ServiceNow: similar incidents, changes, affected devices | Problem: linked incidents, the cause. Change: the pause | ServiceNow API; Microsoft 365 Apps admin center (Cloud Update) |
+| Confirm | Nexthink flags the version that crashes more than others. ServiceNow finds similar incidents. The Software agent links them to one problem. ServiceNow's Problems investigation agent finds the cause and writes the fix in one go: pause the update, change the settings. The engineer approves both in one change. A flow pauses the update | Nexthink: crashes by version. ServiceNow: similar incidents, changes, affected devices | Problem: linked incidents, the cause. Change: the pause | ServiceNow API; Microsoft 365 Apps admin center (Cloud Update) |
 | Identify | A flow lists everyone affected | Nexthink: devices with the new version and their crashes. Cloud Update: which devices have the update | Problem: the people affected | Nexthink API; Cloud Update |
 | Notify | Nobody new is messaged. Peter's first message already said we are working on it, and everyone else never meets the bug | — | — | — |
-| Resolve | ServiceNow's problem agent proposes the steps, and the engineer approves them in a change. A flow changes the settings, then rolls the update out to everyone else in waves; they never see the bug | Nexthink remote actions or Intune: the settings. Cloud Update: the update | Change: the fix. Knowledge base: the known error and its fix | Nexthink API or Intune; Cloud Update |
+| Resolve | Under the same approved change, a flow changes the settings, then rolls the update out to everyone else in waves; they never see the bug | Nexthink remote actions or Intune: the settings. Cloud Update: the update | Change: the fix. Knowledge base: the known error and its fix | Nexthink API or Intune; Cloud Update |
 | Inform | A flow closes every linked incident. Each person gets a message and a one-tap rating | The problem record | Incidents closed; the ratings | Teams; ServiceNow survey |
 
 What Peter sees, in order:
@@ -122,7 +122,7 @@ What everyone else sees: nothing. The update reaches them after the fix, and Vis
 
 ### What I design
 
-Everything is seen from the employee's side: for them, it just sorts itself out. The first rule: people do as little as possible. Peter does nothing between the workaround and the fix; he only reads messages and keeps working. The engineer only decides: she confirms the cause and approves two changes, the pause and the fix. Everyone else does nothing at all. In 2019 the engineer searched Nexthink and wrote the fix by hand; in 2026 the analysis and the steps come to her ready.
+Everything is seen from the employee's side: for them, it just sorts itself out. The first rule: people do as little as possible. Peter does nothing between the workaround and the fix; he only reads messages and keeps working. The engineer only decides, once: she approves one change that pauses the update and applies the fix. Everyone else does nothing at all. In 2019 the engineer searched Nexthink and wrote the fix by hand; in 2026 the analysis and the steps come to her ready.
 
 What that takes:
 
