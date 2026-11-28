@@ -57,7 +57,9 @@ The 2019 journey works now, with one change: AI only where a step needs a decisi
 
 ## The same journey, 2026
 
-Peter gets the same two messages as in 2019, with Visio in the browser in place of the virtual machine, and has nothing to do in between. Everyone else gets the fix in waves and never sees the bug. Behind the scenes, the platforms now do what we had to script.
+Peter gets the same two messages as in 2019, with Visio in the browser in place of the virtual machine, and has nothing to do in between. Everyone else gets the fix in waves and never sees the bug.
+
+Seven steps become four. The gaps between the 2019 steps were people's work: someone searching, someone writing a fix, someone sending an update. In 2026 those gaps run by themselves. Peter reads two messages, the engineer says yes twice, and nobody else does anything.
 
 Visual: [D26-17] A bad update, 2026.
 

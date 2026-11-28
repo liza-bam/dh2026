@@ -50,9 +50,9 @@ def glyph(d, name, x, y, s, fill=TEAL):
     d.el.append(f'<path d="{symbol(name)}" fill="{fill}" transform="translate({x - s / 2:.1f} {y + s / 2:.1f}) scale({k:.4f})"/>')
 
 
-def person(d, i, kind, badge=None):
+def person(d, i, kind, badge=None, x=None):
     """kind: peter (a laptop) or engineer (a person at work). badge: alert, message or done."""
-    x = cx(i)
+    x = cx(i) if x is None else x
     if kind == 'peter':
         d.el.append(f'<circle cx="{x}" cy="{PY}" r="{R}" fill="{TINT}"/>')
         glyph(d, 'laptop_outline', x, PY, 50)
@@ -102,9 +102,10 @@ def vline(d, x, y1, y2, label=None, ly=None, dashed=False):
             d.t(x, ly - h / 2 + 20 + k * 22, s, 15, 700, 'middle', fill=TEAL)
 
 
-def pair(d, x, up, down, ly=400, down_first=False):
+def pair(d, x, up, down, ly=400, down_first=False, bottom=None):
     """Two arrows between a person and a system: up brings data to the person, down takes their answer back."""
-    for dx, y1, y2 in [(-10, SY1 - SR - 6, PY + R + 32), (10, PY + R + 32, SY1 - SR - 6)]:
+    b = SY1 - SR - 6 if bottom is None else bottom
+    for dx, y1, y2 in [(-10, b, PY + R + 32), (10, PY + R + 32, b)]:
         d.el.append(f'<path d="M{x + dx:.0f} {y1:.0f}V{y2:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
     u, dn = [('up', t) for t in up.split('\n')], [('down', t) for t in down.split('\n')]
     lines = dn + u if down_first else u + dn
@@ -157,13 +158,14 @@ def legend(d, label, agents):
     d.t(64, END + 34, 'Legend', 15, 700, fill=INK)
     d.t(W - 20, END + 34, label, 15, 700, 'end', fill=INK)
     items = [('peter', 'Peter, whose Visio crashed'), ('engineer', 'The support engineer'),
-             ('everyone', 'Everyone else due the update'), ('alert', 'Something went wrong'),
+             ('everyone', 'Everyone else due the update')] + ([] if agents else [('alert', 'Something went wrong')]) + [
              ('message', 'A message to Peter'), ('done', 'Fixed'),
              ('hub', 'Digital Hub') if not agents else ('agent', 'An agent: a system with its own account'),
              ('now', 'ServiceNow: the case record'), ('nexthink', 'Nexthink: watches every laptop')]
     if agents:
         items += [('cloud', 'Microsoft 365 Cloud Update'), ('intune', 'Microsoft Intune')]
-    items += [('arrow', 'Words on an arrow: the data that moves'), ('both', 'Reads and writes the record')]
+    items += [('arrow', 'Words on an arrow: the data that moves')]
+    items += [('auto', 'Automatic: nobody touches it')] if agents else [('both', 'Reads and writes the record')]
     cw, rh = (W - 84) / 5, 50
     for k, (key, text) in enumerate(items):
         x, y = 64 + (k % 5) * cw, END + 70 + (k // 5) * rh
@@ -185,6 +187,8 @@ def legend(d, label, agents):
             glyph(d, 'smart_toy', ix, y, 22)
         elif key == 'arrow':
             d.el.append(f'<path d="M{x} {y}h32" stroke="{LINE}" stroke-width="1.8" marker-end="url(#m{d.uid})"/>')
+        elif key == 'auto':
+            d.el.append(f'<rect x="{x}" y="{y - 12}" width="36" height="24" fill="#fff" stroke="{LINE}" stroke-width="1.5" stroke-dasharray="5 4"/>')
         elif key == 'both':
             d.el.append(f'<path d="M{x + 2} {y}h32" stroke="{LINE}" stroke-width="1.8" marker-start="url(#m{d.uid})" marker-end="url(#m{d.uid})"/>')
         else:
@@ -236,11 +240,12 @@ def under(d, i, key, name, label, up=True, left=False):
     d.t(x - 8 if left else x + 8, (SYB + 58 + SY3 - SR) / 2 + 5, label, 14, 600, 'end' if left else 'start', fill=SECOND)
 
 
-def everyone(d, i):
-    """Step 8: the fix reaches everyone else; they see nothing, so no arrow."""
-    person(d, i, 'everyone')
-    d.t(cx(i), 400, 'Sees nothing:', 15, 600, 'middle', fill=SECOND)
-    d.t(cx(i), 420, 'Visio just works', 15, 600, 'middle', fill=SECOND)
+def everyone(d, i, x=None, y=400):
+    """The fix reaches everyone else; they see nothing, so no arrow."""
+    x = cx(i) if x is None else x
+    person(d, i, 'everyone', x=x)
+    d.t(x, y, 'Sees nothing:', 15, 600, 'middle', fill=SECOND)
+    d.t(x, y + 20, 'Visio just works', 15, 600, 'middle', fill=SECOND)
 
 
 FIXED = '\u201cWe fixed\nthe problem\u201d'
@@ -279,39 +284,59 @@ def build19():
     return d
 
 
+STEPS26 = [
+    ('Crash', 'Visio won’t start. Peter is told and keeps working', '2019: steps 1–2'),
+    ('Hold', 'The engineer says yes. The update stops for everyone else', '2019: steps 3–4'),
+    ('Fix', 'The engineer says yes. The settings change', '2019: step 5'),
+    ('Fixed', 'Peter hears back. Everyone else notices nothing', '2019: steps 6–7'),
+]
+# what runs by itself at each step: (logo, caption)
+AUTO26 = [
+    [('nexthink', 'Crash'), ('now', 'Incident'), ('agent', 'Message')],
+    [('agent', 'Analysis'), ('now', 'Change'), ('cloud', 'Pause')],
+    [('now', 'Change'), ('intune', 'Settings')],
+    [('agent', 'Message'), ('cloud', 'In waves'), ('now', 'Closed')],
+]
+
+
 def build26():
-    d = base('bu26', 'A bad Visio update in 2026: Peter gets the same messages; agents and flows do the work; the engineer only says yes; everyone else gets the fix and notices nothing; every step reads and writes the ServiceNow record', '2026')
-    # 1 Peter's Visio crashes; Nexthink records it
-    person(d, 0, 'peter', 'alert'); system(d, cx(0), SY1, 'nexthink', 'Nexthink')
-    vline(d, cx(0), PY + R + 32, SY1 - SR - 6, 'Crash\nand version', 410)
-    # 2 a webhook opens the incident; the Software agent tells Peter, with the workaround from the knowledge base
-    record(d, 1, 'Incident', first=True)
-    mid = cx(0) + 80
-    path(d, (cx(0) + SR + 6, SY1), (mid, SY1), (mid, SYB), (cx(1) - 34, SYB), label='Webhook', at=(mid + 40, (SY1 + SYB) / 2 + 5))
-    person(d, 1, 'peter', 'message'); robot(d, cx(1), SY1, 'Digital Hub')
-    vline(d, cx(1), SY1 - SR - 6, PY + R + 32, 'Ticket + Visio\nin the browser', 410)
-    both(d, cx(1), SY1 + SR + 14, SYB - 34)
-    under(d, 1, 'now', 'Knowledge base', 'Workaround')
-    # 3 the incidents become one problem; the problem agent prepares the analysis; the engineer says yes
-    person(d, 2, 'engineer'); robot(d, cx(2), SY1, 'ServiceNow'); record(d, 2, 'Problem')
-    pair(d, cx(2), 'Analysis,\nready', 'Yes', ly=410)
-    both(d, cx(2), SY1 + SR + 14, SYB - 34)
-    under(d, 2, 'nexthink', 'Nexthink', 'By version')
-    # 4 a change pauses the update; the Software agent tells Peter
-    person(d, 3, 'peter', 'message'); robot(d, cx(3), SY1, 'Digital Hub'); record(d, 3, 'Change: pause')
-    vline(d, cx(3), SY1 - SR - 6, PY + R + 32, 'Update held,\nfix underway', 410)
-    both(d, cx(3), SY1 + SR + 14, SYB - 34)
-    under(d, 3, 'cloud', 'Cloud Update', 'Pause', up=False)
-    # 5 the problem agent prepares the steps; the engineer says yes; Intune changes the settings
-    person(d, 4, 'engineer'); robot(d, cx(4), SY1, 'ServiceNow'); record(d, 4, 'Change: fix')
-    pair(d, cx(4), 'Steps,\nready', 'Yes', ly=410)
-    both(d, cx(4), SY1 + SR + 14, SYB - 34)
-    under(d, 4, 'intune', 'Intune', 'Settings', up=False)
-    # 6 the Software agent tells Peter; his incident closes
-    person(d, 5, 'peter', 'done'); robot(d, cx(5), SY1, 'Digital Hub'); record(d, 5, 'Incident closed')
-    pair(d, cx(5), FIXED, 'Rating', ly=410)
-    both(d, cx(5), SY1 + SR + 14, SYB - 34)
-    # 7 Cloud Update rolls the update out to everyone else in waves; nobody notices; everything closes
-    everyone(d, 6); record(d, 6, 'All closed')
-    under(d, 6, 'cloud', 'Cloud Update', 'In waves', up=False, left=True)
+    """2026: four steps; people only read and say yes; everything else runs in one automatic strip."""
+    global X0, COL, PY, END, H
+    keep = X0, COL, PY, END, H
+    X0, COL, PY, END, H = 205, 265, 270, 690, 890
+    d = Rich('bu26', W, H, 'A bad Visio update in 2026, in four steps: Peter gets two messages, the engineer says yes twice, everything else is automatic and everyone else notices nothing')
+    frame(d, '2026')
+    for i, (t, s_, was) in enumerate(STEPS26):
+        head(d, i, i + 1, t, s_)
+        d.t(cx(i) - COL / 2 + 10, TOP + 92, was, 15, 400, 'start', fill=SECOND)
+    top, bot, ay = 500, 670, 590
+    d.el.append(f'<rect x="84" y="{top}" width="{W - 124}" height="{bot - top}" fill="#fff" stroke="{LINE}" stroke-width="1.5" stroke-dasharray="6 5"/>')
+    glyph(d, 'bolt', 104, top + 22, 20, SECOND)
+    d.t(118, top + 28, 'Automatic: nobody touches it', 15, 700, fill=SECOND)
+    prev = None
+    for i, group in enumerate(AUTO26):
+        n = len(group)
+        xs = [cx(i) + (k - (n - 1) / 2) * 78 for k in range(n)]
+        for x, (key, cap) in zip(xs, group):
+            if key == 'agent':
+                d.el.append(f'<circle cx="{x}" cy="{ay}" r="22" fill="{TINT}" stroke="{TEAL}" stroke-width="1.5"/>')
+                glyph(d, 'smart_toy', x, ay, 26)
+            else:
+                mark(d, key, x, ay, 22)
+            d.t(x, ay + 44, cap, 15, 600, 'middle', fill=SECOND)
+        if prev is not None:
+            hline(d, prev + 28, xs[0] - 30, ay)
+        prev = xs[-1]
+    # people: only what they see and say
+    person(d, 0, 'peter', 'message')
+    pair(d, cx(0), 'Ticket + Visio\nin the browser', 'Crash', ly=408, bottom=top - 6)
+    person(d, 1, 'engineer')
+    pair(d, cx(1), 'Analysis,\nready', 'Yes', ly=408, bottom=top - 6)
+    person(d, 2, 'engineer')
+    pair(d, cx(2), 'Steps,\nready', 'Yes', ly=408, bottom=top - 6)
+    px, ex = cx(3) - 62, cx(3) + 62
+    person(d, 3, 'peter', 'done', x=px)
+    pair(d, px, FIXED, 'Rating', ly=408, bottom=top - 6)
+    everyone(d, 3, x=ex, y=400)
+    X0, COL, PY, END, H = keep
     return d
