@@ -280,52 +280,68 @@ def build19():
 
 
 STEPS26 = [
-    ('Crash', 'Visio won’t start. Peter is told and keeps working', '2019: steps 1–2'),
-    ('Hold', 'The engineer says yes. The update stops for everyone else', '2019: steps 3–4'),
-    ('Fix', 'The engineer says yes. The settings change', '2019: step 5'),
-    ('Fixed', 'Peter hears back. Everyone else notices nothing', '2019: steps 6–7'),
+    ('Crash', 'Peter\u2019s Visio crashes. Within a minute, Digital Hub\u2019s agent tells him how to keep working.', '2019: steps 1\u20132'),
+    ('Pause', 'ServiceNow\u2019s agent finds the cause by itself. The engineer only agrees to pause the update.', '2019: steps 3\u20134'),
+    ('Fix', 'ServiceNow\u2019s agent writes the fix by itself. The engineer only agrees, and Intune applies it.', '2019: step 5'),
+    ('Done', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed. Everyone else gets the update and never sees the crash.', '2019: steps 6\u20137'),
 ]
-# what runs by itself at each step: (logo, caption)
+# who says what to whom, on each arrow: (to the person, from the person)
+TALK26 = [
+    ('Digital Hub\u2019s agent to Peter: \u201cWe created a ticket. Use Visio in the browser.\u201d', 'His laptop reports the crash'),
+    ('ServiceNow\u2019s agent to the engineer: \u201cThe new update crashes Visio. Pause it?\u201d', 'She says yes'),
+    ('ServiceNow\u2019s agent to the engineer: \u201cFix: change these settings. Apply it?\u201d', 'She says yes'),
+    ('Digital Hub\u2019s agent to Peter: \u201cWe fixed the problem with your Visio update.\u201d', 'Peter rates it'),
+]
+# what each system does by itself, in order
 AUTO26 = [
-    [('nexthink', 'Crash'), ('now', 'Incident'), ('hub', 'Message')],
-    [('now', 'Analysis'), ('cloud', 'Pause')],
-    [('now', 'Change'), ('intune', 'Settings')],
-    [('hub', 'Message'), ('cloud', 'In waves'), ('now', 'Closed')],
+    [('nexthink', 'Nexthink sees Visio crash on Peter\u2019s laptop'), ('now', 'ServiceNow opens a ticket for Peter'), ('hub', 'Digital Hub\u2019s agent messages Peter')],
+    [('now', 'ServiceNow\u2019s agent compares the crashes in Nexthink and finds the cause: the new update'), ('cloud', 'Cloud Update pauses the update for everyone')],
+    [('now', 'ServiceNow\u2019s agent writes the fix: new settings'), ('intune', 'Intune changes the settings on every laptop')],
+    [('hub', 'Digital Hub\u2019s agent tells Peter it\u2019s fixed'), ('cloud', 'Cloud Update gives everyone else the update, in waves'), ('now', 'ServiceNow closes the ticket')],
 ]
+
+
+def talk(d, x, up, down, ly, bottom, upw=150, downw=100):
+    """Two arrows beside a person: the up arrow brings a message, the down arrow takes the answer."""
+    xu, xd = x + 20, x + 44
+    d.el.append(f'<path d="M{xu:.0f} {bottom:.0f}V{PY + R + 32:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
+    d.el.append(f'<path d="M{xd:.0f} {PY + R + 32:.0f}V{bottom:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
+    for text, tx, w, anchor in [(up, xu - 10, upw, 'end'), (down, xd + 10, downw, 'start')]:
+        ls = wrap(text, w, 16)
+        y0 = ly - (len(ls) - 1) * 10 + 5
+        for k, t in enumerate(ls):
+            d.t(tx, y0 + k * 20, t, 15, 600, anchor, fill=TEAL)
 
 
 def build26():
-    """2026: four steps; people only read and say yes; everything else runs in one automatic strip."""
-    global X0, COL, PY, END, H
-    keep = X0, COL, PY, END, H
-    X0, COL, PY, END, H = 205, 265, 270, 700, 900
-    d = Rich('bu26', W, H, 'A bad Visio update in 2026, in four steps: Peter gets two messages, the engineer says yes twice, everything else is automatic and everyone else notices nothing')
+    """2026: four steps; people only read a message and say yes; everything else runs by itself."""
+    global W, X0, COL, PY, BOT, END, H
+    keep = W, X0, COL, PY, BOT, END, H
+    W, X0, COL, PY, BOT, END, H = 1300, 212, 305, 300, 590, 880, 1080
+    d = Rich('bu26', W, H, 'A bad Visio update in 2026, in four steps: Digital Hub tells Peter twice, ServiceNow asks the engineer twice and she says yes, and the systems do everything else by themselves; everyone else never sees the crash')
     frame(d, '2026')
     for i, (t, s_, was) in enumerate(STEPS26):
         head(d, i, i + 1, t, s_)
-        d.t(cx(i) - COL / 2 + 10, TOP + 92, was, 15, 400, 'start', fill=SECOND)
-    top, ay = 502, 620
-    d.t(110, 545, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, fill=TEAL)
-    prev = None
-    for i, group in enumerate(AUTO26):
-        n = len(group)
-        xs = [cx(i) + (k - (n - 1) / 2) * 78 for k in range(n)]
-        for x, (key, cap) in zip(xs, group):
-            mark(d, key, x, ay, 22)
-            d.t(x, ay + 44, cap, 15, 600, 'middle', fill=SECOND)
-        if prev is not None:
-            hline(d, prev + 28, xs[0] - 30, ay)
-        prev = xs[-1]
-    # people: only what they see and say
-    person(d, 0, 'peter', 'message')
-    pair(d, cx(0), 'Ticket + Visio\nin the browser', 'Crash', ly=408, bottom=top - 6)
-    person(d, 1, 'engineer')
-    pair(d, cx(1), 'It\u2019s the update.\nPause it?', 'Yes', ly=408, bottom=top - 6)
-    person(d, 2, 'engineer')
-    pair(d, cx(2), 'Change the\nsettings?', 'Yes', ly=408, bottom=top - 6)
-    px, ex = cx(3) - 70, cx(3) + 70
+        d.t(cx(i) - COL / 2 + 10, TOP + 112, was, 15, 400, 'start', fill=SECOND)
+    # people: what they are told and what they answer
+    bottom = BOT + 18
+    for i, (up, down) in enumerate(TALK26[:3]):
+        person(d, i, 'peter' if i == 0 else 'engineer', 'message' if i == 0 else None)
+        talk(d, cx(i), up, down, 470, bottom, upw=180)
+    px, ex = cx(3) - 50, cx(3) + 88
     person(d, 3, 'peter', 'done', x=px)
-    pair(d, px, FIXED, 'Rating', ly=408, bottom=top - 6)
-    everyone(d, 3, x=ex, y=400)
-    X0, COL, PY, END, H = keep
+    talk(d, px, TALK26[3][0], TALK26[3][1], 470, bottom, upw=125, downw=70)
+    person(d, 3, 'everyone', x=ex)
+    d.t(ex, PY + R + 44, 'Sees nothing:', 15, 600, 'middle', fill=SECOND)
+    d.t(ex, PY + R + 64, 'Visio just works', 15, 600, 'middle', fill=SECOND)
+    # systems: one heading, then what each system does, in order
+    d.t(110, BOT + 62, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, fill=TEAL)
+    for i, rows in enumerate(AUTO26):
+        lx = cx(i) - COL / 2 + 28
+        for k, (key, text) in enumerate(rows):
+            y = BOT + 112 + k * 64
+            mark(d, key, lx, y, 18)
+            n = len(wrap(text, COL - 70, 15))
+            d.lines(lx + 28, y + 5 - (n - 1) * 9.5, text, COL - 70, 15, 400, INK, lh=19)
+    W, X0, COL, PY, BOT, END, H = keep
     return d
