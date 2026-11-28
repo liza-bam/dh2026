@@ -315,7 +315,7 @@ def build26():
     each person is joined to the system that talks to them."""
     global W, X0, COL, PY, R, BOT, END, H
     keep = W, X0, COL, PY, R, BOT, END, H
-    W, X0, COL, PY, R, BOT = 1000, 220, 300, 270, 34, 560
+    W, X0, COL, PY, R, BOT = 1000, 220, 300, 284, 48, 580
     y1, y2 = BOT + 75, BOT + 190
     END = y2 + 175
     H = END + 240
@@ -339,26 +339,26 @@ def build26():
             else:
                 arrow(d, (px_ + 8, y2 - 28), (px_ + 8, y1), (x - 30, y1), col=LINE)
     d.t(W / 2, END - 24, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, 'middle', fill=TEAL)
-    top, ly, end = PY + R + 32, 450, y1 - 30
+    top, ly, end = PY + R + 32, 470, y1 - 30
     # step 1: Peter. His laptop reports the crash to Nexthink; Digital Hub's agent writes to him
     person(d, 0, 'peter', 'message', x=220)
     arrow(d, (208, top), (208, y1 - 52), (125, y1 - 52), (125, end))
     label(d, 198, ly, 'His laptop reports the crash', 120, 'end')
     arrow(d, (315, end), (315, y1 - 40), (232, y1 - 40), (232, top))
-    label(d, 242, ly, 'Digital Hub\u2019s agent: \u201cWe created a ticket. Use Visio in the browser.\u201d', 112, 'start')
+    label(d, 242, ly, '\u201cWe created a ticket. Use Visio in the browser.\u201d', 112, 'start')
     # step 2: the engineer and ServiceNow's agent
     person(d, 1, 'engineer', x=425)
     arrow(d, (437, end), (437, top))
-    label(d, 447, ly, 'ServiceNow\u2019s agent: \u201cThe new update crashes Visio. Pause it and change the settings?\u201d', 132, 'start')
+    label(d, 447, ly, '\u201cThe new update crashes Visio. Pause it and change the settings?\u201d', 132, 'start')
     arrow(d, (413, top), (413, end))
     label(d, 403, ly + 80, 'She says yes', 60, 'end')
     # step 3: Peter hears back; everyone else just gets the update
     person(d, 2, 'peter', 'done', x=725)
     arrow(d, (713, end), (713, top))
-    label(d, 703, ly, 'Digital Hub\u2019s agent: \u201cWe fixed the problem.\u201d', 100, 'end')
+    label(d, 703, ly, '\u201cWe fixed the problem.\u201d', 130, 'end')
     arrow(d, (737, top), (737, end))
     label(d, 747, ly + 80, 'Peter rates it', 60, 'start')
-    person(d, 2, 'everyone', x=840)
+    person(d, 2, 'everyone', x=850)
     arrow(d, (832, end), (832, top))
     label(d, 842, ly, 'The update. They notice nothing', 110, 'start')
     W, X0, COL, PY, R, BOT, END, H = keep
