@@ -16,7 +16,10 @@ def vec(name):
 
 def mark(d, key, x, y, r):
     """A platform logo in a disc, drawn from vector files so it stays sharp."""
-    if key == 'now':
+    if key == 'hub':
+        d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#f5c000"/>')
+        glyph(d, 'hub', x, y, r * 1.15, '#fff')
+    elif key == 'now':
         d.el.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#293e40"/>')
         d.el.append(f'<image href="{vec("servicenow")}" x="{x - r}" y="{y - r}" width="{2 * r}" height="{2 * r}"/>')
     elif key == 'nexthink':
@@ -160,12 +163,12 @@ def legend(d, label, agents):
     items = [('peter', 'Peter, whose Visio crashed'), ('engineer', 'The support engineer'),
              ('everyone', 'Everyone else due the update')] + ([] if agents else [('alert', 'Something went wrong')]) + [
              ('message', 'A message to Peter'), ('done', 'Fixed'),
-             ('hub', 'Digital Hub') if not agents else ('agent', 'An agent: a system with its own account'),
+             ('hub', 'Digital Hub'),
              ('now', 'ServiceNow: the case record'), ('nexthink', 'Nexthink: watches every laptop')]
     if agents:
         items += [('cloud', 'Microsoft 365 Cloud Update'), ('intune', 'Microsoft Intune')]
     items += [('arrow', 'Words on an arrow: the data that moves')]
-    items += [('auto', 'Automatic: nobody touches it')] if agents else [('both', 'Reads and writes the record')]
+    items += [] if agents else [('both', 'Reads and writes the record')]
     cw, rh = (W - 84) / 5, 50
     for k, (key, text) in enumerate(items):
         x, y = 64 + (k % 5) * cw, END + 70 + (k // 5) * rh
@@ -292,10 +295,10 @@ STEPS26 = [
 ]
 # what runs by itself at each step: (logo, caption)
 AUTO26 = [
-    [('nexthink', 'Crash'), ('now', 'Incident'), ('agent', 'Message')],
-    [('agent', 'Analysis'), ('now', 'Change'), ('cloud', 'Pause')],
+    [('nexthink', 'Crash'), ('now', 'Incident'), ('hub', 'Message')],
+    [('now', 'Analysis'), ('cloud', 'Pause')],
     [('now', 'Change'), ('intune', 'Settings')],
-    [('agent', 'Message'), ('cloud', 'In waves'), ('now', 'Closed')],
+    [('hub', 'Message'), ('cloud', 'In waves'), ('now', 'Closed')],
 ]
 
 
@@ -303,26 +306,20 @@ def build26():
     """2026: four steps; people only read and say yes; everything else runs in one automatic strip."""
     global X0, COL, PY, END, H
     keep = X0, COL, PY, END, H
-    X0, COL, PY, END, H = 205, 265, 270, 690, 890
+    X0, COL, PY, END, H = 205, 265, 270, 700, 900
     d = Rich('bu26', W, H, 'A bad Visio update in 2026, in four steps: Peter gets two messages, the engineer says yes twice, everything else is automatic and everyone else notices nothing')
     frame(d, '2026')
     for i, (t, s_, was) in enumerate(STEPS26):
         head(d, i, i + 1, t, s_)
         d.t(cx(i) - COL / 2 + 10, TOP + 92, was, 15, 400, 'start', fill=SECOND)
-    top, bot, ay = 500, 670, 590
-    d.el.append(f'<rect x="84" y="{top}" width="{W - 124}" height="{bot - top}" fill="#fff" stroke="{LINE}" stroke-width="1.5" stroke-dasharray="6 5"/>')
-    glyph(d, 'bolt', 104, top + 22, 20, SECOND)
-    d.t(118, top + 28, 'Automatic: nobody touches it', 15, 700, fill=SECOND)
+    top, ay = 502, 620
+    d.t(110, 545, 'AUTOMATIC: NOBODY TOUCHES IT', 24, 700, fill=TEAL)
     prev = None
     for i, group in enumerate(AUTO26):
         n = len(group)
         xs = [cx(i) + (k - (n - 1) / 2) * 78 for k in range(n)]
         for x, (key, cap) in zip(xs, group):
-            if key == 'agent':
-                d.el.append(f'<circle cx="{x}" cy="{ay}" r="22" fill="{TINT}" stroke="{TEAL}" stroke-width="1.5"/>')
-                glyph(d, 'smart_toy', x, ay, 26)
-            else:
-                mark(d, key, x, ay, 22)
+            mark(d, key, x, ay, 22)
             d.t(x, ay + 44, cap, 15, 600, 'middle', fill=SECOND)
         if prev is not None:
             hline(d, prev + 28, xs[0] - 30, ay)
