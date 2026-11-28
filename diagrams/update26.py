@@ -105,26 +105,18 @@ def vline(d, x, y1, y2, label=None, ly=None, dashed=False):
             d.t(x, ly - h / 2 + 20 + k * 22, s, 15, 700, 'middle', fill=TEAL)
 
 
-def pair(d, x, up, down, ly=400, down_first=False, bottom=None):
-    """Two arrows between a person and a system: up brings data to the person, down takes their answer back."""
+def pair(d, x, up, down, ly=400, down_first=False, bottom=None, spread=0):
+    """Two arrows between a person and a system, each with its own label beside it:
+    the up arrow (left) brings data to the person, the down arrow (right) takes their answer back."""
     b = SY1 - SR - 6 if bottom is None else bottom
-    for dx, y1, y2 in [(-10, b, PY + R + 32), (10, PY + R + 32, b)]:
-        d.el.append(f'<path d="M{x + dx:.0f} {y1:.0f}V{y2:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
-    u, dn = [('up', t) for t in up.split('\n')], [('down', t) for t in down.split('\n')]
-    lines = dn + u if down_first else u + dn
-    w = max(len(t) for _, t in lines) * 8.4 + 34
-    h = 22 * len(lines) + 8
-    y0 = ly - h / 2
-    d.rect(x - w / 2, y0, w, h, '#fff', '#fff', rx=0, sw=0)
-    first = {}
-    for k, (way, t) in enumerate(lines):
-        ty = y0 + 20 + k * 22
-        if way not in first:
-            first[way] = 1
-            tx = x - w / 2 + 10
-            tri = f'{tx},{ty - 3} {tx + 10},{ty - 3} {tx + 5},{ty - 12}' if way == 'up' else f'{tx},{ty - 12} {tx + 10},{ty - 12} {tx + 5},{ty - 3}'
-            d.el.append(f'<polygon points="{tri}" fill="{TEAL}"/>')
-        d.t(x - w / 2 + 26, ty, t, 15, 700, 'start', fill=TEAL)
+    xu, xd = x - 12, x + 12
+    d.el.append(f'<path d="M{xu:.0f} {b:.0f}V{PY + R + 32:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
+    d.el.append(f'<path d="M{xd:.0f} {PY + R + 32:.0f}V{b:.0f}" fill="none" stroke="{TEAL}" stroke-width="2" marker-end="url(#m{d.uid})"/>')
+    for text, tx, anchor, yy in [(up, xu - 10, 'end', ly - spread), (down, xd + 10, 'start', ly + spread)]:
+        ls = text.split('\n')
+        y0 = yy - (len(ls) - 1) * 11 + 5
+        for k, t in enumerate(ls):
+            d.t(tx, y0 + k * 22, t, 15, 700, anchor, fill=TEAL)
 
 
 def path(d, *pts, label=None, at=None):
@@ -267,7 +259,7 @@ def build19():
     both(d, cx(1), SY1 + SR + 6, SYB - 34)
     # 3 the engineer searches Nexthink; the ticket shows three similar ones
     person(d, 2, 'engineer'); system(d, cx(2), SY1, 'nexthink'); record(d, 2, '3 similar tickets')
-    pair(d, cx(2), 'The cause:\nthe update', 'She searches', ly=410, down_first=True)
+    pair(d, cx(2), 'The cause:\nthe update', 'She searches', ly=410, down_first=True, spread=40)
     both(d, cx(2), SY1 + SR + 6, SYB - 34)
     # 4 Digital Hub holds the update and tells Peter
     person(d, 3, 'peter', 'message'); system(d, cx(3), SY1, 'hub'); record(d, 3, 'Update held')
@@ -279,7 +271,7 @@ def build19():
     both(d, cx(4), SY1 + SR + 6, SYB - 34)
     # 6 Peter hears back and rates it; his ticket closes
     person(d, 5, 'peter', 'done'); system(d, cx(5), SY1, 'hub'); record(d, 5, 'Ticket closed')
-    pair(d, cx(5), FIXED, 'Rating', ly=410)
+    pair(d, cx(5), FIXED, 'Rating', ly=410, spread=40)
     both(d, cx(5), SY1 + SR + 6, SYB - 34)
     # 7 Digital Hub runs the same steps for everyone else; nobody notices
     everyone(d, 6); system(d, cx(6), SY1, 'hub'); record(d, 6, 'All closed')
@@ -331,7 +323,7 @@ def build26():
     pair(d, cx(1), 'Analysis,\nready', 'Yes', ly=408, bottom=top - 6)
     person(d, 2, 'engineer')
     pair(d, cx(2), 'Steps,\nready', 'Yes', ly=408, bottom=top - 6)
-    px, ex = cx(3) - 62, cx(3) + 62
+    px, ex = cx(3) - 70, cx(3) + 70
     person(d, 3, 'peter', 'done', x=px)
     pair(d, px, FIXED, 'Rating', ly=408, bottom=top - 6)
     everyone(d, 3, x=ex, y=400)
